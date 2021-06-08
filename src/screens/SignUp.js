@@ -87,7 +87,7 @@ const UnderHeader = styled.div`
   margin-left: auto;
   margin-right: 30px;
   width: 600px;
-  height: 60px;
+  min-height: 60px;
   display: flex;
   justify-content: center;
   align-items: flex-end;

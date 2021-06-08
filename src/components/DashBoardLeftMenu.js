@@ -32,7 +32,7 @@ const Container = styled.main`
   margin-right: auto;
   height: 100%;
   background-color: #004070;
-  width: 200px;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   padding-top: 100px;
