@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import DashBoardHeader from "../components/DashBoardHeader";
 import DashBoardLeftMenu from "../components/DashBoardLeftMenu";
-import DashBoardMainContents from "./DashBoardMainContents";
+import MyProjectMainContents from "./MyProjectMainContents";
+import ReportingMainContents from "./ReportingMainContents";
 
 const DashBoardContainer = styled.div`
   height: 100%;
@@ -16,15 +17,15 @@ const DashBoardMainBox = styled.div`
   display: flex;
 `;
 
-function DashBoard() {
+function Reporting() {
   return (
     <DashBoardContainer>
       <DashBoardHeader />
       <DashBoardMainBox>
         <DashBoardLeftMenu />
-        <DashBoardMainContents></DashBoardMainContents>
+        <ReportingMainContents></ReportingMainContents>
       </DashBoardMainBox>
     </DashBoardContainer>
   );
 }
-export default DashBoard;
+export default Reporting;
