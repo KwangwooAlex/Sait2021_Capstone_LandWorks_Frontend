@@ -9,8 +9,8 @@ import { HelmetProvider } from "react-helmet-async";
 import { useState } from "react";
 import Layout from "./components/Layout";
 import DashBoard from "./screens/DashBoard";
-import MyProject from "./screens/MyProject";
-import Reporting from "./screens/Reporting";
+import MyTeam from "./screens/MyTeam";
+import MyProfile from "./screens/MyProfile";
 
 function App() {
   const isLoggedInProject = useReactiveVar(isLoggedInProjectVar);
@@ -29,20 +29,20 @@ function App() {
                 <Login />
               )}
             </Route>
-            <Route path={routes.myProject} exact>
+            <Route path={routes.myTeam} exact>
               {isLoggedInProject ? (
                 <Layout>
-                  <MyProject />
+                  <MyTeam />
                 </Layout>
               ) : (
                 <Login />
               )}
             </Route>
 
-            <Route path={routes.reporting} exact>
+            <Route path={routes.myProfile} exact>
               {isLoggedInProject ? (
                 <Layout>
-                  <Reporting />
+                  <MyProfile />
                 </Layout>
               ) : (
                 <Login />

@@ -61,38 +61,6 @@ const DashBoardSection = styled.div`
   }
 `;
 
-const MyProject = styled.div`
-  padding-left: 20px;
-  height: 45px;
-  cursor: pointer;
-  align-items: center;
-  display: flex;
-  color: #a09d9d;
-  font-size: 18px;
-  margin-top: 25px;
-  font-weight: 600;
-  &:hover {
-    color: white;
-    background-color: #fdfdfd7f;
-  }
-`;
-
-const Reporting = styled.div`
-  padding-left: 20px;
-  height: 45px;
-  cursor: pointer;
-  align-items: center;
-  display: flex;
-  color: #a09d9d;
-  font-size: 18px;
-  margin-top: 25px;
-  font-weight: 600;
-  &:hover {
-    color: white;
-    background-color: #fdfdfd7f;
-  }
-`;
-
 const MyTeam = styled.div`
   padding-left: 20px;
   height: 45px;
@@ -109,23 +77,7 @@ const MyTeam = styled.div`
   }
 `;
 
-const Task = styled.div`
-  padding-left: 20px;
-  height: 45px;
-  cursor: pointer;
-  align-items: center;
-  display: flex;
-  color: #a09d9d;
-  font-size: 18px;
-  margin-top: 25px;
-  font-weight: 600;
-  &:hover {
-    color: white;
-    background-color: #fdfdfd7f;
-  }
-`;
-
-const Services = styled.div`
+const MyProfile = styled.div`
   padding-left: 20px;
   height: 45px;
   cursor: pointer;
@@ -161,44 +113,25 @@ function DashBoardLeftMenu() {
           <Letter>DASHBOARD</Letter>
         </DashBoardSection>
       </Link>
-      <Link to="/myProject">
-        <MyProject>
+      <Link to="/myTeam">
+        <MyTeam>
           <ICON>
-            <FontAwesomeIcon icon={faProjectDiagram} size="lg" />
+            <FontAwesomeIcon icon={faPeopleCarry} size="lg" />
           </ICON>
-          <Letter>MY PROJECT</Letter>
-        </MyProject>
+          <Letter>MY Team</Letter>
+        </MyTeam>
       </Link>
-      <Link to="/reporting">
-        <Reporting>
+      <Link to="/myProfile">
+        <MyProfile>
           <ICON>
             {" "}
             <FontAwesomeIcon icon={faNewspaper} size="lg" />
           </ICON>
-          <Letter>REPORTING</Letter>{" "}
-        </Reporting>
+          <Letter>MY PROFILE</Letter>{" "}
+        </MyProfile>
       </Link>
-      <MyTeam>
-        <ICON>
-          {" "}
-          <FontAwesomeIcon icon={faPeopleCarry} size="lg" />
-        </ICON>
-        <Letter>MY TEAM</Letter>{" "}
-      </MyTeam>
-      <Task>
-        <ICON>
-          {" "}
-          <FontAwesomeIcon icon={faTasks} size="lg" />
-        </ICON>
-        <Letter>TASKS</Letter>
-      </Task>
-      <Services>
-        <ICON>
-          {" "}
-          <FontAwesomeIcon icon={faHands} size="lg" />
-        </ICON>
-        <Letter>SERVICES</Letter>
-      </Services>
+
+     
       {/* </ButtonSection> */}
     </Container>
   );
