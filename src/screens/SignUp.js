@@ -19,6 +19,7 @@ import LogOutHeader from "../components/LogOutHeader";
 import FormSignUpBox from "../components/auth/FormSignUpBox";
 import SignUpButton from "../components/auth/SignUpButton";
 
+
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccount(
     $username: String!
