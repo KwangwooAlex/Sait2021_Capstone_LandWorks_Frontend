@@ -13,10 +13,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useRef } from "react";
-import MyProfileEdit from "./MyProfileEdit";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Modal from "react-modal";
-
+// import Modal from "react-modal";
 
 const SEE_PROFILE_QUERY = gql`
   query seeProfile($username: String!){
@@ -60,48 +58,6 @@ const EDIT_PROFILE_MUTATION = gql`
   }
 `;
 
-const Container = styled.main`
-  padding: 40px 40px 0 40px;
-  height: 100%;
-  /* background-color: black; */
-  width: 90%;
-  
-`;
-
-const MainTitle = styled.div`
-  color: #004070;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: 30px;
-  width: 100%;
-  height: 40px;
-  border-bottom: black 2px solid;
-  box-sizing: border-box;
-`;
-
-const EditBtn = styled.button` 
-  border-radius: 10px;
-  background: white;
-  border: 1px solid;
-  color: #707070;
-  float: right;
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
-`;
-const SaveBtn = styled.button` 
-  border-radius: 10px;
-  background: white;
-  border: 1px solid;
-  color: #707070;
-  float: right;
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
-`;
 
 const InfoSection = styled.div`
   display: flex;
@@ -149,29 +105,9 @@ const Avatar = styled(AccountCircleIcon)`
   align-items:center;
 `;
 
-const ProfileImgEdit = styled.button`
-
-`;
-
-const ConfirmEditImg = styled.button`
-
-`;
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '500px',
-    height: '300px',
-  },
-};
 
 
-function MyProfileMainContents() { 
+function MyPofileEdit() { 
 
   // const { username } = useParams();
   const { data } = useQuery(SEE_PROFILE_QUERY, {
@@ -181,49 +117,8 @@ function MyProfileMainContents() {
   // console.log(data.seeProfile.username);
   const { editProfile } = useMutation(EDIT_PROFILE_MUTATION);
 
-  const [disabled, setDisabled] = useState(true);
-  const [activeEditBtn, setActiveEditBtn]=useState("Edit");
-  const [activeConfirmPassword, setActiveConfirmPassword] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-
-  const handleEditClick = () => {
-
-    setDisabled(!disabled);
-
-    if (activeConfirmPassword){
-      setActiveConfirmPassword(false);
-      setActiveEditBtn("Edit");
-      alert("Your profile has been saved.");
-      setEditMode(false);
-    }
-    else {
-    setActiveConfirmPassword(true);
-    setActiveEditBtn("Save");
-    setEditMode(true);
-  }};
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  }
-
-  const handleCloseModal = () => {
-    alert("Your changed has been saved.");
-    setIsModalOpen(false);
-  }
-
-  return (
-    <Container>
-      <MainTitle>
-        MY PROFILE
-        <EditBtn type='submit' onClick={handleEditClick}>{activeEditBtn}</EditBtn>
-      </MainTitle>
-
-      {editMode ?
-        <MyProfileEdit></MyProfileEdit>
-      // }
-        : (
-      <InfoSection>  
+  return ( 
+      <InfoSection>
         <InputContainer>
           <AccountInfo>
             <InfoTitle>Account Information</InfoTitle>
@@ -231,46 +126,44 @@ function MyProfileMainContents() {
             <Input
               type="text" 
               name="username"
-              value={data.seeProfile.username}
-              disabled={disabled}
+              // value={data.seeProfile.username}
+            //   disabled={disabled}
             />
             <InfoSubTitle>Company Name</InfoSubTitle>
             <Input
               type="text"
               name="companyName"
-              value={data.seeProfile.companyName}
-              disabled={disabled}        
+              // value={data.seeProfile.companyName}
+              // disabled={disabled}        
             />
             <InfoSubTitle>Email</InfoSubTitle>
             <Input
               type="email"
               name="email" 
-              value={data.seeProfile.email}
-              disabled={disabled}       
+              // value={data.seeProfile.email}
+              // disabled={disabled}       
             />
             <InfoSubTitle>Phone Number</InfoSubTitle>      
             <Input
               type="number"
               name="phoneNumber"
-              value={data.seeProfile.phoneNumber}
-              disabled={disabled}        
+              // value={data.seeProfile.phoneNumber}
+              // disabled={disabled}        
             />
             <InfoSubTitle>Password</InfoSubTitle>      
             <Input
               type="password"
               name="password" 
-              value={data.seeProfile.password}
-              disabled={disabled}       
+              // value={data.seeProfile.password}
+              // disabled={disabled}       
             />
-            {activeConfirmPassword && 
-            <>
+
               <InfoSubTitle>Confirm Password</InfoSubTitle>      
               <Input
                 type="text"
                 name="password"           
               />
-            </>
-            }      
+
           </AccountInfo>
           
           <PersonalInfo>
@@ -279,63 +172,47 @@ function MyProfileMainContents() {
             <Input 
               type="text"
               name="birth" 
-              value={data.seeProfile.birth} 
-              disabled={disabled}      
+              // value={data.seeProfile.birth} 
+              // disabled={disabled}      
             />
             <InfoSubTitle>Country/Region</InfoSubTitle>
             <Input
               type="text"
               name="country"
-              value={data.seeProfile.country}
-              disabled={disabled}        
+              // value={data.seeProfile.country}
+              // disabled={disabled}        
             />
             <InfoSubTitle>State</InfoSubTitle>
             <Input
               type="text"
               name="state" 
-              value={data.seeProfile.state}
-              disabled={disabled}       
+              // value={data.seeProfile.state}
+              // disabled={disabled}       
             />
             <InfoSubTitle>City</InfoSubTitle>
             <Input
               type="text"
               name="city" 
-              value={data.seeProfile.city}
-              disabled={disabled}       
+              // value={data.seeProfile.city}
+              // disabled={disabled}       
             />
             <InfoSubTitle>Street</InfoSubTitle>      
             <Input
               type="text"
               name="Street"  
-              value={data.seeProfile.Street}
-              disabled={disabled}      
+              // value={data.seeProfile.Street}
+              // disabled={disabled}      
             />
           </PersonalInfo>
-        </InputContainer> 
-        
-        <ProfileImg>
-          <Avatar>
-            {/* <AccountCircleIcon></AccountCircleIcon> */}
-          </Avatar>
-          <ProfileImgEdit onClick={handleOpenModal}>
-            Edit
-          </ProfileImgEdit>
-          <Modal 
-            isOpen={isModalOpen}
-            style={customStyles}
-          >
-            Edit Profile img
-            <ConfirmEditImg onClick={handleCloseModal}>
-              Save
-            </ConfirmEditImg>
-          </Modal>
-        </ProfileImg>
-        
-      </InfoSection>
-        )}
-      
-    </Container>
+        </InputContainer>
+
+        <Avatar>
+          {/* <AccountCircleIcon></AccountCircleIcon> */}
+        </Avatar>
+
+        </InfoSection> 
+
   );
 }
 
-export default MyProfileMainContents;
+export default MyPofileEdit;
