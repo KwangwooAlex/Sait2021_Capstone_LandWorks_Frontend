@@ -14,24 +14,25 @@ import { useState, useRef } from "react";
 import MyProfileEdit from "./MyProfileEdit";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Modal from "react-modal";
+import useUser from "../components/hooks/useUser";
 
-const SEE_PROFILE_QUERY = gql`
-  query seeProfile($username: String!) {
-    seeProfile(username: $username) {
-      id
-      username
-      email
-      companyName
-      phoneNumber
-      avatar
-      birth
-      country
-      state
-      city
-      Street
-    }
-  }
-`;
+// const SEE_PROFILE_QUERY = gql`
+//   query seeProfile($username: String!) {
+//     seeProfile(username: $username) {
+//       id
+//       username
+//       email
+//       companyName
+//       phoneNumber
+//       avatar
+//       birth
+//       country
+//       state
+//       city
+//       Street
+//     }
+//   }
+// `;
 
 const EDIT_PROFILE_MUTATION = gql`
   mutation editProfile(
@@ -161,13 +162,15 @@ const customStyles = {
 };
 
 function MyProfileMainContents() {
+  const { data: userData } = useUser();
   // const { username } = useParams();
-  const { data } = useQuery(SEE_PROFILE_QUERY, {
-    variables: { username: "Kwangwoo2" }, //<--- 광우한테 물어보자
-  });
+  // const { data } = useQuery(SEE_PROFILE_QUERY, {
+  //   variables: { username: "Kwangwoo2" },
+  // });
   // console.log(data.seeProfile.username);
   const { editProfile } = useMutation(EDIT_PROFILE_MUTATION);
 
+  console.log("userData", userData);
   const [disabled, setDisabled] = useState(true);
   const [activeEditBtn, setActiveEditBtn] = useState("Edit");
   const [activeConfirmPassword, setActiveConfirmPassword] = useState(false);
@@ -219,35 +222,35 @@ function MyProfileMainContents() {
               <Input
                 type="text"
                 name="username"
-                value={data?.seeProfile?.username}
+                value={userData?.me?.username}
                 disabled={disabled}
               />
               <InfoSubTitle>Company Name</InfoSubTitle>
               <Input
                 type="text"
                 name="companyName"
-                value={data?.seeProfile?.companyName}
+                value={userData?.me?.companyName}
                 disabled={disabled}
               />
               <InfoSubTitle>Email</InfoSubTitle>
               <Input
                 type="email"
                 name="email"
-                value={data?.seeProfile?.email}
+                value={userData?.me?.email}
                 disabled={disabled}
               />
               <InfoSubTitle>Phone Number</InfoSubTitle>
               <Input
                 type="number"
                 name="phoneNumber"
-                value={data?.seeProfile?.phoneNumber}
+                value={userData?.me?.phoneNumber}
                 disabled={disabled}
               />
               <InfoSubTitle>Password</InfoSubTitle>
               <Input
                 type="password"
                 name="password"
-                value={data?.seeProfile?.password}
+                value={userData?.me?.password}
                 disabled={disabled}
               />
               {activeConfirmPassword && (
@@ -264,35 +267,35 @@ function MyProfileMainContents() {
               <Input
                 type="text"
                 name="birth"
-                value={data?.seeProfile?.birth}
+                value={userData?.me?.birth}
                 disabled={disabled}
               />
               <InfoSubTitle>Country/Region</InfoSubTitle>
               <Input
                 type="text"
                 name="country"
-                value={data?.seeProfile?.country}
+                value={userData?.me?.country}
                 disabled={disabled}
               />
               <InfoSubTitle>State</InfoSubTitle>
               <Input
                 type="text"
                 name="state"
-                value={data?.seeProfile?.state}
+                value={userData?.me?.state}
                 disabled={disabled}
               />
               <InfoSubTitle>City</InfoSubTitle>
               <Input
                 type="text"
                 name="city"
-                value={data?.seeProfile?.city}
+                value={userData?.me?.city}
                 disabled={disabled}
               />
               <InfoSubTitle>Street</InfoSubTitle>
               <Input
                 type="text"
                 name="Street"
-                value={data?.seeProfile?.Street}
+                value={userData?.me?.Street}
                 disabled={disabled}
               />
             </PersonalInfo>
