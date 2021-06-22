@@ -1,4 +1,4 @@
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import hamburgerMenu from "../asset/HamburgerMenu.PNG";
 import avatar from "../asset/avatarTT.PNG";
@@ -11,7 +11,7 @@ import routes from "../routes";
 import { fauser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useRef } from "react";
-import MyProfileEdit from "./MyProfileEdit";
+// import MyProfileEdit from "./MyProfileEdit";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Modal from "react-modal";
 import useUser from "../components/hooks/useUser";
@@ -163,18 +163,18 @@ const customStyles = {
 
 function MyProfileMainContents() {
   const { data: userData } = useUser();
-  // const { username } = useParams();
-  // const { data } = useQuery(SEE_PROFILE_QUERY, {
-  //   variables: { username: "Kwangwoo2" },
-  // });
-  // console.log(data.seeProfile.username);
-  const { editProfile } = useMutation(EDIT_PROFILE_MUTATION);
+  // console.log("userData", userData);
 
-  console.log("userData", userData);
   const [disabled, setDisabled] = useState(true);
   const [activeEditBtn, setActiveEditBtn] = useState("Edit");
   const [activeConfirmPassword, setActiveConfirmPassword] = useState(false);
-  const [editMode, setEditMode] = useState(false);
+  // const [editMode, setEditMode] = useState(false);
+  const [inputChange, setInputChange] = useState("");
+  const handleChange = (e) => {
+    setInputChange({
+      [e.target.name] : e.target.value
+    });
+  };
 
   const handleEditClick = () => {
     setDisabled(!disabled);
@@ -183,13 +183,42 @@ function MyProfileMainContents() {
       setActiveConfirmPassword(false);
       setActiveEditBtn("Edit");
       alert("Your profile has been saved.");
-      setEditMode(false);
+      // setEditMode(false);
     } else {
       setActiveConfirmPassword(true);
       setActiveEditBtn("Save");
-      setEditMode(true);
+      // setEditMode(true); 
+      setInputChange(inputChange);  
     }
   };
+  console.log("userData", userData);
+
+
+
+  // const location = useLocation();
+  // const { getValues } = useForm({
+  //   mode: "onChange",
+  //   defaultValues: {
+  //     username: location?.state?.username || "",
+  //     companyName: location?.state?.companyName|| "",
+  //     email: location?.state?.email || "",
+  //     phoneNumber: location?.state?.phoneNumber || ""
+  //   },
+  // });
+  // const { editProfile,  loading  } = useMutation(EDIT_PROFILE_MUTATION);
+  
+  // const onSubmitValid = (data) => {
+  //   if (loading) {
+  //     return;
+  //   }
+  //   const { username, companyName, email, phoneNumber } = getValues();
+  //   console.log("email", email);
+  //   editProfile({
+  //     variables: { username, companyName, email, phoneNumber },
+  //   });
+  // };
+
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => {
@@ -210,10 +239,10 @@ function MyProfileMainContents() {
         </EditBtn>
       </MainTitle>
 
-      {editMode ? (
+      {/* {editMode ? (
         <MyProfileEdit></MyProfileEdit>
-      ) : (
-        // }
+      ) : ( */}
+        {/* // } */}
         <InfoSection>
           <InputContainer>
             <AccountInfo>
@@ -222,39 +251,42 @@ function MyProfileMainContents() {
               <Input
                 type="text"
                 name="username"
-                value={userData?.me?.username}
+                placeholder={userData?.me?.username}
                 disabled={disabled}
+                onChange={handleChange}
               />
               <InfoSubTitle>Company Name</InfoSubTitle>
               <Input
                 type="text"
                 name="companyName"
-                value={userData?.me?.companyName}
+                placeholder={userData?.me?.companyName}
                 disabled={disabled}
               />
               <InfoSubTitle>Email</InfoSubTitle>
               <Input
                 type="email"
                 name="email"
-                value={userData?.me?.email}
+                placeholder={userData?.me?.email}
                 disabled={disabled}
               />
               <InfoSubTitle>Phone Number</InfoSubTitle>
               <Input
                 type="number"
                 name="phoneNumber"
-                value={userData?.me?.phoneNumber}
+                placeholder={userData?.me?.phoneNumber}
                 disabled={disabled}
               />
-              <InfoSubTitle>Password</InfoSubTitle>
-              <Input
-                type="password"
-                name="password"
-                value={userData?.me?.password}
-                disabled={disabled}
-              />
+
+
               {activeConfirmPassword && (
                 <>
+                  <InfoSubTitle>Password</InfoSubTitle>
+                  <Input
+                    type="password"
+                    name="password"
+                    placeholder={userData?.me?.password}
+                    disabled={disabled}
+                  />
                   <InfoSubTitle>Confirm Password</InfoSubTitle>
                   <Input type="text" name="password" />
                 </>
@@ -267,35 +299,35 @@ function MyProfileMainContents() {
               <Input
                 type="text"
                 name="birth"
-                value={userData?.me?.birth}
+                placeholder={userData?.me?.birth}
                 disabled={disabled}
               />
               <InfoSubTitle>Country/Region</InfoSubTitle>
               <Input
                 type="text"
                 name="country"
-                value={userData?.me?.country}
+                placeholder={userData?.me?.country}
                 disabled={disabled}
               />
               <InfoSubTitle>State</InfoSubTitle>
               <Input
                 type="text"
                 name="state"
-                value={userData?.me?.state}
+                placeholder={userData?.me?.state}
                 disabled={disabled}
               />
               <InfoSubTitle>City</InfoSubTitle>
               <Input
                 type="text"
                 name="city"
-                value={userData?.me?.city}
+                placeholder={userData?.me?.city}
                 disabled={disabled}
               />
               <InfoSubTitle>Street</InfoSubTitle>
               <Input
                 type="text"
                 name="Street"
-                value={userData?.me?.Street}
+                placeholder={userData?.me?.Street}
                 disabled={disabled}
               />
             </PersonalInfo>
@@ -310,7 +342,7 @@ function MyProfileMainContents() {
             </Modal>
           </ProfileImg>
         </InfoSection>
-      )}
+      {/* )} */}
     </Container>
   );
 }
