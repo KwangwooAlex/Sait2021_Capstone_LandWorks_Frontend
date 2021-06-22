@@ -10,11 +10,18 @@ import { useForm } from "react-hook-form";
 import routes from "../routes";
 import { fauser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useRef } from "react";
+import { useState } from "react";
 // import MyProfileEdit from "./MyProfileEdit";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Modal from "react-modal";
 import useUser from "../components/hooks/useUser";
+import {
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
+
 
 // const SEE_PROFILE_QUERY = gql`
 //   query seeProfile($username: String!) {
@@ -87,23 +94,13 @@ const EditBtn = styled.button`
   box-shadow: 0px 2px 4px gray;
   cursor: pointer;
 `;
-const SaveBtn = styled.button`
-  border-radius: 10px;
-  background: white;
-  border: 1px solid;
-  color: #707070;
-  float: right;
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
-`;
 
 const InfoSection = styled.div`
   display: flex;
-  margin-top: 40px;
-  padding: 0;
+  margin: 10% 25%;
+  justify-content: center;
+  align-items: center;
+
 `;
 
 const InputContainer = styled.div`
@@ -130,23 +127,46 @@ const InfoSubTitle = styled.h5`
   margin-top: 25px;
 `;
 
+const PhotoInfo = styled.div``;
+              
+const PhotoBtn = styled.div``; 
+
 const ProfileImg = styled.div`
   flex: 0.3;
   width: 100%;
 `;
 
-const Avatar = styled(AccountCircleIcon)`
-  object-fit: contain;
-  cursor: pointer;
-  flex: 0.3;
-  color: black;
-  width: 100px;
-  align-items: center;
-`;
+const ShowImg = styled.div``;
 
 const ProfileImgEdit = styled.button``;
 
-const ConfirmEditImg = styled.button``;
+const CancelEditImg = styled.button`
+  background: white;
+  border: 2x solid;
+  border-color:#B8B8B8;
+  color: #004070;
+  float: right;
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  `;
+
+const SaveEditImg = styled.button`
+  margin-left:18px;
+  background: #004070;
+  border: none;
+  color: white;
+  float: right;
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  `;
 
 const customStyles = {
   content: {
@@ -160,6 +180,32 @@ const customStyles = {
     height: "300px",
   },
 };
+
+const ImgTitle = styled.h1`
+  font-family:Source Han Sans KR;
+  margin-top: 50px;
+  text-align: left;
+  font-weight: bold;
+  margin-left: 20px;
+  font-size: 20px
+`;
+
+const ImgInput = styled.input`
+  align-items: center;
+  display: none; 
+`;
+
+const UploadLabel = styled.label`
+  margin-top: 20px;
+  margin-left: 30px;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: #004070;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 15px
+`;
+
 
 function MyProfileMainContents() {
   const { data: userData } = useUser();
@@ -219,14 +265,17 @@ function MyProfileMainContents() {
   // };
 
 
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleSaveModal = () => {
     alert("Your changed has been saved.");
+    setIsModalOpen(false);
+  };
+
+  const handleCancelModal = () => {
     setIsModalOpen(false);
   };
 
@@ -333,16 +382,36 @@ function MyProfileMainContents() {
             </PersonalInfo>
           </InputContainer>
 
-          <ProfileImg>
-            <Avatar>{/* <AccountCircleIcon></AccountCircleIcon> */}</Avatar>
+          <ProfileImg>           
+            <FontAwesomeIcon icon={faUserCircle} size="9x" />            
+            
             <ProfileImgEdit onClick={handleOpenModal}>Edit</ProfileImgEdit>
+            
             <Modal isOpen={isModalOpen} style={customStyles}>
-              Edit Profile img
-              <ConfirmEditImg onClick={handleCloseModal}>Save</ConfirmEditImg>
+            
+              <PhotoInfo>
+                <ImgTitle>Change your profile picture</ImgTitle>
+
+                <UploadLabel>
+                  <ImgInput type="file" /> 
+                  <FontAwesomeIcon icon={faUpload} size="2x" />  
+                  Upload Picture
+                </UploadLabel>
+              
+                <ShowImg>
+                  <FontAwesomeIcon icon={faUserCircle} size="5x" />
+                </ShowImg> 
+                
+              </PhotoInfo>
+
+              <PhotoBtn>                      
+                <SaveEditImg onClick={handleSaveModal}>Save</SaveEditImg>
+                <CancelEditImg onClick={handleCancelModal}>Cancel</CancelEditImg>
+              </PhotoBtn> 
+              
             </Modal>
           </ProfileImg>
-        </InfoSection>
-      {/* )} */}
+        </InfoSection>      
     </Container>
   );
 }
