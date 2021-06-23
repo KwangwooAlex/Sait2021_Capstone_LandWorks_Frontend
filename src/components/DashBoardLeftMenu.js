@@ -35,7 +35,7 @@ const Container = styled.main`
   min-width: 200px;
   display: flex;
   flex-direction: column;
-  padding-top: 100px;
+  padding-top: 30px;
 `;
 
 // const ButtonSection = styled.div`

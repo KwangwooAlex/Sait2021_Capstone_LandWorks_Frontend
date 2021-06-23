@@ -43,12 +43,12 @@ import {
 
 const EDIT_PROFILE_MUTATION = gql`
   mutation editProfile(
-    $username: String!
+    $username: String
     $email: String
-    $companyName: String!
-    $phoneNumber: String!
-    $password: String!
-    $avatar: String!
+    $companyName: String
+    $phoneNumber: String
+    $password: String
+    $avatar: String
   ) {
     editProfile(
       username: $username
@@ -75,7 +75,7 @@ const Container = styled.main`
 const MainTitle = styled.div`
   color: #004070;
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: 30px;
+  font-size: 20px;
   width: 100%;
   height: 40px;
   border-bottom: black 2px solid;
@@ -100,7 +100,6 @@ const InfoSection = styled.div`
   margin: 10% 25%;
   justify-content: center;
   align-items: center;
-
 `;
 
 const InputContainer = styled.div`
@@ -134,6 +133,7 @@ const PhotoBtn = styled.div``;
 const ProfileImg = styled.div`
   flex: 0.3;
   width: 100%;
+  margin-left: 40px;
 `;
 
 const ShowImg = styled.div``;
@@ -187,7 +187,7 @@ const ImgTitle = styled.h1`
   text-align: left;
   font-weight: bold;
   margin-left: 20px;
-  font-size: 20px
+  font-size: 20px;
 `;
 
 const ImgInput = styled.input`
@@ -203,13 +203,19 @@ const UploadLabel = styled.label`
   cursor: pointer;
   color: #004070;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 15px
+  font-size: 15px;
+`;
+
+const TestBtn = styled.button`
+
 `;
 
 
 function MyProfileMainContents() {
+
   const { data: userData } = useUser();
   // console.log("userData", userData);
+  // const location = useLocation();
 
   const [disabled, setDisabled] = useState(true);
   const [activeEditBtn, setActiveEditBtn] = useState("Edit");
@@ -237,9 +243,27 @@ function MyProfileMainContents() {
       setInputChange(inputChange);  
     }
   };
-  console.log("userData", userData);
+  // console.log("userData", userData);
 
+  const [editProfile,{loading}] = useMutation(EDIT_PROFILE_MUTATION); 
 
+  const {handleSubmit} = useForm({
+    mode: "onChange",
+  });
+
+  const onSaveValid = (data) =>  {    
+    console.log("saveData", data);
+    if (loading) {
+      return;
+    }
+    editProfile({
+      variables: { 
+        ...data,
+      },
+    });
+  };
+
+  const onSaveInvalid = (data) => {};
 
   // const location = useLocation();
   // const { getValues } = useForm({
@@ -279,6 +303,7 @@ function MyProfileMainContents() {
     setIsModalOpen(false);
   };
 
+  
   return (
     <Container>
       <MainTitle>
@@ -288,12 +313,9 @@ function MyProfileMainContents() {
         </EditBtn>
       </MainTitle>
 
-      {/* {editMode ? (
-        <MyProfileEdit></MyProfileEdit>
-      ) : ( */}
-        {/* // } */}
         <InfoSection>
           <InputContainer>
+          <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}> 
             <AccountInfo>
               <InfoTitle>Account Information</InfoTitle>
               <InfoSubTitle>User Name</InfoSubTitle>
@@ -341,6 +363,8 @@ function MyProfileMainContents() {
                 </>
               )}
             </AccountInfo>
+            <TestBtn type="submit">test</TestBtn>
+            </form>
 
             <PersonalInfo>
               <InfoTitle>Personal Information</InfoTitle>

@@ -75,13 +75,15 @@ function DashBoardHeader() {
   return (
     <Container>
       <LeftMenu>
-        <HamburgerMenu src={hamburgerMenu} />
+        {/* <HamburgerMenu src={hamburgerMenu} /> */}
       </LeftMenu>
       <Link to="/">
         <MiddleTitle>Landwork Resource Management Inc</MiddleTitle>
       </Link>
       <RightMenu>
-        <Avatar src={avatar} />
+        <Link to="/myProfile">
+          <Avatar src={avatar} />
+        </Link>
         <QuestionMark src={questionMark} />
         <Logout src={logout} onClick={LogoutFn} />
       </RightMenu>

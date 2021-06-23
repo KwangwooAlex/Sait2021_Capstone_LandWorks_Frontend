@@ -7,6 +7,7 @@ import logout from "../asset/logout.PNG";
 import teamImg from "../asset/teamImg.PNG";
 import Modal from "react-modal";
 import { useState } from "react";
+import Input from "../components/auth/Input";
 
 const Container = styled.main`
   padding: 40px 40px 0 40px;
@@ -26,7 +27,7 @@ const MainTitle = styled.div`
 `;
 
 const CreateBtn = styled.button` 
-  margin-top: 10px;
+  margin-top: 25px;
   border-radius: 20px;
   background: #004070;
   border: 1px solid;
@@ -42,7 +43,43 @@ const CreateBtn = styled.button`
 
 // `;
 
-const CancelEditImg = styled.button`
+
+const ModalHeader = styled.h4`
+  margin: 0;
+  padding: 10px;
+  background: #004070;
+  color: white; 
+  font-size: 13px;
+`;
+
+const ModalBody = styled.div`
+  margin: 20px 30px;
+`; 
+
+const ModalInfo = styled.div`
+`;
+
+const TeamLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+
+`;
+
+const DesLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+`;
+
+const Description = styled.textarea`
+  padding: 10px;
+`;
+
+const ModalBtn = styled.div`
+  margin: 20px auto;
+`;
+
+const CancelTeam = styled.button`
   background: white;
   border: 2x solid;
   border-color:#B8B8B8;
@@ -54,9 +91,9 @@ const CancelEditImg = styled.button`
   cursor: pointer;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  `;
+`;
 
-const SaveEditImg = styled.button`
+const SaveTeam = styled.button`
   margin-left:18px;
   background: #004070;
   border: none;
@@ -68,10 +105,11 @@ const SaveEditImg = styled.button`
   cursor: pointer;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  `;
+`;
 
 const customStyles = {
   content: {
+    padding: "0",
     top: "50%",
     left: "50%",
     right: "auto",
@@ -79,9 +117,25 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "500px",
-    height: "300px",
+    height: "380px",
   },
 };
+
+const TeamHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const SearchTeam = styled.div`
+  padding 0;
+`;
+
+const TeamBody = styled.div`
+
+`;
+
+
+
 
 function MyTeamMainContents() {
 
@@ -108,12 +162,47 @@ function MyTeamMainContents() {
   return (
     <Container>
       <MainTitle>MY TEAM</MainTitle>
+      <TeamHeader>
       <CreateBtn onClick={handleCreateTeam}>+ Create Team</CreateBtn>
-      {/* <TeamImg src={teamImg}></TeamImg> */}
+        <SearchTeam>
+          <Input 
+            type="text"
+            placeholder="Search.." />
+        </SearchTeam>
+      </TeamHeader>
+
       <Modal isOpen={isModalOpen} style={customStyles}>
-        <SaveEditImg onClick={handleSaveModal}>Save</SaveEditImg>
-        <CancelEditImg onClick={handleCancelModal}>Cancel</CancelEditImg>
+        <ModalHeader>NEW TEAM</ModalHeader>
+
+        <ModalBody>
+          <ModalInfo>
+            <TeamLabel>Team name</TeamLabel>
+            <Input
+              type="text"
+              name="teamName"
+              placeholder="Enter the team name..."
+            />          
+            <DesLabel>Description</DesLabel>
+            <Description
+              type="text"
+              cols='57'
+              rows='5'
+              name="teamDescription"
+              placeholder="Let people know what this team is all about..."
+            />
+          </ModalInfo>
+
+          <ModalBtn>        
+            <SaveTeam onClick={handleSaveModal}>Save</SaveTeam>
+            <CancelTeam onClick={handleCancelModal}>Cancel</CancelTeam>
+          </ModalBtn> 
+        </ModalBody>
       </Modal>
+
+      <TeamBody>
+        {/* Team list */}
+      </TeamBody>
+
     </Container>
   );
 }
