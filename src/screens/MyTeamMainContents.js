@@ -8,6 +8,31 @@ import teamImg from "../asset/teamImg.PNG";
 import Modal from "react-modal";
 import { useState } from "react";
 import Input from "../components/auth/Input";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+
+const SEE_TEAM_QUERY = gql`
+  query seeTeam($teamName: String!) {
+    seeTeam(teamName: $teamName) {
+      id
+      teamName
+      teamMember
+      project
+      role
+    }
+  }
+`;
+
+const CREATE_TEAM_MUTATION = gql`
+  mutation createTeam($teamName: String!) {
+    createTeam(teamName: $teamName) {
+      ok
+      error
+      id
+    }
+  }
+`;
 
 const Container = styled.main`
   padding: 40px 40px 0 40px;
@@ -127,25 +152,41 @@ const TeamHeader = styled.div`
 `;
 
 const SearchTeam = styled.div`
-  padding 0;
+  padding: 0px;
 `;
 
 const TeamBody = styled.div`
 
 `;
 
+const TeamName = styled.h2`
+`;
 
+const TestBtn = styled.button`
+
+`;
+
+const TeamList = styled.ul``;
+const ListT = styled.li``;
 
 
 function MyTeamMainContents() {
-
+// const [TeamName, setTeamName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
   
-  const handleSaveModal = () => {
-    alert("Your changed has been saved.");
+   
+//   const handleCreateModal = () => {
+//     alert("Your team has been created.");
+//     setIsModalOpen(false);
+//     setTeamName(TeamName);
+//   };
+
+
+  const handleCreateModal = () => {
+    alert("Your team has been created.");
     setIsModalOpen(false);
   };
   
@@ -156,7 +197,43 @@ function MyTeamMainContents() {
   const handleCreateTeam = () => {
     handleOpenModal();
   };
+
+   
+
+  const { data, refetch } = useQuery(SEE_TEAM_QUERY);
+
+  // console.log(data);
+
+  const {handleSubmit, setValue, watch, register} = useForm({
+    mode: "onChange",
+  });
+
+  useEffect(( ) => {
+    setValue("teamName", data?.seeTeam?.teamName);
+  },[data, setValue]);
+
+  const handleChange = (e) => {
+    if(e.target.name === "teamName"){
+      setValue("teamName", e.target.value);
+    };
+  };
+
+  const [createTeam, { loading }] = useMutation(CREATE_TEAM_MUTATION);
   
+  const onSaveValid = (data) =>  {    
+    console.log("saveTeam", data.teamName);
+    if (loading) {
+      return;
+    }
+    createTeam({
+      variables: { 
+        ...data,
+      },
+    });
+    refetch();
+  };
+
+  const onSaveInvalid = (data) => {};
 
 
   return (
@@ -171,16 +248,20 @@ function MyTeamMainContents() {
         </SearchTeam>
       </TeamHeader>
 
-      <Modal isOpen={isModalOpen} style={customStyles}>
-        <ModalHeader>NEW TEAM</ModalHeader>
 
+      {/* <Modal isOpen={isModalOpen} style={customStyles}>
+        <ModalHeader>NEW TEAM</ModalHeader>
         <ModalBody>
+        <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}> 
           <ModalInfo>
             <TeamLabel>Team name</TeamLabel>
             <Input
+              ref={register}
               type="text"
               name="teamName"
+              value={watch("teamName")}
               placeholder="Enter the team name..."
+              onChange={handleChange}
             />          
             <DesLabel>Description</DesLabel>
             <Description
@@ -193,14 +274,33 @@ function MyTeamMainContents() {
           </ModalInfo>
 
           <ModalBtn>        
-            <SaveTeam onClick={handleSaveModal}>Save</SaveTeam>
+            <SaveTeam type="submit" onClick={handleCreateModal}>Create</SaveTeam>
             <CancelTeam onClick={handleCancelModal}>Cancel</CancelTeam>
           </ModalBtn> 
+          </form>
         </ModalBody>
-      </Modal>
+      </Modal> */}
 
       <TeamBody>
         {/* Team list */}
+        {/* <TeamName>{userData?.seeTeam?.teamName}</TeamName> */}
+        {/* <TeamName>{data?.seeTeam?.teamName}</TeamName> */}
+        <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}> 
+        <Input
+              ref={register}
+              type="text"
+              name="teamName"
+               value={watch("teamName")}
+              placeholder="Enter the team name..."
+              onChange={handleChange}
+            />
+            <TestBtn type="submit">test</TestBtn>
+            </form>
+            <TeamList>
+              {data.seeTeam.map((team) => (
+                <ListT key={team.id}>{team.teamName}</ListT>
+              ))}
+            </TeamList>  
       </TeamBody>
 
     </Container>

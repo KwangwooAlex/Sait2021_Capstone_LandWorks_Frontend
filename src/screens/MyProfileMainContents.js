@@ -232,8 +232,6 @@ const TestBtn = styled.button`
 function MyProfileMainContents() {
 
   // const { data: userData, refetch:userDataRefetch } = useUser();
-  // console.log("userData", userData);
-  // const location = useLocation();
   const { data: userData, refetch } = useQuery(ME_QUERY);
 
 
@@ -241,10 +239,9 @@ function MyProfileMainContents() {
   const [disabled, setDisabled] = useState(true);
   const [activeEditBtn, setActiveEditBtn] = useState("Edit");
   const [activeConfirmPassword, setActiveConfirmPassword] = useState(false);
-  // const [editMode, setEditMode] = useState(false);
   const [inputChange, setInputChange] = useState("");
 
-  const {handleSubmit, setValue, getValues, watch, register} = useForm({
+  const {handleSubmit, setValue, watch, register} = useForm({
     mode: "onChange",
   });
 
@@ -253,6 +250,7 @@ function MyProfileMainContents() {
     setValue("companyName", userData?.me?.companyName);
     setValue("email", userData?.me?.email);
     setValue("phoneNumber", userData?.me?.phoneNumber);
+    setValue("password", userData?.me?.password);
 
   },[userData, setValue]);
 
@@ -269,21 +267,24 @@ function MyProfileMainContents() {
     if(e.target.name === "phoneNumber"){
       setValue("phoneNumber", e.target.value);
     }
+    if(e.target.name === "password"){
+      setValue("password", e.target.value);
+    }
   };
 
   const handleEditClick = () => {
     setDisabled(!disabled);
+    setInputChange(inputChange);
 
     if (activeConfirmPassword) {
       setActiveConfirmPassword(false);
       setActiveEditBtn("Edit");
       alert("Your profile has been saved.");
-      // setEditMode(false);
+      // setInputChange(setValue);
     } else {
       setActiveConfirmPassword(true);
       setActiveEditBtn("Save");
-      // setEditMode(true); 
-      setInputChange(inputChange);  
+      // setInputChange(setValue);  
     }
   };
   // console.log("userData", userData);
@@ -305,29 +306,6 @@ function MyProfileMainContents() {
 
   const onSaveInvalid = (data) => {};
 
-  // const location = useLocation();
-  // const { getValues } = useForm({
-  //   mode: "onChange",
-  //   defaultValues: {
-  //     username: location?.state?.username || "",
-  //     companyName: location?.state?.companyName|| "",
-  //     email: location?.state?.email || "",
-  //     phoneNumber: location?.state?.phoneNumber || ""
-  //   },
-  // });
-  // const { editProfile,  loading  } = useMutation(EDIT_PROFILE_MUTATION);
-  
-  // const onSubmitValid = (data) => {
-  //   if (loading) {
-  //     return;
-  //   }
-  //   const { username, companyName, email, phoneNumber } = getValues();
-  //   console.log("email", email);
-  //   editProfile({
-  //     variables: { username, companyName, email, phoneNumber },
-  //   });
-  // };
-
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => {
@@ -346,6 +324,7 @@ function MyProfileMainContents() {
   
   return (
     <Container>
+
       <MainTitle>
         MY PROFILE
         <EditBtn type="submit" onClick={handleEditClick}>
@@ -386,7 +365,7 @@ function MyProfileMainContents() {
                 value={watch("email")}
                 placeholder={userData?.me?.email}
                 disabled={disabled}
-                 onChange={handleChange}
+                onChange={handleChange}
               />
               <InfoSubTitle>Phone Number</InfoSubTitle>
               <Input
@@ -396,7 +375,7 @@ function MyProfileMainContents() {
                 value={watch("phoneNumber")}
                 placeholder={userData?.me?.phoneNumber}
                 disabled={disabled}
-                 onChange={handleChange}
+                onChange={handleChange}
               />
 
 
@@ -404,13 +383,25 @@ function MyProfileMainContents() {
                 <>
                   <InfoSubTitle>Password</InfoSubTitle>
                   <Input
+                    ref={register}
                     type="password"
                     name="password"
+                    value={watch("password")}
                     placeholder={userData?.me?.password}
                     disabled={disabled}
+                    onChange={handleChange}
                   />
                   <InfoSubTitle>Confirm Password</InfoSubTitle>
-                  <Input type="text" name="password" />
+                  <Input 
+                    ref={register}
+                    type="password"
+                    name="password"
+                    value={watch("password")}
+                    placeholder={userData?.me?.password}
+                    disabled={disabled}
+                    onChange={handleChange}
+                  />
+                    
                 </>
               )}
             </AccountInfo>
@@ -421,38 +412,53 @@ function MyProfileMainContents() {
               <InfoTitle>Personal Information</InfoTitle>
               <InfoSubTitle>Date of Birth</InfoSubTitle>
               <Input
+                // ref={register}
+                // value={watch("birth")}                               
                 type="text"
                 name="birth"
                 placeholder={userData?.me?.birth}
                 disabled={disabled}
+                // onChange={handleChange}
               />
               <InfoSubTitle>Country/Region</InfoSubTitle>
               <Input
+                // ref={register}
+                // value={watch("country")}  
                 type="text"
                 name="country"
                 placeholder={userData?.me?.country}
                 disabled={disabled}
+                // onChange={handleChange}
               />
               <InfoSubTitle>State</InfoSubTitle>
               <Input
+                // ref={register}
+                // value={watch("state")} 
                 type="text"
                 name="state"
                 placeholder={userData?.me?.state}
                 disabled={disabled}
+                // onChange={handleChange}
               />
               <InfoSubTitle>City</InfoSubTitle>
               <Input
+                // ref={register}
+                // value={watch("city")} 
                 type="text"
                 name="city"
                 placeholder={userData?.me?.city}
                 disabled={disabled}
+                // onChange={handleChange}
               />
               <InfoSubTitle>Street</InfoSubTitle>
               <Input
+                // ref={register}
+                // value={watch("Street")}
                 type="text"
                 name="Street"
                 placeholder={userData?.me?.Street}
                 disabled={disabled}
+                // onChange={handleChange}
               />
             </PersonalInfo>
           </InputContainer>
@@ -486,7 +492,8 @@ function MyProfileMainContents() {
               
             </Modal>
           </ProfileImg>
-        </InfoSection>      
+        </InfoSection>
+        {/* </form> */}
     </Container>
   );
 }
