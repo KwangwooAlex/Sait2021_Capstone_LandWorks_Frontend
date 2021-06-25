@@ -21,6 +21,7 @@ import {
 import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
 
 
 // const SEE_PROFILE_QUERY = gql`
@@ -61,6 +62,23 @@ const EDIT_PROFILE_MUTATION = gql`
       ok
       error
       id
+    }
+  }
+`;
+
+const ME_QUERY = gql`
+  query me {
+    me {
+      username
+      email
+      companyName
+      phoneNumber
+      avatar
+      birth
+      country
+      state
+      city
+      Street
     }
   }
 `;
@@ -213,19 +231,44 @@ const TestBtn = styled.button`
 
 function MyProfileMainContents() {
 
-  const { data: userData } = useUser();
+  // const { data: userData, refetch:userDataRefetch } = useUser();
   // console.log("userData", userData);
   // const location = useLocation();
+  const { data: userData, refetch } = useQuery(ME_QUERY);
 
+
+  
   const [disabled, setDisabled] = useState(true);
   const [activeEditBtn, setActiveEditBtn] = useState("Edit");
   const [activeConfirmPassword, setActiveConfirmPassword] = useState(false);
   // const [editMode, setEditMode] = useState(false);
   const [inputChange, setInputChange] = useState("");
+
+  const {handleSubmit, setValue, getValues, watch, register} = useForm({
+    mode: "onChange",
+  });
+
+  useEffect(( ) => {
+    setValue("username", userData?.me?.username);
+    setValue("companyName", userData?.me?.companyName);
+    setValue("email", userData?.me?.email);
+    setValue("phoneNumber", userData?.me?.phoneNumber);
+
+  },[userData, setValue]);
+
   const handleChange = (e) => {
-    setInputChange({
-      [e.target.name] : e.target.value
-    });
+    if(e.target.name === "username"){
+      setValue("username", e.target.value);
+    }
+    if(e.target.name === "companyName"){
+      setValue("companyName", e.target.value);
+    }
+    if(e.target.name === "email"){
+      setValue("email", e.target.value);
+    }
+    if(e.target.name === "phoneNumber"){
+      setValue("phoneNumber", e.target.value);
+    }
   };
 
   const handleEditClick = () => {
@@ -247,10 +290,6 @@ function MyProfileMainContents() {
 
   const [editProfile,{loading}] = useMutation(EDIT_PROFILE_MUTATION); 
 
-  const {handleSubmit} = useForm({
-    mode: "onChange",
-  });
-
   const onSaveValid = (data) =>  {    
     console.log("saveData", data);
     if (loading) {
@@ -261,6 +300,7 @@ function MyProfileMainContents() {
         ...data,
       },
     });
+    refetch();
   };
 
   const onSaveInvalid = (data) => {};
@@ -320,32 +360,43 @@ function MyProfileMainContents() {
               <InfoTitle>Account Information</InfoTitle>
               <InfoSubTitle>User Name</InfoSubTitle>
               <Input
+                ref={register}
                 type="text"
                 name="username"
+                value={watch("username")}
                 placeholder={userData?.me?.username}
                 disabled={disabled}
                 onChange={handleChange}
               />
               <InfoSubTitle>Company Name</InfoSubTitle>
               <Input
+                ref={register}
                 type="text"
                 name="companyName"
+                value={watch("companyName")}
                 placeholder={userData?.me?.companyName}
                 disabled={disabled}
+                onChange={handleChange}
               />
               <InfoSubTitle>Email</InfoSubTitle>
               <Input
+                ref={register}
                 type="email"
                 name="email"
+                value={watch("email")}
                 placeholder={userData?.me?.email}
                 disabled={disabled}
+                 onChange={handleChange}
               />
               <InfoSubTitle>Phone Number</InfoSubTitle>
               <Input
+                ref={register}
                 type="number"
                 name="phoneNumber"
+                value={watch("phoneNumber")}
                 placeholder={userData?.me?.phoneNumber}
                 disabled={disabled}
+                 onChange={handleChange}
               />
 
 
