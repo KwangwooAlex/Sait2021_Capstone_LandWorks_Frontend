@@ -296,11 +296,11 @@ function MyTeamMainContents() {
             />
             <TestBtn type="submit">test</TestBtn>
             </form>
-            <TeamList>
+            {/* <TeamList>
               {data.seeTeam.map((team) => (
                 <ListT key={team.id}>{team.teamName}</ListT>
               ))}
-            </TeamList>  
+            </TeamList>   */}
       </TeamBody>
 
     </Container>

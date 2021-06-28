@@ -11,6 +11,8 @@ import Layout from "./components/Layout";
 import DashBoard from "./screens/DashBoard";
 import MyTeam from "./screens/MyTeam";
 import MyProfile from "./screens/MyProfile";
+import MyProject from "./screens/MyProject";
+import Files from "./screens/Files";
 
 function App() {
   const isLoggedInProject = useReactiveVar(isLoggedInProjectVar);
@@ -29,6 +31,7 @@ function App() {
                 <Login />
               )}
             </Route>
+
             <Route path={routes.myTeam} exact>
               {isLoggedInProject ? (
                 <Layout>
@@ -48,7 +51,27 @@ function App() {
                 <Login />
               )}
             </Route>
+    {/* ******************************************************************* */}
+            <Route path={routes.myProject} exact>
+              {isLoggedInProject ? (
+                <Layout>
+                  <MyProject />
+                </Layout>
+              ) : (
+                <Login />
+              )}
+            </Route>
 
+            <Route path={routes.files} exact>
+              {isLoggedInProject ? (
+                <Layout>
+                  <Files />
+                </Layout>
+              ) : (
+                <Login />
+              )}
+            </Route>
+    {/* ******************************************************************* */}
             {!isLoggedInProject ? (
               <Route path={routes.signUp}>
                 <SignUp />
