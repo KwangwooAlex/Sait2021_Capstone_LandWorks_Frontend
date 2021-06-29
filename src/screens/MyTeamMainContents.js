@@ -15,40 +15,18 @@ import { useEffect } from "react";
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
     seeAllMyTeam {
-      id
       teamName
-      teamMember{
+      teamMember {
         id
         username
-        email
-        companyName
-        phoneNumber
-        avatar
-        birth
-        country
-        state
-        city
-        Street
-        team
-      }
-      project {
-        id
-        projectName
-        projectStatus
-        projectType
-        description
-        securityLevel
-        team
-        createdAt
-        updatedAt
       }
       role {
-        id
-        roleName
         teamId
         userId
-        createdAt
-        updatedAt
+        roleName
+      }
+      project {
+        projectName
       }
     }
   }
@@ -81,7 +59,7 @@ const MainTitle = styled.div`
   box-sizing: border-box;
 `;
 
-const CreateBtn = styled.button` 
+const CreateBtn = styled.button`
   margin-top: 25px;
   border-radius: 20px;
   background: #004070;
@@ -98,26 +76,23 @@ const CreateBtn = styled.button`
 
 // `;
 
-
 const ModalHeader = styled.h4`
   margin: 0;
   padding: 10px;
   background: #004070;
-  color: white; 
+  color: white;
   font-size: 13px;
 `;
 
 const ModalBody = styled.div`
   margin: 20px 30px;
-`; 
-
-const ModalInfo = styled.div`
 `;
+
+const ModalInfo = styled.div``;
 
 const TeamLabel = styled.label`
   display: flex;
   flex-direction: column;
-
 `;
 
 const DesLabel = styled.label`
@@ -137,19 +112,19 @@ const ModalBtn = styled.div`
 const CancelTeam = styled.button`
   background: white;
   border: 2x solid;
-  border-color:#B8B8B8;
+  border-color: #b8b8b8;
   color: #004070;
   float: right;
   width: 80px;
   height: 30px;
   font-size: 15px;
   cursor: pointer;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
 `;
 
 const SaveTeam = styled.button`
-  margin-left:18px;
+  margin-left: 18px;
   background: #004070;
   border: none;
   color: white;
@@ -158,7 +133,7 @@ const SaveTeam = styled.button`
   height: 30px;
   font-size: 15px;
   cursor: pointer;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
 `;
 
@@ -185,41 +160,33 @@ const SearchTeam = styled.div`
   padding: 0px;
 `;
 
-const TeamBody = styled.div`
+const TeamBody = styled.div``;
 
-`;
+const TeamName = styled.h2``;
 
-const TeamName = styled.h2`
-`;
-
-const TestBtn = styled.button`
-
-`;
+const TestBtn = styled.button``;
 
 const TeamList = styled.ul``;
 const ListT = styled.li``;
 
-
 function MyTeamMainContents() {
-// const [TeamName, setTeamName] = useState("");
+  // const [TeamName, setTeamName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
-  
-   
-//   const handleCreateModal = () => {
-//     alert("Your team has been created.");
-//     setIsModalOpen(false);
-//     setTeamName(TeamName);
-//   };
 
+  //   const handleCreateModal = () => {
+  //     alert("Your team has been created.");
+  //     setIsModalOpen(false);
+  //     setTeamName(TeamName);
+  //   };
 
   const handleCreateModal = () => {
     alert("Your team has been created.");
     setIsModalOpen(false);
   };
-  
+
   const handleCancelModal = () => {
     setIsModalOpen(false);
   };
@@ -228,35 +195,34 @@ function MyTeamMainContents() {
     handleOpenModal();
   };
 
-   
-
   const { data, refetch } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
-  // console.log("data", data);
+  console.log("전체팀보자data", data);
 
-  const {handleSubmit, setValue, watch, register} = useForm({
+  const { handleSubmit, setValue, watch, register } = useForm({
     mode: "onChange",
   });
 
-  useEffect(( ) => {
+  useEffect(() => {
     setValue("teamName", data?.seeTeam?.teamName);
-  },[data, setValue]);
+  }, [data, setValue]);
 
   const handleChange = (e) => {
-    if(e.target.name === "teamName"){
+    if (e.target.name === "teamName") {
       setValue("teamName", e.target.value);
-    };
+    }
   };
 
   const [createTeam, { loading }] = useMutation(CREATE_TEAM_MUTATION);
-  
-  const onSaveValid = (data) =>  {    
+
+  const onSaveValid = (data) => {
+    handleCreateModal();
     console.log("saveTeam", data);
     if (loading) {
       return;
     }
     createTeam({
-      variables: { 
+      variables: {
         ...data,
       },
     });
@@ -265,49 +231,45 @@ function MyTeamMainContents() {
 
   const onSaveInvalid = (data) => {};
 
-
   return (
     <Container>
       <MainTitle>MY TEAM</MainTitle>
       <TeamHeader>
-      <CreateBtn onClick={handleCreateTeam}>+ Create Team</CreateBtn>
+        <CreateBtn onClick={handleCreateTeam}>+ Create Team</CreateBtn>
         <SearchTeam>
-          <Input 
-            type="text"
-            placeholder="Search.." />
+          <Input type="text" placeholder="Search.." />
         </SearchTeam>
       </TeamHeader>
-
 
       <Modal isOpen={isModalOpen} style={customStyles}>
         <ModalHeader>NEW TEAM</ModalHeader>
         <ModalBody>
-        <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}> 
-          <ModalInfo>
-            <TeamLabel>Team name</TeamLabel>
-            <Input
-              ref={register}
-              type="text"
-              name="teamName"
-              value={watch("teamName")}
-              placeholder="Enter the team name..."
-              onChange={handleChange}
-            />          
-            <DesLabel>Description</DesLabel>
-            <Description
-              type="text"
-              cols='57'
-              rows='5'
-              name="teamDescription"
-              placeholder="Let people know what this team is all about..."
-            />
-          </ModalInfo>
+          <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
+            <ModalInfo>
+              <TeamLabel>Team name</TeamLabel>
+              <Input
+                ref={register}
+                type="text"
+                name="teamName"
+                value={watch("teamName")}
+                placeholder="Enter the team name..."
+                onChange={handleChange}
+              />
+              <DesLabel>Description</DesLabel>
+              <Description
+                type="text"
+                cols="57"
+                rows="5"
+                name="teamDescription"
+                placeholder="Let people know what this team is all about..."
+              />
+            </ModalInfo>
 
-          <ModalBtn>        
-            <SaveTeam type="submit" onClick={handleCreateModal}>Create</SaveTeam>
-            {/* <SaveTeam type="submit">Create</SaveTeam> */}
-            <CancelTeam onClick={handleCancelModal}>Cancel</CancelTeam>
-          </ModalBtn> 
+            <ModalBtn>
+              <SaveTeam type="submit">Create</SaveTeam>
+              {/* <SaveTeam type="submit">Create</SaveTeam> */}
+              <CancelTeam onClick={handleCancelModal}>Cancel</CancelTeam>
+            </ModalBtn>
           </form>
         </ModalBody>
       </Modal>
@@ -316,23 +278,22 @@ function MyTeamMainContents() {
         {/* Team list */}
         {/* <TeamName>{userData?.seeTeam?.teamName}</TeamName> */}
         {/* <TeamName>{data?.seeTeam?.teamName}</TeamName> */}
-        <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}> 
-        <Input
-              ref={register}
-              type="text"
-              name="teamName"
-               value={watch("teamName")}
-              placeholder="Enter the team name..."
-              onChange={handleChange}
-            />
-            </form>
-            {/* <TeamList>
+        <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
+          <Input
+            ref={register}
+            type="text"
+            name="teamName"
+            value={watch("teamName")}
+            placeholder="Enter the team name..."
+            onChange={handleChange}
+          />
+        </form>
+        {/* <TeamList>
               {data.seeTeam.map((team) => (
                 <ListT key={team.id}>{team.teamName}</ListT>
               ))}
             </TeamList>   */}
       </TeamBody>
-
     </Container>
   );
 }
