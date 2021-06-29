@@ -6,6 +6,49 @@ import { Link } from "react-router-dom";
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+
+const SEE_PROJECT_QUERY = gql`
+  query seeProject($projectId: Int!) {
+    seeProject(projectId: $projectId) {
+      id
+      projectName
+      projectStatus
+      projectType
+      description
+      securityLevel
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+const CREATE_PROJECT_MUTATION = gql`
+  mutation createProject(
+    $teamId: Int!
+    $projectName: String!
+    $projectStatus: String!
+    $projectType: String!
+    $description: String!
+    $securityLevel: String!
+  ) {
+    createProject(
+      teamId: $teamId
+      projectName: $projectName
+      projectStatus: $projectStatus
+      projectType: $projectType
+      description: $description
+      securityLevel: $securityLevel
+    ) {
+      ok
+      error
+      id
+    }
+  }
+`;
+
 
 const Container = styled.main`
   padding: 40px 40px 0 40px;
@@ -96,6 +139,10 @@ const RightBtn = styled.div`
 const LeftBtn = styled.div`
 `;
 
+// const ModalContainer = styled.div`
+
+// `;
+
 const ModalInfo = styled.div`
 `;
 
@@ -108,7 +155,7 @@ const ModalHeader = styled.h4`
 `;
 
 const ModalBody = styled.div`
-  margin: 20px 30px;
+  margin: 30px 30px;
 `; 
 
 
@@ -116,13 +163,16 @@ const ProjectLabel = styled.label`
   display: flex;
   /* flex-direction: column; */
   margin-bottom: 15px;
+  width: 100%
 `;
 
 const InputText =styled.input`
   display: flex;
-  border: 1px solid black;
+  border: 1px solid lightgray;
+  border-radius: 5px;
   margin-left: 15px;
   padding: 5px;
+  width: 500px;  
 `;
 
 const SelectStatus = styled(Select)`
@@ -144,10 +194,11 @@ const EndD = styled.div`
 
 const DatePickerForm = styled(DatePicker)`
   height: 20px;
-  width: 85px;
-  font-size: 12px;
+  width: 150px;
+  font-size: 15px;
   text-align: center;
   border: 1px solid lightgray;
+  border-radius: 5px;
   cursor: pointer;
   margin-left: 15px;
   padding: 5px;
@@ -209,18 +260,64 @@ const ListHeader = styled.th`
 
 function MyProjectMainContents() {
 
+  const { data, refetch } = useQuery(SEE_PROJECT_QUERY);
+
+  // console.log("data", data);
+
+  const {handleSubmit, setValue, watch, register} = useForm({
+    mode: "onChange",
+  });
+
+  useEffect(( ) => {
+    setValue("projectName", data?.seeProject?.projectName);
+  },[data, setValue]);
+
+  const handleChange = (e) => {
+    if(e.target.name === "projectName"){
+      setValue("projectName", e.target.value);
+    };
+  };
+
+  const [createProject, { loading }] = useMutation(CREATE_PROJECT_MUTATION);
+  
+  const onSaveValid = (data) =>  {    
+    console.log("saveProject", data);
+    if (loading) {
+      return;
+    }
+    createProject({
+      variables: { 
+        ...data,
+      },
+    });
+    refetch();
+  };
+
+  const onSaveInvalid = (data) => {};
     
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+
   const handleOpenModal = () => {
   setIsModalOpen(true);
   };
 
-  const handleCreateTeam = () => {
-      handleOpenModal();
-  };
+  // const handleCreateTeam = () => {
+  //     handleOpenModal();
+  // };
+  const handleCreateModal = () => {
+    setIsSummaryOpen(false);
+    setIsModalOpen(false);
+  }
+
+  const handleBackModal = () => {
+    setIsSummaryOpen(false);
+    setIsModalOpen(true);
+  }
 
   const handleNextModal = () => {
-      setIsModalOpen(false);
+      // setIsModalOpen(false);
+      setIsSummaryOpen(true);
     };
   
     const handleCancelModal = () => {
@@ -237,7 +334,7 @@ function MyProjectMainContents() {
   <Container>
     <TeamName>
       {/* 선택한 팀 네임이 불러져와야함 */}
-      $Teamname
+      Teamname
     </TeamName>
     <MainHeader>
       <MainTitle>
@@ -265,71 +362,141 @@ function MyProjectMainContents() {
         <NewProjectBtn onClick={handleOpenModal}>New Project</NewProjectBtn>     
         <Modal isOpen={isModalOpen} style={customStyles}>
           <ModalHeader>NEW PROJECT</ModalHeader>
-          <ModalBody>
-            <ModalInfo>
-                <ProjectLabel>Project name: 
-                  <InputText
-                  // ref={register}
-                  type="text"
-                  name="teamName"
-                  // value={watch("teamName")}
-                  placeholder="Enter the team name..."
-                  // onChange={handleChange}
+            <ModalBody>
+              <ModalInfo>
+                  <ProjectLabel>Project name: 
+                    <InputText
+                    // ref={register}
+                    type="text"
+                    name="teamName"
+                    // value={watch("projectName")}
+                    placeholder="Enter the team name..."
+                    // onChange={handleChange}
+                    />
+                  </ProjectLabel>
+
+                  <ProjectLabel>Project Status: 
+                    <SelectStatus options = {optionStatus}/>
+                  </ProjectLabel>
+
+                  <ProjectLabel>Project Type: 
+                    <InputText
+                    // ref={register}
+                    type="text"
+                    name="teamName"
+                    // value={watch("teamName")}
+                    placeholder="Enter the project type..."
+                    // onChange={handleChange}
+                    />
+                  </ProjectLabel>
+
+                  <ProcessDate>
+                    <StartD>
+                      <ProjectLabel>Start Date: 
+                        <DatePickerForm
+                            selected={startDate}
+                            dateFormat="yy-MM-dd"
+                            onChange={(date) => setStartDate(date)}
+                        />
+                      </ProjectLabel>
+                    </StartD>
+                    <EndD>
+                      <ProjectLabel>End Date: 
+                        <DatePickerForm
+                            selected={endDate}
+                            dateFormat="yy-MM-dd"
+                            onChange={(date) => setEndDate(date)}
+                        />
+                      </ProjectLabel>
+                    </EndD>
+                  </ProcessDate>
+
+                  <DesLabel>Description</DesLabel>
+                  <Description
+                    type="text"
+                    cols='72'
+                    rows='5'
+                    name="teamDescription"
+                    placeholder="Let people know what this team is all about..."
                   />
-                </ProjectLabel>
+              </ModalInfo>
+              <ModalBtn>         
+                <NextBtn onClick={handleNextModal}>Next</NextBtn>            
+                <CancelBtn onClick={handleCancelModal}>Cancel</CancelBtn>
+              </ModalBtn> 
+            </ModalBody>
+        </Modal>    
 
-                <ProjectLabel>Project Status: 
-                  <SelectStatus options = {optionStatus}/>
-                </ProjectLabel>
+        <Modal isOpen={isSummaryOpen} style={customStyles}>
+          <ModalHeader>NEW PROJECT</ModalHeader>
+          <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
+          <ModalBody> 
+              <ModalInfo>
+               <ProjectLabel>Project name:  
+                    <InputText
+                    ref={register}
+                    type="text"
+                    name="projectName"
+                    value={watch("projectName")}
+                    placeholder="Enter the project name..."
+                    onChange={handleChange}
+                    />
+                  </ProjectLabel>
 
-                <ProjectLabel>Project Type: 
-                  <InputText
-                  // ref={register}
-                  type="text"
-                  name="teamName"
-                  // value={watch("teamName")}
-                  placeholder="Enter the team name..."
-                  // onChange={handleChange}
-                  />
-                </ProjectLabel>
+                  <ProjectLabel>Project Status: 
+                    <SelectStatus options = {optionStatus}/>
+                  </ProjectLabel>
 
-                <ProcessDate>
-                  <StartD>
-                    <ProjectLabel>Start Date: 
-                      <DatePickerForm
-                          selected={startDate}
-                          dateFormat="yy-MM-dd"
-                          onChange={(date) => setStartDate(date)}
-                      />
-                    </ProjectLabel>
-                  </StartD>
-                  <EndD>
-                    <ProjectLabel>End Date: 
-                      <DatePickerForm
-                          selected={endDate}
-                          dateFormat="yy-MM-dd"
-                          onChange={(date) => setEndDate(date)}
-                      />
-                    </ProjectLabel>
-                  </EndD>
-                </ProcessDate>
+                  <ProjectLabel>Project Type: 
+                    <InputText
+                    // ref={register}
+                    type="text"
+                    name="projectName"
+                    // value={watch("teamName")}
+                    placeholder="Enter the project type..."
+                    // onChange={handleChange}
+                    />
+                  </ProjectLabel>
 
-                <DesLabel>Description</DesLabel>
-                <Description
-                  type="text"
-                  cols='57'
-                  rows='5'
-                  name="teamDescription"
-                  placeholder="Let people know what this team is all about..."
-                />
-            </ModalInfo>
+                  <ProcessDate>
+                    <StartD>
+                      <ProjectLabel>Start Date: 
+                        <DatePickerForm
+                            selected={startDate}
+                            dateFormat="yy-MM-dd"
+                            onChange={(date) => setStartDate(date)}
+                        />
+                      </ProjectLabel>
+                    </StartD>
+                    <EndD>
+                      <ProjectLabel>End Date: 
+                        <DatePickerForm
+                            selected={endDate}
+                            dateFormat="yy-MM-dd"
+                            onChange={(date) => setEndDate(date)}
+                        />
+                      </ProjectLabel>
+                    </EndD>
+                  </ProcessDate>
+
+                  <DesLabel>Description</DesLabel>
+                   <Description
+                    type="text"
+                    cols='72'
+                    rows='5'
+                    name="teamDescription"
+                    placeholder="Let people know what this team is all about..."
+                  /> 
+              </ModalInfo>
+            <ModalBtn>         
+              <NextBtn onClick={handleCreateModal}>Create</NextBtn> 
+              <NextBtn type="submit">Test</NextBtn>            
+              <CancelBtn onClick={handleBackModal}>Back</CancelBtn>
+            </ModalBtn>
           </ModalBody>
-          <ModalBtn>         
-            <NextBtn onClick={handleNextModal}>Next</NextBtn>            
-            <CancelBtn onClick={handleCancelModal}>Cancel</CancelBtn>
-          </ModalBtn> 
-        </Modal>                
-        <CopyBtn>Copy</CopyBtn>
+          </form>
+        </Modal>            
+
       </LeftBtn>
       <RightBtn>
           <DeleteBtn>Delete Project</DeleteBtn>

@@ -12,14 +12,44 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
-const SEE_TEAM_QUERY = gql`
-  query seeTeam($teamName: String!) {
-    seeTeam(teamName: $teamName) {
+export const SEE_ALL_MY_TEAM_QUERY = gql`
+  query seeAllMyTeam {
+    seeAllMyTeam {
       id
       teamName
-      teamMember
-      project
-      role
+      teamMember{
+        id
+        username
+        email
+        companyName
+        phoneNumber
+        avatar
+        birth
+        country
+        state
+        city
+        Street
+        team
+      }
+      project {
+        id
+        projectName
+        projectStatus
+        projectType
+        description
+        securityLevel
+        team
+        createdAt
+        updatedAt
+      }
+      role {
+        id
+        roleName
+        teamId
+        userId
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -200,9 +230,9 @@ function MyTeamMainContents() {
 
    
 
-  const { data, refetch } = useQuery(SEE_TEAM_QUERY);
+  const { data, refetch } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
-  // console.log(data);
+  // console.log("data", data);
 
   const {handleSubmit, setValue, watch, register} = useForm({
     mode: "onChange",
@@ -221,7 +251,7 @@ function MyTeamMainContents() {
   const [createTeam, { loading }] = useMutation(CREATE_TEAM_MUTATION);
   
   const onSaveValid = (data) =>  {    
-    console.log("saveTeam", data.teamName);
+    console.log("saveTeam", data);
     if (loading) {
       return;
     }
@@ -249,7 +279,7 @@ function MyTeamMainContents() {
       </TeamHeader>
 
 
-      {/* <Modal isOpen={isModalOpen} style={customStyles}>
+      <Modal isOpen={isModalOpen} style={customStyles}>
         <ModalHeader>NEW TEAM</ModalHeader>
         <ModalBody>
         <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}> 
@@ -275,11 +305,12 @@ function MyTeamMainContents() {
 
           <ModalBtn>        
             <SaveTeam type="submit" onClick={handleCreateModal}>Create</SaveTeam>
+            {/* <SaveTeam type="submit">Create</SaveTeam> */}
             <CancelTeam onClick={handleCancelModal}>Cancel</CancelTeam>
           </ModalBtn> 
           </form>
         </ModalBody>
-      </Modal> */}
+      </Modal>
 
       <TeamBody>
         {/* Team list */}
@@ -294,7 +325,6 @@ function MyTeamMainContents() {
               placeholder="Enter the team name..."
               onChange={handleChange}
             />
-            <TestBtn type="submit">test</TestBtn>
             </form>
             {/* <TeamList>
               {data.seeTeam.map((team) => (
