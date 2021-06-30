@@ -160,14 +160,31 @@ const SearchTeam = styled.div`
   padding: 0px;
 `;
 
-const TeamBody = styled.div``;
+const TeamBody = styled.div`
+`;
 
-const TeamName = styled.h2``;
+const TeamList = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  justify-items: stretch;
+  grid-gap: 50px;
+  height: 300px;
+`;
 
-const TestBtn = styled.button``;
-
-const TeamList = styled.ul``;
-const ListT = styled.li``;
+const ListEachTeam = styled.li`
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 15px;
+  border: 1px solid lightgray;
+  margin: 20px auto;
+  padding: 15px;
+  box-shadow: 0px 3px 6px gray;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #FFB6B6;
+  width: 100%;
+  height: 100%;  
+`;
 
 function MyTeamMainContents() {
   // const [TeamName, setTeamName] = useState("");
@@ -176,18 +193,12 @@ function MyTeamMainContents() {
     setIsModalOpen(true);
   };
 
-  //   const handleCreateModal = () => {
-  //     alert("Your team has been created.");
-  //     setIsModalOpen(false);
-  //     setTeamName(TeamName);
-  //   };
-
-  const handleCreateModal = () => {
+  const handleCreateBtnModal = () => {
     alert("Your team has been created.");
     setIsModalOpen(false);
   };
 
-  const handleCancelModal = () => {
+  const handleCancelBtnModal = () => {
     setIsModalOpen(false);
   };
 
@@ -197,14 +208,14 @@ function MyTeamMainContents() {
 
   const { data, refetch } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
-  console.log("전체팀보자data", data);
+  console.log("전체팀보자", data);
 
   const { handleSubmit, setValue, watch, register } = useForm({
     mode: "onChange",
   });
 
   useEffect(() => {
-    setValue("teamName", data?.seeTeam?.teamName);
+    setValue("teamName", data?.seeAllMyTeam?.teamName);
   }, [data, setValue]);
 
   const handleChange = (e) => {
@@ -216,7 +227,7 @@ function MyTeamMainContents() {
   const [createTeam, { loading }] = useMutation(CREATE_TEAM_MUTATION);
 
   const onSaveValid = (data) => {
-    handleCreateModal();
+    handleCreateBtnModal();
     console.log("saveTeam", data);
     if (loading) {
       return;
@@ -230,7 +241,7 @@ function MyTeamMainContents() {
   };
 
   const onSaveInvalid = (data) => {};
-
+  console.log("팀네임", data?.seeAllMyTeam?.teamName);
   return (
     <Container>
       <MainTitle>MY TEAM</MainTitle>
@@ -268,31 +279,22 @@ function MyTeamMainContents() {
             <ModalBtn>
               <SaveTeam type="submit">Create</SaveTeam>
               {/* <SaveTeam type="submit">Create</SaveTeam> */}
-              <CancelTeam onClick={handleCancelModal}>Cancel</CancelTeam>
+              <CancelTeam onClick={handleCancelBtnModal}>Cancel</CancelTeam>
             </ModalBtn>
           </form>
         </ModalBody>
       </Modal>
 
       <TeamBody>
-        {/* Team list */}
-        {/* <TeamName>{userData?.seeTeam?.teamName}</TeamName> */}
-        {/* <TeamName>{data?.seeTeam?.teamName}</TeamName> */}
-        <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
-          <Input
-            ref={register}
-            type="text"
-            name="teamName"
-            value={watch("teamName")}
-            placeholder="Enter the team name..."
-            onChange={handleChange}
-          />
-        </form>
-        {/* <TeamList>
-              {data.seeTeam.map((team) => (
-                <ListT key={team.id}>{team.teamName}</ListT>
+        <TeamList>
+           {data?.seeAllMyTeam?.map((team) => (
+                <ListEachTeam key={team.id}>
+                  <Link to={`/myProject/${team.teamName}`}>
+                    {team.teamName}
+                  </Link>
+                </ListEachTeam>
               ))}
-            </TeamList>   */}
+            </TeamList>  
       </TeamBody>
     </Container>
   );

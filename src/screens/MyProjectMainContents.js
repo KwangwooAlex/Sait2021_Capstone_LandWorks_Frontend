@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
 import Modal from "react-modal";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 // import Input from "../components/auth/Input";
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
@@ -9,6 +9,15 @@ import "react-datepicker/dist/react-datepicker.css";
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
+
+const SEE_TEAM_QUERY = gql`
+  query seeTeam($teamName: String!) {
+    seeTeam(teamName: $teamName) {
+      id
+      teamName
+    }
+  }
+`;
 
 const SEE_PROJECT_QUERY = gql`
   query seeProject($projectId: Int!) {
@@ -59,9 +68,9 @@ const Container = styled.main`
 
 
 const TeamName = styled.div`
-  color: #004070;
+  color: Black;
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   width: 100%;
   height: 40px;
   border-bottom: black 2px solid;
@@ -89,44 +98,77 @@ const RightSection = styled.div`
 const NavBar = styled.div`
   display: flex;
   margin-right: 40px;
+  text-align: center;
 `;
 
 const Letter = styled.div`
-  padding: 10px;
-
-  width: 90px;
+  padding: 5px;
+  width: 100px;
   cursor: pointer;
+  border-bottom: 1px solid #FFB41E;
+  margin-right: 10px;
   &:hover {
-    color: #FFB41E;
-    background-color: #004070;
-    border-top: black 2px solid;
+    color: #004070;
+    background-color: #FFB41E;
+    /*border-top: black 2px solid;*/
   }
 `;
+
+const SelectedPage = styled.div`
+  background-color: #FFB41E;
+`;
+
 
 const MainContents = styled.div`
 `;
 
-const NewProjectBtn = styled.button``;
-const CopyBtn = styled.button``;
-const DeleteBtn = styled.button``;
+const NewProjectBtn = styled.button`
+  margin-top: 25px;
+  border-radius: 20px;
+  background: #004070;
+  border: 1px solid;
+  color: white;
+  width: 150px;
+  height: 35px;
+  font-size: 15px;
+  box-shadow: 0px 2px 4px gray;
+  cursor: pointer;  
+`;
+
+const DeleteBtn = styled.button`
+  margin-top: 25px;
+  border-radius: 20px;
+  background: white;
+  border: 1px solid;
+  color: #004070;
+  width: 150px;
+  height: 35px;
+  font-size: 15px;
+  box-shadow: 0px 2px 4px gray;
+  cursor: pointer;
+`;
 
 const InputSearch = styled.input`
-  border: 1px solid black;
+  border: 1px solid lightgray;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  height: 20px;
 `;
 
 const customStyles = {
-    content: {
-      padding: "0",
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      width: "600px",
-      height: "500px",
-    },
-  };
+  content: {
+    padding: "0",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "600px",
+    height: "500px",
+  },
+};
 
 const AllBtn =  styled.div`
   display: flex;
@@ -137,11 +179,8 @@ const RightBtn = styled.div`
 `;
 
 const LeftBtn = styled.div`
+
 `;
-
-// const ModalContainer = styled.div`
-
-// `;
 
 const ModalInfo = styled.div`
 `;
@@ -157,7 +196,6 @@ const ModalHeader = styled.h4`
 const ModalBody = styled.div`
   margin: 30px 30px;
 `; 
-
 
 const ProjectLabel = styled.label`
   display: flex;
@@ -188,6 +226,7 @@ const ProcessDate = styled.div`
 const StartD = styled.div`
   display: flex;
 `;
+
 const EndD = styled.div`
   display: flex;
 `;
@@ -214,7 +253,6 @@ const Description = styled.textarea`
   padding: 10px;
 `;
 
-
 const ModalBtn = styled.div`
   margin: 20px auto;
 `;
@@ -232,6 +270,7 @@ const NextBtn = styled.button`
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
 `;
+
 const CancelBtn = styled.button`
   background: white;
   border: 2x solid;
@@ -246,7 +285,6 @@ const CancelBtn = styled.button`
   font-weight: bold;
 `;
 
-
 const ListBox = styled.div`
   margin-top: 40px;
   border: 1px solid white;    
@@ -259,39 +297,58 @@ const ListHeader = styled.th`
 
 
 function MyProjectMainContents() {
+  const {teamName} = useParams();
+    const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
+    variables: { teamName: teamName },
+    }
+  ); 
+  const { data } = useQuery(SEE_PROJECT_QUERY);
 
-  const { data, refetch } = useQuery(SEE_PROJECT_QUERY);
+  console.log("teamData", teamData);
+  console.log("teamName", teamName);
 
-  // console.log("data", data);
+  console.log("projectData", data);
 
   const {handleSubmit, setValue, watch, register} = useForm({
     mode: "onChange",
   });
 
-  useEffect(( ) => {
-    setValue("projectName", data?.seeProject?.projectName);
-  },[data, setValue]);
+  // useEffect(( ) => {
+  //   // setValue("teamId", teamData?.seeTeam?.id);
+  //   setValue("projectName", projectData?.seeProject?.projectName);
+  //   setValue("projectStatus", projectData?.seeProject?.projectStatus);
+  //   setValue("projectType", projectData?.seeProject?.projectType);
+  //   setValue("startDate", projectData?.seeProject?.startDate);
+  //   setValue("endDate", projectData?.seeProject?.endDate);
+  //   setValue("description", projectData?.seeProject?.description);
+  // },[projectData, setValue]);
 
   const handleChange = (e) => {
     if(e.target.name === "projectName"){
       setValue("projectName", e.target.value);
     };
-  };
+  }; 
 
   const [createProject, { loading }] = useMutation(CREATE_PROJECT_MUTATION);
-  
-  const onSaveValid = (data) =>  {    
+   
+  const onSaveValid = (data) =>  {     
+    handleNextBtnModal();
     console.log("saveProject", data);
+    console.log("status", status);
+    console.log("security", security);
     if (loading) {
       return;
     }
     createProject({
       variables: { 
         ...data,
+        projectStatus:status,
+        securityLevel:security,
+        teamId:teamData.seeTeam.id,       
       },
     });
     refetch();
-  };
+  }; 
 
   const onSaveInvalid = (data) => {};
     
@@ -299,59 +356,79 @@ function MyProjectMainContents() {
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
 
   const handleOpenModal = () => {
-  setIsModalOpen(true);
+    setIsModalOpen(true);
   };
 
-  // const handleCreateTeam = () => {
-  //     handleOpenModal();
-  // };
-  const handleCreateModal = () => {
+  const handleCreateBtnModal = () => {
+    alert("Your Project has been created.");
     setIsSummaryOpen(false);
     setIsModalOpen(false);
   }
 
-  const handleBackModal = () => {
+  const handleBackBtnModal = () => {
     setIsSummaryOpen(false);
     setIsModalOpen(true);
   }
 
-  const handleNextModal = () => {
-      // setIsModalOpen(false);
-      setIsSummaryOpen(true);
-    };
+  const handleNextBtnModal = () => {
+    // setIsModalOpen(false);
+    setIsSummaryOpen(true);
+  };
   
-    const handleCancelModal = () => {
-      setIsModalOpen(false);
-    };
-    const optionStatus = [
-      { value: 'Active', label: 'Active' },
-      { value: 'On Hold', label: 'On Hold' },
-      { value: 'Complete', label: 'Complete' },
-    ];
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+  const handleCancelBtnModal = () => {
+    setIsModalOpen(false);
+  };
+  
+  const optionStatus = [
+    { value: 'Active', label: 'Active' },
+    { value: 'On Hold', label: 'On Hold' },
+    { value: 'Complete', label: 'Complete' },
+  ];
+
+  const optionSecurity = [
+    { value: 'Open', label: 'Open' },
+    { value: 'Protected', label: 'Protected' },
+    { value: 'Confidential', label: 'Confidential' },
+  ];
+
+  const [status, setStatus] = useState(null);
+  const [security, setSecurity] = useState(null);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const handleStatus = (e)=>{
+   setStatus(e.value);
+  }
+
+  const handleSecurity = (e)=>{
+    setSecurity(e.value);
+  }
+
   return (
   <Container>
     <TeamName>
-      {/* 선택한 팀 네임이 불러져와야함 */}
-      Teamname
+      {teamData?.seeTeam?.teamName}
     </TeamName>
     <MainHeader>
       <MainTitle>
         MY PROJECT
       </MainTitle> 
       <RightSection>
-        <NavBar>
+        {/* <NavBar>
           <Link to="/myProject">
-              <Letter>My Project</Letter>
+          <SelectedPage><Letter>My Project</Letter></SelectedPage>
           </Link>  
+          <Link to="/files">
+            <Letter>Overview</Letter>
+          </Link>
           <Link to="/files">
               <Letter>Files</Letter>
           </Link>
-          {/* <Link to="/members">
-              <Letter>Members</Letter>
-          </Link>     */}
-        </NavBar>
+          <Link to="/files">
+            <Letter>Members</Letter>
+          </Link>
+        </NavBar> */}
         <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
       </RightSection>
     </MainHeader>
@@ -362,31 +439,38 @@ function MyProjectMainContents() {
         <NewProjectBtn onClick={handleOpenModal}>New Project</NewProjectBtn>     
         <Modal isOpen={isModalOpen} style={customStyles}>
           <ModalHeader>NEW PROJECT</ModalHeader>
+           <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
             <ModalBody>
               <ModalInfo>
                   <ProjectLabel>Project name: 
                     <InputText
-                    // ref={register}
-                    type="text"
-                    name="teamName"
-                    // value={watch("projectName")}
-                    placeholder="Enter the team name..."
-                    // onChange={handleChange}
+                      ref={register}
+                      type="text"
+                      name="projectName"
+                      value={watch("projectName")}
+                      placeholder="Enter the project name..."
+                      onChange={handleChange}
                     />
                   </ProjectLabel>
 
                   <ProjectLabel>Project Status: 
-                    <SelectStatus options = {optionStatus}/>
+                    <SelectStatus 
+                      options = {optionStatus}
+                      name="projectStatus"
+                      ref={register}
+                      value={watch("projectStatus")}   
+                      onChange={handleStatus}                   
+                    />
                   </ProjectLabel>
 
                   <ProjectLabel>Project Type: 
                     <InputText
-                    // ref={register}
-                    type="text"
-                    name="teamName"
-                    // value={watch("teamName")}
-                    placeholder="Enter the project type..."
-                    // onChange={handleChange}
+                      ref={register}
+                      type="text"
+                      name="projectType"
+                      value={watch("projectType")}
+                      placeholder="Enter the Project type..."
+                      onChange={handleChange}
                     />
                   </ProjectLabel>
 
@@ -394,18 +478,24 @@ function MyProjectMainContents() {
                     <StartD>
                       <ProjectLabel>Start Date: 
                         <DatePickerForm
-                            selected={startDate}
-                            dateFormat="yy-MM-dd"
-                            onChange={(date) => setStartDate(date)}
+                          ref={register}
+                          selected={startDate}
+                          name="startDate"
+                          dateFormat="yy-MM-dd"
+                          onChange={(date) => setStartDate(date)}
+                          value={watch("startDate")}
                         />
                       </ProjectLabel>
                     </StartD>
                     <EndD>
                       <ProjectLabel>End Date: 
                         <DatePickerForm
-                            selected={endDate}
-                            dateFormat="yy-MM-dd"
-                            onChange={(date) => setEndDate(date)}
+                          ref={register}
+                          selected={endDate}
+                          name="endDate"
+                          dateFormat="yy-MM-dd"
+                          onChange={(date) => setEndDate(date)}
+                          value={watch("endDate")}
                         />
                       </ProjectLabel>
                     </EndD>
@@ -416,45 +506,65 @@ function MyProjectMainContents() {
                     type="text"
                     cols='72'
                     rows='5'
-                    name="teamDescription"
+                    ref={register}
+                    // onChange={handleChange}
+                    value={watch("description")}
+                    name="description"
                     placeholder="Let people know what this team is all about..."
                   />
+
+                  <ProjectLabel>Security Level: </ProjectLabel>
+                    <SelectStatus 
+                      options = {optionSecurity}
+                      name="securityLevel"
+                      ref={register}
+                      value={watch("securityLevel")}   
+                      onChange={handleSecurity}                   
+                    />
+                  
               </ModalInfo>
               <ModalBtn>         
-                <NextBtn onClick={handleNextModal}>Next</NextBtn>            
-                <CancelBtn onClick={handleCancelModal}>Cancel</CancelBtn>
+                <NextBtn type="submit">Next</NextBtn>            
+                <CancelBtn onClick={handleCancelBtnModal}>Cancel</CancelBtn>
               </ModalBtn> 
             </ModalBody>
+            </form>
         </Modal>    
 
         <Modal isOpen={isSummaryOpen} style={customStyles}>
           <ModalHeader>NEW PROJECT</ModalHeader>
-          <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
+          
           <ModalBody> 
               <ModalInfo>
-               <ProjectLabel>Project name:  
+              <ProjectLabel>Project name: 
                     <InputText
-                    ref={register}
-                    type="text"
-                    name="projectName"
-                    value={watch("projectName")}
-                    placeholder="Enter the project name..."
-                    onChange={handleChange}
+                      // ref={register}
+                      // type="text"
+                      // name="projectName"
+                      value={watch("projectName")}
+                      // placeholder="Enter the project name..."
+                      // onChange={handleChange}
                     />
                   </ProjectLabel>
 
                   <ProjectLabel>Project Status: 
-                    <SelectStatus options = {optionStatus}/>
+                    <SelectStatus 
+                      // options = {optionStatus}
+                      // name="projectStatus"
+                      // ref={register}
+                      value={status}   
+                      // onChange={handleStatus}                   
+                    />
                   </ProjectLabel>
 
                   <ProjectLabel>Project Type: 
                     <InputText
-                    // ref={register}
-                    type="text"
-                    name="projectName"
-                    // value={watch("teamName")}
-                    placeholder="Enter the project type..."
-                    // onChange={handleChange}
+                      // ref={register}
+                      // type="text"
+                      // name="projectType"
+                      value={watch("projectType")}
+                      // placeholder="Enter the Project type..."
+                      // onChange={handleChange}
                     />
                   </ProjectLabel>
 
@@ -462,39 +572,56 @@ function MyProjectMainContents() {
                     <StartD>
                       <ProjectLabel>Start Date: 
                         <DatePickerForm
-                            selected={startDate}
-                            dateFormat="yy-MM-dd"
-                            onChange={(date) => setStartDate(date)}
+                          // ref={register}
+                          // selected={startDate}
+                          // name="startDate"
+                          // dateFormat="yy-MM-dd"
+                          // onChange={(date) => setStartDate(date)}
+                          value={watch("startDate")}
                         />
                       </ProjectLabel>
                     </StartD>
                     <EndD>
                       <ProjectLabel>End Date: 
                         <DatePickerForm
-                            selected={endDate}
-                            dateFormat="yy-MM-dd"
-                            onChange={(date) => setEndDate(date)}
+                          // ref={register}
+                          // selected={endDate}
+                          // name="endDate"
+                          // dateFormat="yy-MM-dd"
+                          // onChange={(date) => setEndDate(date)}
+                          value={watch("endDate")}
                         />
                       </ProjectLabel>
                     </EndD>
                   </ProcessDate>
 
                   <DesLabel>Description</DesLabel>
-                   <Description
+                  <Description
                     type="text"
                     cols='72'
                     rows='5'
-                    name="teamDescription"
-                    placeholder="Let people know what this team is all about..."
-                  /> 
+                    /* ref={register} */
+                    // onChange={handleChange}
+                    value={watch("description")}
+                    /* name="description" */
+                    /* placeholder="Let people know what this team is all about..." */
+                  />
+
+                  <ProjectLabel>Security Level: </ProjectLabel>
+                    <SelectStatus 
+                      // options = {optionSecurity}
+                      /* name="securityLevel" */
+                      /* ref={register} */
+                      value={security}   
+                      /* onChange={handleSecurity}                    */
+                    />
               </ModalInfo>
             <ModalBtn>         
-              <NextBtn onClick={handleCreateModal}>Create</NextBtn> 
-              <NextBtn type="submit">Test</NextBtn>            
-              <CancelBtn onClick={handleBackModal}>Back</CancelBtn>
+              <NextBtn onClick={handleCreateBtnModal}>Create</NextBtn>         
+              <CancelBtn onClick={handleBackBtnModal}>Back</CancelBtn>
             </ModalBtn>
           </ModalBody>
-          </form>
+          
         </Modal>            
 
       </LeftBtn>

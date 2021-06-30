@@ -126,7 +126,7 @@ const InputContainer = styled.div`
 `;
 
 const AccountInfo = styled.div`
-  margin-right: 20px;
+  margin-right: 50px;
   width: 100%;
 `;
 
@@ -165,7 +165,7 @@ const CancelEditImg = styled.button`
   color: #004070;
   float: right;
   width: 80px;
-  height: 30px;
+  height: 30px; 
   font-size: 15px;
   cursor: pointer;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -291,7 +291,8 @@ function MyProfileMainContents() {
 
   const [editProfile,{loading}] = useMutation(EDIT_PROFILE_MUTATION); 
 
-  const onSaveValid = (data) =>  {    
+  const onSaveValid = (data) =>  {
+    handleEditClick();    
     console.log("saveData", data);
     if (loading) {
       return;
@@ -324,17 +325,18 @@ function MyProfileMainContents() {
   
   return (
     <Container>
-
+      <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}> 
       <MainTitle>
         MY PROFILE
-        <EditBtn type="submit" onClick={handleEditClick}>
+        {/* <EditBtn type="submit" onClick={handleEditClick}> */}
+        <EditBtn type="submit">
           {activeEditBtn}
         </EditBtn>
       </MainTitle>
 
         <InfoSection>
           <InputContainer>
-          <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}> 
+          
             <AccountInfo>
               <InfoTitle>Account Information</InfoTitle>
               <InfoSubTitle>User Name</InfoSubTitle>
@@ -405,8 +407,8 @@ function MyProfileMainContents() {
                 </>
               )}
             </AccountInfo>
-            <TestBtn type="submit">test</TestBtn>
-            </form>
+            
+            
 
             <PersonalInfo>
               <InfoTitle>Personal Information</InfoTitle>
@@ -493,7 +495,7 @@ function MyProfileMainContents() {
             </Modal>
           </ProfileImg>
         </InfoSection>
-        {/* </form> */}
+        </form>
     </Container>
   );
 }

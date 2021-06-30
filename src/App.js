@@ -52,7 +52,7 @@ function App() {
               )}
             </Route>
     {/* ******************************************************************* */}
-            <Route path={routes.myProject} exact>
+            <Route path={`/myProject/:teamName`}>
               {isLoggedInProject ? (
                 <Layout>
                   <MyProject />
@@ -63,6 +63,7 @@ function App() {
             </Route>
 
             <Route path={routes.files} exact>
+            {/* <Route path={`/files/:projectId`} exact> */}
               {isLoggedInProject ? (
                 <Layout>
                   <Files />

@@ -113,14 +113,6 @@ function DashBoardLeftMenu() {
           <Letter>DASHBOARD</Letter>
         </DashBoardSection>
       </Link>
-      <Link to="/myTeam">
-        <MyTeam>
-          <ICON>
-            <FontAwesomeIcon icon={faPeopleCarry} size="lg" />
-          </ICON>
-          <Letter>MY Team</Letter>
-        </MyTeam>
-      </Link>
       <Link to="/myProfile">
         <MyProfile>
           <ICON>
@@ -129,6 +121,14 @@ function DashBoardLeftMenu() {
           </ICON>
           <Letter>MY PROFILE</Letter>{" "}
         </MyProfile>
+      </Link>
+      <Link to="/myTeam">
+        <MyTeam>
+          <ICON>
+            <FontAwesomeIcon icon={faPeopleCarry} size="lg" />
+          </ICON>
+          <Letter>MY Team</Letter>
+        </MyTeam>
       </Link>
 
      
