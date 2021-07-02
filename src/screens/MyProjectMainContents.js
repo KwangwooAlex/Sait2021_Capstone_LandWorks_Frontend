@@ -9,12 +9,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
+import useUser from "../components/hooks/useUser";
+import FormError from "../components/auth/FormError";
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
     seeTeam(teamName: $teamName) {
       id
       teamName
+      project {
+        projectName
+        projectStatus
+        projectType
+        description
+        securityLevel
+  		}
     }
   }
 `;
@@ -290,38 +299,56 @@ const ListBox = styled.div`
   border: 1px solid white;    
   box-shadow: 0px 3px 6px gray;
   height: 600px;
+  width: 100%;
+  padding:0;
 `;
 
-const ListHeader = styled.th`
+const ListTop= styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  background-color: lightgray;
 `;
+
+const ListHeader = styled.h3`
+  margin: 5px 15px;
+`;
+
+const ProjectBody = styled.div`
+
+`;
+
+const ListSection = styled.div`
+  display: flex;
+  margin: 5px 20px;
+
+`;
+
+const ListEachProject = styled.li`
+  display: flex;
+  cursor: pointer;
+`;
+
+
+/* const = styled.div``; */
 
 
 function MyProjectMainContents() {
+
   const {teamName} = useParams();
     const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
     }
   ); 
-  const { data } = useQuery(SEE_PROJECT_QUERY);
+  console.log("teamData", teamData?.seeTeam?.project);
 
-  console.log("teamData", teamData);
-  console.log("teamName", teamName);
+  const { data } = useQuery(SEE_PROJECT_QUERY); 
+  // console.log("projectData", data);
 
-  console.log("projectData", data);
-
-  const {handleSubmit, setValue, watch, register} = useForm({
+  const {handleSubmit, setValue, watch, register, errors} = useForm({
     mode: "onChange",
   });
 
-  // useEffect(( ) => {
-  //   // setValue("teamId", teamData?.seeTeam?.id);
-  //   setValue("projectName", projectData?.seeProject?.projectName);
-  //   setValue("projectStatus", projectData?.seeProject?.projectStatus);
-  //   setValue("projectType", projectData?.seeProject?.projectType);
-  //   setValue("startDate", projectData?.seeProject?.startDate);
-  //   setValue("endDate", projectData?.seeProject?.endDate);
-  //   setValue("description", projectData?.seeProject?.description);
-  // },[projectData, setValue]);
 
   const handleChange = (e) => {
     if(e.target.name === "projectName"){
@@ -329,7 +356,7 @@ function MyProjectMainContents() {
     };
   }; 
 
-  const [createProject, { loading }] = useMutation(CREATE_PROJECT_MUTATION);
+  const [createProject, { loading, error }] = useMutation(CREATE_PROJECT_MUTATION);
    
   const onSaveValid = (data) =>  {     
     handleNextBtnModal();
@@ -415,20 +442,7 @@ function MyProjectMainContents() {
         MY PROJECT
       </MainTitle> 
       <RightSection>
-        {/* <NavBar>
-          <Link to="/myProject">
-          <SelectedPage><Letter>My Project</Letter></SelectedPage>
-          </Link>  
-          <Link to="/files">
-            <Letter>Overview</Letter>
-          </Link>
-          <Link to="/files">
-              <Letter>Files</Letter>
-          </Link>
-          <Link to="/files">
-            <Letter>Members</Letter>
-          </Link>
-        </NavBar> */}
+
         <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
       </RightSection>
     </MainHeader>
@@ -441,15 +455,22 @@ function MyProjectMainContents() {
           <ModalHeader>NEW PROJECT</ModalHeader>
            <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
             <ModalBody>
+            <FormError message={errors?.projectName?.message} />
+            <FormError message={errors?.projectType?.message} />
+            <FormError message={errors?.description?.message} />
               <ModalInfo>
+ 
                   <ProjectLabel>Project name: 
                     <InputText
-                      ref={register}
+                    ref={register({
+                    required: "Project Name is required",
+                    })}
                       type="text"
                       name="projectName"
                       value={watch("projectName")}
                       placeholder="Enter the project name..."
                       onChange={handleChange}
+                      hasError={Boolean(errors?.projectName?.message)}
                     />
                   </ProjectLabel>
 
@@ -463,14 +484,18 @@ function MyProjectMainContents() {
                     />
                   </ProjectLabel>
 
+
                   <ProjectLabel>Project Type: 
                     <InputText
-                      ref={register}
+                    ref={register({
+                    required: "Project Type is required",
+                    })}
                       type="text"
                       name="projectType"
                       value={watch("projectType")}
                       placeholder="Enter the Project type..."
                       onChange={handleChange}
+                      hasError={Boolean(errors?.projectType?.message)}
                     />
                   </ProjectLabel>
 
@@ -500,17 +525,17 @@ function MyProjectMainContents() {
                       </ProjectLabel>
                     </EndD>
                   </ProcessDate>
-
                   <DesLabel>Description</DesLabel>
                   <Description
                     type="text"
-                    cols='72'
+                    cols='70'
                     rows='5'
                     ref={register}
                     // onChange={handleChange}
                     value={watch("description")}
                     name="description"
                     placeholder="Let people know what this team is all about..."
+                    hasError={Boolean(errors?.description?.message)}
                   />
 
                   <ProjectLabel>Security Level: </ProjectLabel>
@@ -538,33 +563,19 @@ function MyProjectMainContents() {
               <ModalInfo>
               <ProjectLabel>Project name: 
                     <InputText
-                      // ref={register}
-                      // type="text"
-                      // name="projectName"
-                      value={watch("projectName")}
-                      // placeholder="Enter the project name..."
-                      // onChange={handleChange}
+                      value={teamData?.seeTeam?.project?.projectName}
                     />
                   </ProjectLabel>
 
                   <ProjectLabel>Project Status: 
                     <SelectStatus 
-                      // options = {optionStatus}
-                      // name="projectStatus"
-                      // ref={register}
-                      value={status}   
-                      // onChange={handleStatus}                   
+                      value={status}                   
                     />
                   </ProjectLabel>
 
                   <ProjectLabel>Project Type: 
                     <InputText
-                      // ref={register}
-                      // type="text"
-                      // name="projectType"
                       value={watch("projectType")}
-                      // placeholder="Enter the Project type..."
-                      // onChange={handleChange}
                     />
                   </ProjectLabel>
 
@@ -572,11 +583,6 @@ function MyProjectMainContents() {
                     <StartD>
                       <ProjectLabel>Start Date: 
                         <DatePickerForm
-                          // ref={register}
-                          // selected={startDate}
-                          // name="startDate"
-                          // dateFormat="yy-MM-dd"
-                          // onChange={(date) => setStartDate(date)}
                           value={watch("startDate")}
                         />
                       </ProjectLabel>
@@ -584,11 +590,6 @@ function MyProjectMainContents() {
                     <EndD>
                       <ProjectLabel>End Date: 
                         <DatePickerForm
-                          // ref={register}
-                          // selected={endDate}
-                          // name="endDate"
-                          // dateFormat="yy-MM-dd"
-                          // onChange={(date) => setEndDate(date)}
                           value={watch("endDate")}
                         />
                       </ProjectLabel>
@@ -600,21 +601,13 @@ function MyProjectMainContents() {
                     type="text"
                     cols='72'
                     rows='5'
-                    /* ref={register} */
-                    // onChange={handleChange}
                     value={watch("description")}
-                    /* name="description" */
-                    /* placeholder="Let people know what this team is all about..." */
                   />
 
                   <ProjectLabel>Security Level: </ProjectLabel>
                     <SelectStatus 
-                      // options = {optionSecurity}
-                      /* name="securityLevel" */
-                      /* ref={register} */
                       value={security}   
-                      /* onChange={handleSecurity}                    */
-                    />
+                  />
               </ModalInfo>
             <ModalBtn>         
               <NextBtn onClick={handleCreateBtnModal}>Create</NextBtn>         
@@ -631,7 +624,31 @@ function MyProjectMainContents() {
     </AllBtn>
 
     <ListBox>
-        <ListHeader></ListHeader>
+      <ListTop>
+        <ListHeader>O</ListHeader>
+        <ListHeader>No.</ListHeader>
+        <ListHeader>Type</ListHeader>
+        <ListHeader>Name</ListHeader>
+        <ListHeader>Status</ListHeader>
+        <ListHeader>Description</ListHeader>
+        <ListHeader>Security</ListHeader>
+        <ListHeader>End Date</ListHeader>
+        <ListHeader>Edit icon</ListHeader>
+      </ListTop>
+
+      <ProjectBody>
+        {teamData?.seeTeam?.project?.map((projects) => (
+          <ListEachProject key={projects.id}>
+            {/* <Link to={`/myProject/${team.teamName}`}> */}
+              <ListSection>{projects.projectName}</ListSection>
+              <ListSection>{projects.projectType}</ListSection>
+              <ListSection>{projects.description}</ListSection>
+              <ListSection>{projects.projectStatus}</ListSection>
+              <ListSection>{projects.securityLevel}</ListSection>
+            {/* </Link> */}
+          </ListEachProject>
+        ))}
+      </ProjectBody>
     </ListBox>
     </MainContents> 
   </Container>

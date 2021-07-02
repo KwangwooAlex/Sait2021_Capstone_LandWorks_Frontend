@@ -76,101 +76,11 @@ const InputSearch = styled.input`
   height: 20px;
 `;
 
-const SixBtn = styled.div`
-display: flex;
-justify-content: space-between;
+const TopBtn = styled.div`
 `;
 
-const FourBtn = styled.div`
-display: flex;
-
-`;
-
-const TwoBtn = styled.div`
-display: flex;
-`;
-
-const UploadBtn = styled.button`
-  margin-top: 25px;
-  border-radius: 20px;
-  background: #004070;
-  border: 1px solid;
-  color: white;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
-`;
-
-const DownloadBtn = styled.button`
-  margin-left: 10px;
-  margin-top: 25px;
-  border-radius: 20px;
-  background: #004070;
-  border: 1px solid;
-  color: white;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer
-`;
-
-const NewFolderBtn = styled.button`
-  margin-left: 10px;
-  margin-top: 25px;
-  border-radius: 20px;
-  background: #004070;
-  border: 1px solid;
-  color: white;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer
-`;
-
-const CopyBtn = styled.button`
-margin-left: 10px;
-margin-top: 25px;
-  border-radius: 20px;
-  background: #004070;
-  border: 1px solid;
-  color: white;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer
-`;
-
-const MoveBtn = styled.button`
-margin-top: 25px;
-  border-radius: 20px;
-  background: #004070;
-  border: 1px solid;
-  color: white;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer
-`;
-
-const DeleteBtn = styled.button`
-margin-left: 10px;
-  margin-top: 25px;
-  border-radius: 20px;
-  background: #004070;
-  border: 1px solid;
-  color: white;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer
-`;
+const AddBtn = styled.button``;
+const EditBtn = styled.button``;
 
 const ListBox = styled.div`
   margin-top: 40px;
@@ -193,7 +103,7 @@ const ListHeader = styled.h3`
 `;
 
 
-function FilesMainContents() {
+function MembersMainContents() {
   // const {teamName} = useParams();
   //   const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
   //   variables: { teamName: teamName },
@@ -207,7 +117,7 @@ function FilesMainContents() {
     </TeamName>
     <MainHeader>
       <MainTitle>
-        Files
+        Members
       </MainTitle> 
       <RightSection>
         <NavBar>
@@ -215,27 +125,20 @@ function FilesMainContents() {
           <Letter>Overview</Letter>
           </Link>  
           <Link to="/files">
-          <SelectedPage><Letter>Files</Letter></SelectedPage>
+          <Letter>Files</Letter>
           </Link>
           <Link to="/members">
-            <Letter>Members</Letter>
+          <SelectedPage><Letter>Members</Letter></SelectedPage>
           </Link>
         </NavBar>
         <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
       </RightSection>
     </MainHeader>
-    <SixBtn>
-      <FourBtn>  
-        <UploadBtn>Upload</UploadBtn>
-        <DownloadBtn>Download</DownloadBtn>
-        <NewFolderBtn>New Folder</NewFolderBtn>
-        <CopyBtn>Copy</CopyBtn>
-      </FourBtn>
-      <TwoBtn>
-        <MoveBtn>Move</MoveBtn>
-        <DeleteBtn>Delete</DeleteBtn>
-      </TwoBtn>
-    </SixBtn>
+
+    <TopBtn>        
+      <AddBtn>Add</AddBtn>
+      <EditBtn>Edit</EditBtn>
+    </TopBtn>
 
     <ListBox>
       <ListTop>
@@ -255,4 +158,4 @@ function FilesMainContents() {
   )
 }
 
-export default FilesMainContents;
+export default MembersMainContents;

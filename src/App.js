@@ -13,6 +13,8 @@ import MyTeam from "./screens/MyTeam";
 import MyProfile from "./screens/MyProfile";
 import MyProject from "./screens/MyProject";
 import Files from "./screens/Files";
+import Overview from "./screens/Overview";
+import Members from "./screens/Members";
 
 function App() {
   const isLoggedInProject = useReactiveVar(isLoggedInProjectVar);
@@ -62,6 +64,17 @@ function App() {
               )}
             </Route>
 
+            <Route path={routes.overview} exact>
+            {/* <Route path={`/myProject/:teamName/:projectId`} > */}
+              {isLoggedInProject ? (
+                <Layout>
+                  <Overview />
+                </Layout>
+              ) : (
+                <Login />
+              )}
+            </Route>
+
             <Route path={routes.files} exact>
             {/* <Route path={`/files/:projectId`} exact> */}
               {isLoggedInProject ? (
@@ -72,6 +85,18 @@ function App() {
                 <Login />
               )}
             </Route>
+
+            <Route path={routes.members} exact>
+            {/* <Route path={`/files/:projectId`} exact> */}
+              {isLoggedInProject ? (
+                <Layout>
+                  <Members />
+                </Layout>
+              ) : (
+                <Login />
+              )}
+            </Route>
+
     {/* ******************************************************************* */}
             {!isLoggedInProject ? (
               <Route path={routes.signUp}>

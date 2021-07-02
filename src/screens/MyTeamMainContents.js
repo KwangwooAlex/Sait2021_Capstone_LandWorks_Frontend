@@ -109,6 +109,15 @@ const ModalBtn = styled.div`
   margin: 20px auto;
 `;
 
+const InputSearch = styled.input`
+  margin-top: 25px;
+  border: 1px solid lightgray;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  height: 20px;
+`;
+
 const CancelTeam = styled.button`
   background: white;
   border: 2x solid;
@@ -161,14 +170,15 @@ const SearchTeam = styled.div`
 `;
 
 const TeamBody = styled.div`
-`;
-
-const TeamList = styled.ul`
   display: grid;
   grid-template-columns: repeat(4,1fr);
-  justify-items: stretch;
   grid-gap: 50px;
-  height: 300px;
+  justify-items: stretch;
+`;
+
+const TeamList = styled.div`
+  height: 100%;
+  width:100%;
 `;
 
 const ListEachTeam = styled.li`
@@ -181,9 +191,11 @@ const ListEachTeam = styled.li`
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
-  background-color: #FFB6B6;
+  background-color: white;
   width: 100%;
-  height: 100%;  
+  height: 100%; 
+  list-style: none;
+  height: 150px;
 `;
 
 function MyTeamMainContents() {
@@ -248,7 +260,7 @@ function MyTeamMainContents() {
       <TeamHeader>
         <CreateBtn onClick={handleCreateTeam}>+ Create Team</CreateBtn>
         <SearchTeam>
-          <Input type="text" placeholder="Search.." />
+        <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
         </SearchTeam>
       </TeamHeader>
 
@@ -286,15 +298,15 @@ function MyTeamMainContents() {
       </Modal>
 
       <TeamBody>
-        <TeamList>
            {data?.seeAllMyTeam?.map((team) => (
-                <ListEachTeam key={team.id}>
-                  <Link to={`/myProject/${team.teamName}`}>
-                    {team.teamName}
-                  </Link>
-                </ListEachTeam>
-              ))}
-            </TeamList>  
+              <ListEachTeam key={team.id}>
+                <Link to={`/myProject/${team.teamName}`}>
+                  <TeamList>
+                      {team.teamName}
+                  </TeamList>  
+                </Link>
+              </ListEachTeam>
+            ))}
       </TeamBody>
     </Container>
   );

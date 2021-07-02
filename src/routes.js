@@ -4,6 +4,8 @@ const routes = {
   myTeam: "/myTeam",
   myProfile: "/myProfile",
   myProject: "/myProject",
-  files: "/files"
+  overview: "/overview",
+  files: "/files",
+  members: "/members",
 };
 export default routes;
