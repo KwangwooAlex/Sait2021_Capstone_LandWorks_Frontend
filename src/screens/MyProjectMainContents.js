@@ -18,6 +18,7 @@ const SEE_TEAM_QUERY = gql`
       id
       teamName
       project {
+        id
         projectName
         projectStatus
         projectType
@@ -294,6 +295,8 @@ const CancelBtn = styled.button`
   font-weight: bold;
 `;
 
+const InputResult = styled.div``;
+
 const ListBox = styled.div`
   margin-top: 40px;
   border: 1px solid white;    
@@ -335,8 +338,11 @@ const ListEachProject = styled.li`
 
 function MyProjectMainContents() {
 
+  const [submitData, setSubmitData] = useState({});
   const {teamName} = useParams();
-    const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
+console.log("projects");
+console.log("submitData",submitData);
+  const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
     }
   ); 
@@ -358,29 +364,9 @@ function MyProjectMainContents() {
 
   const [createProject, { loading, error }] = useMutation(CREATE_PROJECT_MUTATION);
    
-  const onSaveValid = (data) =>  {     
-    handleNextBtnModal();
-    console.log("saveProject", data);
-    console.log("status", status);
-    console.log("security", security);
-    if (loading) {
-      return;
-    }
-    createProject({
-      variables: { 
-        ...data,
-        projectStatus:status,
-        securityLevel:security,
-        teamId:teamData.seeTeam.id,       
-      },
-    });
-    refetch();
-  }; 
-
-  const onSaveInvalid = (data) => {};
-    
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -405,6 +391,38 @@ function MyProjectMainContents() {
   const handleCancelBtnModal = () => {
     setIsModalOpen(false);
   };
+
+
+  const onSaveValid = (data) =>  {     
+    handleNextBtnModal();
+    console.log("saveProject", data);
+    console.log("status", status);
+    console.log("security", security);
+    setSubmitData(data);
+    if (loading) {
+      return;
+    }
+  }; 
+
+  const createButton=()=>{
+    if (loading) {
+      return;
+    }
+    createProject({
+      variables: { 
+        ...submitData,
+        projectStatus:status,
+        securityLevel:security,
+        teamId:teamData.seeTeam.id,       
+      },
+    });
+    refetch();
+    handleCreateBtnModal();
+    setSubmitData(null);
+  }
+
+  const onSaveInvalid = (data) => {};
+    
   
   const optionStatus = [
     { value: 'Active', label: 'Active' },
@@ -562,55 +580,40 @@ function MyProjectMainContents() {
           <ModalBody> 
               <ModalInfo>
               <ProjectLabel>Project name: 
-                    <InputText
-                      value={teamData?.seeTeam?.project?.projectName}
-                    />
+                    <InputResult>{submitData?.projectName}</InputResult>
                   </ProjectLabel>
 
                   <ProjectLabel>Project Status: 
-                    <SelectStatus 
-                      value={status}                   
-                    />
+                  <InputResult>{status}</InputResult>
                   </ProjectLabel>
 
                   <ProjectLabel>Project Type: 
-                    <InputText
-                      value={watch("projectType")}
-                    />
+                  <InputResult>{submitData?.projectType}</InputResult>
                   </ProjectLabel>
 
                   <ProcessDate>
                     <StartD>
                       <ProjectLabel>Start Date: 
-                        <DatePickerForm
-                          value={watch("startDate")}
-                        />
+                      <InputResult>{submitData?.projectName}</InputResult>
                       </ProjectLabel>
                     </StartD>
                     <EndD>
                       <ProjectLabel>End Date: 
-                        <DatePickerForm
-                          value={watch("endDate")}
-                        />
+                      <InputResult>{submitData?.projectName}</InputResult>
                       </ProjectLabel>
                     </EndD>
                   </ProcessDate>
 
-                  <DesLabel>Description</DesLabel>
-                  <Description
-                    type="text"
-                    cols='72'
-                    rows='5'
-                    value={watch("description")}
-                  />
+                  <DesLabel>Description: </DesLabel>
+                  <InputResult>{submitData?.description}</InputResult>
 
-                  <ProjectLabel>Security Level: </ProjectLabel>
-                    <SelectStatus 
-                      value={security}   
-                  />
+                  <ProjectLabel>Security Level: 
+                  <InputResult>{security}</InputResult>
+                  </ProjectLabel>
+
               </ModalInfo>
             <ModalBtn>         
-              <NextBtn onClick={handleCreateBtnModal}>Create</NextBtn>         
+              <NextBtn onClick={()=>createButton()}>Create</NextBtn>         
               <CancelBtn onClick={handleBackBtnModal}>Back</CancelBtn>
             </ModalBtn>
           </ModalBody>
@@ -638,15 +641,15 @@ function MyProjectMainContents() {
 
       <ProjectBody>
         {teamData?.seeTeam?.project?.map((projects) => (
+            <Link to={`/myProject/${teamName}/${projects?.id}`}>
           <ListEachProject key={projects.id}>
-            {/* <Link to={`/myProject/${team.teamName}`}> */}
               <ListSection>{projects.projectName}</ListSection>
               <ListSection>{projects.projectType}</ListSection>
               <ListSection>{projects.description}</ListSection>
               <ListSection>{projects.projectStatus}</ListSection>
               <ListSection>{projects.securityLevel}</ListSection>
-            {/* </Link> */}
           </ListEachProject>
+            </Link>
         ))}
       </ProjectBody>
     </ListBox>

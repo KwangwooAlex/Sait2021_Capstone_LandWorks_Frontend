@@ -17,6 +17,7 @@ const DashBoardMainBox = styled.div`
 `;
 
 function Overview() {
+  console.log("here1");
   return (
     <DashBoardContainer>
       <DashBoardHeader />

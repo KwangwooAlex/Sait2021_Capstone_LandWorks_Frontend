@@ -53,7 +53,40 @@ function App() {
                 <Login />
               )}
             </Route>
+
     {/* ******************************************************************* */}
+
+            <Route path={`/myProject/:teamName/:projectId/files`}>
+              {isLoggedInProject ? (
+                <Layout>
+                  <Files />
+                </Layout>
+              ) : (
+                <Login />
+              )}
+            </Route>
+
+            <Route path={`/myProject/:teamName/:projectId/members`}>
+              {isLoggedInProject ? (
+                <Layout>
+                  <Members />
+                </Layout>
+              ) : (
+                <Login />
+              )}
+            </Route>
+       
+
+            <Route path={`/myProject/:teamName/:projectId`}>
+              {isLoggedInProject ? (
+                <Layout>
+                  <Overview />
+                </Layout>
+              ) : (
+                <Login />
+              )}
+            </Route>
+
             <Route path={`/myProject/:teamName`}>
               {isLoggedInProject ? (
                 <Layout>
@@ -64,38 +97,6 @@ function App() {
               )}
             </Route>
 
-            <Route path={routes.overview} exact>
-            {/* <Route path={`/myProject/:teamName/:projectId`} > */}
-              {isLoggedInProject ? (
-                <Layout>
-                  <Overview />
-                </Layout>
-              ) : (
-                <Login />
-              )}
-            </Route>
-
-            <Route path={routes.files} exact>
-            {/* <Route path={`/files/:projectId`} exact> */}
-              {isLoggedInProject ? (
-                <Layout>
-                  <Files />
-                </Layout>
-              ) : (
-                <Login />
-              )}
-            </Route>
-
-            <Route path={routes.members} exact>
-            {/* <Route path={`/files/:projectId`} exact> */}
-              {isLoggedInProject ? (
-                <Layout>
-                  <Members />
-                </Layout>
-              ) : (
-                <Login />
-              )}
-            </Route>
 
     {/* ******************************************************************* */}
             {!isLoggedInProject ? (

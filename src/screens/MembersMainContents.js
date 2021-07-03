@@ -2,7 +2,24 @@ import React from 'react'
 import styled from "styled-components";
 import Modal from "react-modal";
 import { Link, useParams } from "react-router-dom";
+import { gql, useQuery } from '@apollo/client';
 
+const SEE_TEAM_QUERY = gql`
+  query seeTeam($teamName: String!) {
+    seeTeam(teamName: $teamName) {
+      id
+      teamName
+      project {
+        id
+        projectName
+        projectStatus
+        projectType
+        description
+        securityLevel
+  		}
+    }
+  }
+`;
 
 
 const Container = styled.main`
@@ -104,11 +121,11 @@ const ListHeader = styled.h3`
 
 
 function MembersMainContents() {
-  // const {teamName} = useParams();
-  //   const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
-  //   variables: { teamName: teamName },
-  //   }
-  // ); 
+  const {teamName,projectId} = useParams();
+  const { data: teamData} = useQuery(SEE_TEAM_QUERY, {
+    variables: { teamName: teamName },
+    }
+  ); 
 
   return (
     <Container>
@@ -121,13 +138,13 @@ function MembersMainContents() {
       </MainTitle> 
       <RightSection>
         <NavBar>
-          <Link to="/overview">
-          <Letter>Overview</Letter>
-          </Link>  
-          <Link to="/files">
-          <Letter>Files</Letter>
+          <Link to={`/myProject/${teamName}/${projectId}/overview`}> 
+            <Letter>Overview</Letter>
           </Link>
-          <Link to="/members">
+          <Link to={`/myProject/${teamName}/${projectId}/files`}>
+            <Letter>Files</Letter>
+          </Link>
+          <Link to={`/myProject/${teamName}/${projectId}/members`}>
           <SelectedPage><Letter>Members</Letter></SelectedPage>
           </Link>
         </NavBar>

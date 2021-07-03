@@ -2,7 +2,24 @@ import React from 'react'
 import styled from "styled-components";
 import Modal from "react-modal";
 import { Link, useParams } from "react-router-dom";
+import { gql, useQuery } from '@apollo/client';
 
+const SEE_TEAM_QUERY = gql`
+  query seeTeam($teamName: String!) {
+    seeTeam(teamName: $teamName) {
+      id
+      teamName
+      project {
+        id
+        projectName
+        projectStatus
+        projectType
+        description
+        securityLevel
+  		}
+    }
+  }
+`;
 
 
 const Container = styled.main`
@@ -75,6 +92,7 @@ const InputSearch = styled.input`
   font-size: 13px;
   height: 20px;
 `;
+
 
 const SixBtn = styled.div`
 display: flex;
@@ -194,11 +212,11 @@ const ListHeader = styled.h3`
 
 
 function FilesMainContents() {
-  // const {teamName} = useParams();
-  //   const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
-  //   variables: { teamName: teamName },
-  //   }
-  // ); 
+  const {teamName,projectId} = useParams();
+  const { data: teamData} = useQuery(SEE_TEAM_QUERY, {
+    variables: { teamName: teamName },
+    }
+  ); 
 
   return (
     <Container>
@@ -211,19 +229,20 @@ function FilesMainContents() {
       </MainTitle> 
       <RightSection>
         <NavBar>
-          <Link to="/overview">
-          <Letter>Overview</Letter>
-          </Link>  
-          <Link to="/files">
-          <SelectedPage><Letter>Files</Letter></SelectedPage>
+          <Link to={`/myProject/${teamName}/${projectId}/overview`}> 
+            <Letter>Overview</Letter>
           </Link>
-          <Link to="/members">
-            <Letter>Members</Letter>
+          <Link to={`/myProject/${teamName}/${projectId}/files`}>
+            <SelectedPage><Letter>Files</Letter></SelectedPage>
+          </Link>
+          <Link to={`/myProject/${teamName}/${projectId}/members`}>
+          <Letter>Members</Letter>
           </Link>
         </NavBar>
         <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
       </RightSection>
     </MainHeader>
+
     <SixBtn>
       <FourBtn>  
         <UploadBtn>Upload</UploadBtn>
