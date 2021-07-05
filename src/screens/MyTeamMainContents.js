@@ -1,16 +1,10 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import hamburgerMenu from "../asset/HamburgerMenu.PNG";
-import avatar from "../asset/avatarTT.PNG";
-import questionMark from "../asset/questionMark.PNG";
-import logout from "../asset/logout.PNG";
-import teamImg from "../asset/teamImg.PNG";
 import Modal from "react-modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../components/auth/Input";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -72,9 +66,6 @@ const CreateBtn = styled.button`
   cursor: pointer;
 `;
 
-// const TeamImg = styled.img`
-
-// `;
 
 const ModalHeader = styled.h4`
   margin: 0;
@@ -111,11 +102,12 @@ const ModalBtn = styled.div`
 
 const InputSearch = styled.input`
   margin-top: 25px;
-  border: 1px solid lightgray;
+  border: 1px solid gray;
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 13px;
   height: 20px;
+  width: 200px;
 `;
 
 const CancelTeam = styled.button`
@@ -174,18 +166,22 @@ const TeamBody = styled.div`
   grid-template-columns: repeat(4,1fr);
   grid-gap: 50px;
   justify-items: stretch;
+  margin-top: 30px;
 `;
 
 const TeamList = styled.div`
   height: 100%;
   width:100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
 `;
 
 const ListEachTeam = styled.li`
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 15px;
   border: 1px solid lightgray;
-  margin: 20px auto;
   padding: 15px;
   box-shadow: 0px 3px 6px gray;
   border-radius: 10px;
@@ -254,6 +250,7 @@ function MyTeamMainContents() {
 
   const onSaveInvalid = (data) => {};
   console.log("팀네임", data?.seeAllMyTeam?.teamName);
+  
   return (
     <Container>
       <MainTitle>MY TEAM</MainTitle>

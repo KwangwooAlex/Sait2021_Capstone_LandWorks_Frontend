@@ -1,20 +1,10 @@
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
-import hamburgerMenu from "../asset/HamburgerMenu.PNG";
-import avatar from "../asset/avatarTT.PNG";
-import questionMark from "../asset/questionMark.PNG";
-import logout from "../asset/logout.PNG";
 import Input from "../components/auth/Input";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import routes from "../routes";
-import { fauser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-// import MyProfileEdit from "./MyProfileEdit";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Modal from "react-modal";
-import useUser from "../components/hooks/useUser";
 import {
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
@@ -23,24 +13,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 
-
-// const SEE_PROFILE_QUERY = gql`
-//   query seeProfile($username: String!) {
-//     seeProfile(username: $username) {
-//       id
-//       username
-//       email
-//       companyName
-//       phoneNumber
-//       avatar
-//       birth
-//       country
-//       state
-//       city
-//       Street
-//     }
-//   }
-// `;
 
 const EDIT_PROFILE_MUTATION = gql`
   mutation editProfile(
@@ -102,22 +74,25 @@ const MainTitle = styled.div`
 
 const EditBtn = styled.button`
   border-radius: 10px;
-  background: white;
+  background: #004070;
   border: 1px solid;
-  color: #707070;
+  color: white;
   float: right;
   width: 80px;
   height: 30px;
   font-size: 15px;
   box-shadow: 0px 2px 4px gray;
   cursor: pointer;
+  margin-top: 25px;
 `;
 
 const InfoSection = styled.div`
   display: flex;
-  margin: 10% 25%;
+  /* margin: 10% 25%; */
   justify-content: center;
   align-items: center;
+  margin-top: 7%;
+  margin-left: 20%;
 `;
 
 const InputContainer = styled.div`
@@ -144,9 +119,58 @@ const InfoSubTitle = styled.h5`
   margin-top: 25px;
 `;
 
-const PhotoInfo = styled.div``;
-              
-const PhotoBtn = styled.div``; 
+const ProfileImgEdit = styled.button``;
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "500px",
+    height: "300px",
+  },
+};
+
+const PhotoInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const UploadSection = styled.div`
+
+`;
+
+const ImgTitle = styled.h1`
+  font-family:Source Han Sans KR;
+  margin-top: 70px;
+  text-align: left;
+  font-weight: bold;
+  margin-left: 20px;
+  font-size: 20px;
+`;
+
+const ImgInput = styled.input`
+  align-items: center;
+  display: none; 
+`;
+
+const UploadInput = styled.div`
+  margin-top: 20px;
+  margin-left: 30px;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: #004070;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 15px;
+`;
+
+const UploadLabel = styled.label`
+  margin-left: 10px;
+`;
 
 const ProfileImg = styled.div`
   flex: 0.3;
@@ -154,9 +178,13 @@ const ProfileImg = styled.div`
   margin-left: 40px;
 `;
 
-const ShowImg = styled.div``;
+const ShowImg = styled.div`
+  margin-top: 50px;
+`;
 
-const ProfileImgEdit = styled.button``;
+const PhotoBtn = styled.div`
+  margin-top: 40px;
+`; 
 
 const CancelEditImg = styled.button`
   background: white;
@@ -186,48 +214,6 @@ const SaveEditImg = styled.button`
   font-weight: bold;
   `;
 
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    width: "500px",
-    height: "300px",
-  },
-};
-
-const ImgTitle = styled.h1`
-  font-family:Source Han Sans KR;
-  margin-top: 50px;
-  text-align: left;
-  font-weight: bold;
-  margin-left: 20px;
-  font-size: 20px;
-`;
-
-const ImgInput = styled.input`
-  align-items: center;
-  display: none; 
-`;
-
-const UploadLabel = styled.label`
-  margin-top: 20px;
-  margin-left: 30px;
-  display: inline-block;
-  padding: 6px 12px;
-  cursor: pointer;
-  color: #004070;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 15px;
-`;
-
-const TestBtn = styled.button`
-
-`;
-
 
 function MyProfileMainContents() {
 
@@ -251,7 +237,11 @@ function MyProfileMainContents() {
     setValue("email", userData?.me?.email);
     setValue("phoneNumber", userData?.me?.phoneNumber);
     setValue("password", userData?.me?.password);
-
+    setValue("birth", userData?.me?.birth);
+    setValue("country", userData?.me?.country);
+    setValue("state", userData?.me?.state);
+    setValue("city", userData?.me?.city);
+    setValue("street", userData?.me?.street);
   },[userData, setValue]);
 
   const handleChange = (e) => {
@@ -269,6 +259,21 @@ function MyProfileMainContents() {
     }
     if(e.target.name === "password"){
       setValue("password", e.target.value);
+    }
+    if(e.target.name === "birth"){
+      setValue("birth", e.target.value);
+    }
+    if(e.target.name === "country"){
+      setValue("country", e.target.value);
+    }
+    if(e.target.name === "state"){
+      setValue("state", e.target.value);
+    }
+    if(e.target.name === "city"){
+      setValue("city", e.target.value);
+    }
+    if(e.target.name === "street"){
+      setValue("street", e.target.value);
     }
   };
 
@@ -329,10 +334,10 @@ function MyProfileMainContents() {
       <MainTitle>
         MY PROFILE
         {/* <EditBtn type="submit" onClick={handleEditClick}> */}
+      </MainTitle>
         <EditBtn type="submit">
           {activeEditBtn}
         </EditBtn>
-      </MainTitle>
 
         <InfoSection>
           <InputContainer>
@@ -406,61 +411,59 @@ function MyProfileMainContents() {
                     
                 </>
               )}
-            </AccountInfo>
-            
-            
+            </AccountInfo>       
 
             <PersonalInfo>
               <InfoTitle>Personal Information</InfoTitle>
               <InfoSubTitle>Date of Birth</InfoSubTitle>
               <Input
-                // ref={register}
-                // value={watch("birth")}                               
+                ref={register}
+                value={watch("birth")}                               
                 type="text"
                 name="birth"
                 placeholder={userData?.me?.birth}
                 disabled={disabled}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
               <InfoSubTitle>Country/Region</InfoSubTitle>
               <Input
-                // ref={register}
-                // value={watch("country")}  
+                ref={register}
+                value={watch("country")}  
                 type="text"
                 name="country"
                 placeholder={userData?.me?.country}
                 disabled={disabled}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
               <InfoSubTitle>State</InfoSubTitle>
               <Input
-                // ref={register}
-                // value={watch("state")} 
+                ref={register}
+                value={watch("state")} 
                 type="text"
                 name="state"
                 placeholder={userData?.me?.state}
                 disabled={disabled}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
               <InfoSubTitle>City</InfoSubTitle>
               <Input
-                // ref={register}
-                // value={watch("city")} 
+                ref={register}
+                value={watch("city")} 
                 type="text"
                 name="city"
                 placeholder={userData?.me?.city}
                 disabled={disabled}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
               <InfoSubTitle>Street</InfoSubTitle>
               <Input
-                // ref={register}
-                // value={watch("Street")}
+                ref={register}
+                value={watch("Street")}
                 type="text"
                 name="Street"
                 placeholder={userData?.me?.Street}
                 disabled={disabled}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
             </PersonalInfo>
           </InputContainer>
@@ -473,18 +476,19 @@ function MyProfileMainContents() {
             <Modal isOpen={isModalOpen} style={customStyles}>
             
               <PhotoInfo>
+              <UploadSection>
                 <ImgTitle>Change your profile picture</ImgTitle>
 
-                <UploadLabel>
-                  <ImgInput type="file" /> 
-                  <FontAwesomeIcon icon={faUpload} size="2x" />  
-                  Upload Picture
-                </UploadLabel>
-              
-                <ShowImg>
-                  <FontAwesomeIcon icon={faUserCircle} size="5x" />
-                </ShowImg> 
                 
+                  <UploadInput>
+                    <ImgInput type="file" /> 
+                    <FontAwesomeIcon className="uploadIcon" icon={faUpload} size="2x" />  
+                    <UploadLabel>Upload Picture</UploadLabel>
+                  </UploadInput>
+                </UploadSection>
+                  <ShowImg>
+                    <FontAwesomeIcon icon={faUserCircle} size="9x" />
+                  </ShowImg>                 
               </PhotoInfo>
 
               <PhotoBtn>                      

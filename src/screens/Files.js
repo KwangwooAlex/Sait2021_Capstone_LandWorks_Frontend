@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import DashBoardHeader from "../components/DashBoardHeader";
 import DashBoardLeftMenu from "../components/DashBoardLeftMenu";
-// import ProjectHeader from "../components/ProjectHeader";
 import FilesMainContents from "./FilesMainContents";
 
 const DashBoardContainer = styled.div`
@@ -23,7 +22,6 @@ function Files() {
       <DashBoardHeader />
       <DashBoardMainBox>
         <DashBoardLeftMenu />
-        {/* <ProjectHeader></ProjectHeader> */}
         <FilesMainContents></FilesMainContents>
       </DashBoardMainBox>
     </DashBoardContainer>

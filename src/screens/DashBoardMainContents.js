@@ -1,15 +1,10 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
-import hamburgerMenu from "../asset/HamburgerMenu.PNG";
-import avatar from "../asset/avatarTT.PNG";
-import questionMark from "../asset/questionMark.PNG";
-import logout from "../asset/logout.PNG";
 
 const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
   /* background-color: black; */
-  width: 90%;
+  width: 85%;
 `;
 
 const MainTitle = styled.div`
@@ -56,34 +51,39 @@ const FirstBox20 = styled.div`
   width: 400px;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 5px 10px gray;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
 `;
 
 const SecondBox20 = styled.div`
   width: 300px;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 5px 10px gray;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
 `;
 const SecondBox30 = styled.div`
   width: 650px;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 5px 10px gray;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
 `;
 
 const ThirdBox40 = styled.div`
   width: 550px;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 5px 10px gray;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
 `;
 
 const ThirdBox60 = styled.div`
   width: 1070px;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 5px 10px gray;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
 `;
 
 function DashBoardMainContents() {

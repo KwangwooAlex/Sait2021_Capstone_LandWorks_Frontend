@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from "styled-components";
-import Modal from "react-modal";
 import { Link, useParams } from "react-router-dom";
 import { gql, useQuery } from '@apollo/client';
 
@@ -25,7 +24,7 @@ const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
   /* background-color: black; */
-  width: 90%;
+  width: 85%;
 `;
 
 
@@ -67,29 +66,25 @@ const Letter = styled.div`
   padding: 5px;
   width: 100px;
   cursor: pointer;
-  border-bottom: 1px solid #FFB41E;
+  border-bottom: 2px solid #FFB41E;
   margin-right: 10px;
   &:hover {
     color: #004070;
-    background-color: #FFB41E;
+    background-color: #FFEBC4;
     /*border-top: black 2px solid;*/
+  }
+  &.selected {
+    background-color: #FFB41E;
   }
 `;
 
-const SelectedPage = styled.div`
-  background-color: #FFB41E;
-`;
-
-
-const MainContents = styled.div`
-`;
-
 const InputSearch = styled.input`
-  border: 1px solid lightgray;
+  border: 1px solid gray;
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 13px;
   height: 20px;
+  width: 200px;
 `;
 
 const LineContainer = styled.div`
@@ -100,13 +95,6 @@ const LineContainer = styled.div`
   align-items: baseline;
 `;
 
-const FirstLine = styled.div`
-  width: 100%;
-  height: 80px;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 40px;
-`;
 const SecondLine = styled.div`
   margin-top: 40px;
   width: 100%;
@@ -126,34 +114,39 @@ const FirstBox20 = styled.div`
   width: 400px;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 5px 10px gray;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
 `;
 
 const SecondBox20 = styled.div`
   width: 300px;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 5px 10px gray;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
 `;
 const SecondBox30 = styled.div`
   width: 650px;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 5px 10px gray;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
 `;
 
 const ThirdBox40 = styled.div`
   width: 550px;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 5px 10px gray;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
 `;
 
 const ThirdBox60 = styled.div`
   width: 1070px;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 5px 10px gray;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
 `;
 
 // const file = [{id:"", projectName:""},{}]
@@ -171,7 +164,9 @@ function OverviewMainContents() {
 return (
     <Container>
     <TeamName>  
-    {/* {teamData?.seeTeam?.teamName} */}
+      <Link to={`/myProject/${teamName}`}> 
+        {teamName} 
+      </Link>
     </TeamName>
     <MainHeader>
       <MainTitle>
@@ -180,7 +175,7 @@ return (
       <RightSection>
         <NavBar>
           <Link to={`/myProject/${teamName}/${projectId}/overview`}> 
-            <SelectedPage><Letter>Overview</Letter></SelectedPage>
+            <Letter className="selected">Overview</Letter>
           </Link>
           <Link to={`/myProject/${teamName}/${projectId}/files`}>
             <Letter>Files</Letter>
@@ -194,12 +189,6 @@ return (
     </MainHeader>
 
     <LineContainer>
-        <FirstLine>
-          <FirstBox20></FirstBox20>
-          <FirstBox20></FirstBox20>
-          <FirstBox20></FirstBox20>
-          <FirstBox20></FirstBox20>
-        </FirstLine>
         <SecondLine>
           <SecondBox20></SecondBox20>
           <SecondBox30></SecondBox30>

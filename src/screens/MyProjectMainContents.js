@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import styled from "styled-components";
 import Modal from "react-modal";
 import { Link, useParams } from "react-router-dom";
-// import Input from "../components/auth/Input";
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
-import useUser from "../components/hooks/useUser";
 import FormError from "../components/auth/FormError";
+
+import { useTable } from "react-table";
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -25,21 +25,6 @@ const SEE_TEAM_QUERY = gql`
         description
         securityLevel
   		}
-    }
-  }
-`;
-
-const SEE_PROJECT_QUERY = gql`
-  query seeProject($projectId: Int!) {
-    seeProject(projectId: $projectId) {
-      id
-      projectName
-      projectStatus
-      projectType
-      description
-      securityLevel
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -105,30 +90,6 @@ const RightSection = styled.div`
   display: flex;
 `;
 
-const NavBar = styled.div`
-  display: flex;
-  margin-right: 40px;
-  text-align: center;
-`;
-
-const Letter = styled.div`
-  padding: 5px;
-  width: 100px;
-  cursor: pointer;
-  border-bottom: 1px solid #FFB41E;
-  margin-right: 10px;
-  &:hover {
-    color: #004070;
-    background-color: #FFB41E;
-    /*border-top: black 2px solid;*/
-  }
-`;
-
-const SelectedPage = styled.div`
-  background-color: #FFB41E;
-`;
-
-
 const MainContents = styled.div`
 `;
 
@@ -159,11 +120,12 @@ const DeleteBtn = styled.button`
 `;
 
 const InputSearch = styled.input`
-  border: 1px solid lightgray;
+  border: 1px solid gray;
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 13px;
   height: 20px;
+  width: 200px;
 `;
 
 const customStyles = {
@@ -211,7 +173,7 @@ const ProjectLabel = styled.label`
   display: flex;
   /* flex-direction: column; */
   margin-bottom: 15px;
-  width: 100%
+  width: 100%;
 `;
 
 const InputText =styled.input`
@@ -297,64 +259,64 @@ const CancelBtn = styled.button`
 
 const InputResult = styled.div``;
 
-const ListBox = styled.div`
+/* const = styled.div``; */
+
+const TableContainer = styled.table`
   margin-top: 40px;
   border: 1px solid white;    
   box-shadow: 0px 3px 6px gray;
   height: 600px;
   width: 100%;
   padding:0;
+  border-collapse: collapse;
 `;
-
-const ListTop= styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
+const Thead = styled.thead`
   background-color: lightgray;
 `;
-
-const ListHeader = styled.h3`
-  margin: 5px 15px;
+const Tbody = styled.thead`
+  
 `;
-
-const ProjectBody = styled.div`
-
-`;
-
-const ListSection = styled.div`
+const Tr = styled.tr`
   display: flex;
-  margin: 5px 20px;
-
+  border-bottom: 1px solid gray;
 `;
-
-const ListEachProject = styled.li`
-  display: flex;
+const Th = styled.th`
+  font-weight: 600;
+  padding: 10px;
+  margin: 0 10px;
+  width: 100%;
+  text-align: left;
+  &.check { width: 10px; }
+  &.num { width: 40px; }
+  &.pEdit { width: 50px; }
+`;
+const Td = styled.td`
   cursor: pointer;
+  padding: 10px;
+  margin: 10px;
+  width: 100%;
+  &.check { width: 10px; }
+  &.num { width: 40px; }
+  &.pEdit { width: 50px; }
 `;
-
-
-/* const = styled.div``; */
-
+const CheckInput = styled.input``;
 
 function MyProjectMainContents() {
 
   const [submitData, setSubmitData] = useState({});
   const {teamName} = useParams();
-console.log("projects");
-console.log("submitData",submitData);
+  console.log("projects");
+  console.log("submitData",submitData);
+
   const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
     }
   ); 
   console.log("teamData", teamData?.seeTeam?.project);
 
-  const { data } = useQuery(SEE_PROJECT_QUERY); 
-  // console.log("projectData", data);
-
   const {handleSubmit, setValue, watch, register, errors} = useForm({
     mode: "onChange",
   });
-
 
   const handleChange = (e) => {
     if(e.target.name === "projectName"){
@@ -449,6 +411,7 @@ console.log("submitData",submitData);
   const handleSecurity = (e)=>{
     setSecurity(e.value);
   }
+
 
   return (
   <Container>
@@ -626,33 +589,41 @@ console.log("submitData",submitData);
       </RightBtn>
     </AllBtn>
 
-    <ListBox>
-      <ListTop>
-        <ListHeader>O</ListHeader>
-        <ListHeader>No.</ListHeader>
-        <ListHeader>Type</ListHeader>
-        <ListHeader>Name</ListHeader>
-        <ListHeader>Status</ListHeader>
-        <ListHeader>Description</ListHeader>
-        <ListHeader>Security</ListHeader>
-        <ListHeader>End Date</ListHeader>
-        <ListHeader>Edit icon</ListHeader>
-      </ListTop>
+      <TableContainer className="sortable">
+        <Thead>
+            <Tr>
+              {/* <Th>No.</Th>
+              <Th>Type</Th> */}
+              <Th className="check"><CheckInput type="checkbox"></CheckInput></Th>
+              <Th className="num">No.</Th>
+              <Th className="pName">Name</Th>
+              {/* <Th>Type</Th> */}
+              <Th className="pDesc">Description</Th>
+              <Th className="pStatus">Status</Th>
+              <Th className="pSecurity">Security</Th>
+              <Th className="pEdit">Edit</Th>
+              <Th className="pEdit">Delete</Th>
 
-      <ProjectBody>
-        {teamData?.seeTeam?.project?.map((projects) => (
-            <Link to={`/myProject/${teamName}/${projects?.id}`}>
-          <ListEachProject key={projects.id}>
-              <ListSection>{projects.projectName}</ListSection>
-              <ListSection>{projects.projectType}</ListSection>
-              <ListSection>{projects.description}</ListSection>
-              <ListSection>{projects.projectStatus}</ListSection>
-              <ListSection>{projects.securityLevel}</ListSection>
-          </ListEachProject>
-            </Link>
-        ))}
-      </ProjectBody>
-    </ListBox>
+            </Tr>
+        </Thead>
+        <Tbody>
+            {teamData?.seeTeam?.project?.map((projects) => (
+              <Link to={`/myProject/${teamName}/${projects?.id}`}>
+              <Tr key={projects.id}>
+                <Td className="check">O</Td>
+                <Td className="num">0001</Td>
+                <Td className="pName">{projects.projectName}</Td>
+                {/* <Td>{projects.projectType}</Td> */}
+                <Td className="pDesc">{projects.description}</Td>
+                <Td className="pStatus">{projects.projectStatus}</Td>
+                <Td className="pSecurity">{projects.securityLevel}</Td>
+                <Td className="pEdit">Edit</Td>
+                <Td className="pEdit">Delete</Td>
+              </Tr>
+              </Link>
+            ))}
+        </Tbody>
+      </TableContainer>
     </MainContents> 
   </Container>
   )

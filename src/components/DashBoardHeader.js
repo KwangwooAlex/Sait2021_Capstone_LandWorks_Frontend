@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import hamburgerMenu from "../asset/HamburgerMenu.PNG";
 import avatar from "../asset/avatarTT.PNG";
 import questionMark from "../asset/questionMark.PNG";
 import logout from "../asset/logout.PNG";
@@ -24,12 +23,6 @@ const MiddleTitle = styled.div`
   color: white;
   font-size: 15px;
   font-weight: 500;
-`;
-
-const HamburgerMenu = styled.img`
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
 `;
 
 const Avatar = styled.img`

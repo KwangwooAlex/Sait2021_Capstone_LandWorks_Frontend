@@ -6,7 +6,6 @@ import { GlobalStyles } from "./styles";
 import SignUp from "./screens/SignUp";
 import routes from "./routes";
 import { HelmetProvider } from "react-helmet-async";
-import { useState } from "react";
 import Layout from "./components/Layout";
 import DashBoard from "./screens/DashBoard";
 import MyTeam from "./screens/MyTeam";
@@ -15,6 +14,9 @@ import MyProject from "./screens/MyProject";
 import Files from "./screens/Files";
 import Overview from "./screens/Overview";
 import Members from "./screens/Members";
+import AllProject from "./screens/AllProject";
+
+
 
 function App() {
   const isLoggedInProject = useReactiveVar(isLoggedInProjectVar);
@@ -91,6 +93,16 @@ function App() {
               {isLoggedInProject ? (
                 <Layout>
                   <MyProject />
+                </Layout>
+              ) : (
+                <Login />
+              )}
+            </Route>
+
+            <Route path={routes.allProject} exact>
+              {isLoggedInProject ? (
+                <Layout>
+                  <AllProject />
                 </Layout>
               ) : (
                 <Login />

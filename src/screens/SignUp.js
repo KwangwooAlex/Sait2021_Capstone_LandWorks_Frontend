@@ -1,19 +1,11 @@
-import {
-  faFacebookSquare,
-  faInstagram,
-} from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import routes from "../routes";
 import { useForm } from "react-hook-form";
 import FormError from "../components/auth/FormError";
 import { gql, useMutation } from "@apollo/client";
-import { logUserIn } from "../apollo";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
 import AuthLayout from "../components/auth/AuthLayout";
-import FormBox from "../components/auth/FormBox";
-import Button from "../components/auth/Button";
 import Input from "../components/auth/Input";
 import LogOutHeader from "../components/LogOutHeader";
 import FormSignUpBox from "../components/auth/FormSignUpBox";

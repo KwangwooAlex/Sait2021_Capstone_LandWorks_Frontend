@@ -1,8 +1,4 @@
 import styled from "styled-components";
-import { useReactiveVar } from "@apollo/client";
-import { faMoon, faSun } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { darkModeVar, disableDarkMode, enableDarkMode } from "../../apollo";
 
 const Container = styled.div`
   width: 100%;

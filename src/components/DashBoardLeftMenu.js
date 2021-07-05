@@ -1,30 +1,12 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import hamburgerMenu from "../asset/HamburgerMenu.PNG";
-import avatar from "../asset/avatarTT.PNG";
-import questionMark from "../asset/questionMark.PNG";
-import logout from "../asset/logout.PNG";
 import {
-  faInstagram,
-  faServicestack,
-  faTeamspeak,
-} from "@fortawesome/free-brands-svg-icons";
-import {
-  faCompass,
-  faHeart,
   faNewspaper,
-  faPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faBoxes,
-  faHands,
-  faHome,
   faPeopleCarry,
-  faPlane,
   faProjectDiagram,
-  faSearch,
-  faServer,
-  faTasks,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -48,7 +30,7 @@ const Letter = styled.div`
 
 const DashBoardSection = styled.div`
   padding-left: 20px;
-  color: #a09d9d;
+  color: #CDCDCD;
   font-size: 18px;
   align-items: center;
   display: flex;
@@ -67,7 +49,7 @@ const MyTeam = styled.div`
   cursor: pointer;
   align-items: center;
   display: flex;
-  color: #a09d9d;
+  color: #CDCDCD;
   font-size: 18px;
   margin-top: 25px;
   font-weight: 600;
@@ -83,13 +65,13 @@ const MyProfile = styled.div`
   cursor: pointer;
   align-items: center;
   display: flex;
-  color: #a09d9d;
+  color: #CDCDCD;
   font-size: 18px;
   margin-top: 25px;
   font-weight: 600;
   &:hover {
     color: white;
-    background-color: #fdfdfd7f;
+    background-color: #fcfcfd7f;
   }
 `;
 
@@ -128,6 +110,14 @@ function DashBoardLeftMenu() {
             <FontAwesomeIcon icon={faPeopleCarry} size="lg" />
           </ICON>
           <Letter>MY Team</Letter>
+        </MyTeam>
+      </Link>
+      <Link to="/allProject">
+        <MyTeam>
+          <ICON>
+            <FontAwesomeIcon icon={faProjectDiagram} size="lg" />
+          </ICON>
+          <Letter>MY Project</Letter>
         </MyTeam>
       </Link>
 

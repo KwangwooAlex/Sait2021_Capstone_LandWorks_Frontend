@@ -7,5 +7,6 @@ const routes = {
   overview: "/overview",
   files: "/files",
   members: "/members",
+  allProject: "/allProject",
 };
 export default routes;
