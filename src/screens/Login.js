@@ -45,7 +45,7 @@ const ForgotUserName = styled.div`
   font-size: 15px;
   font-weight: 400;
   cursor: pointer;
-  color: #004070;
+  color: white;
   &:hover {
     text-decoration: underline;
     font-weight: 500;
@@ -58,7 +58,7 @@ const ForgetPassWord = styled.div`
   width: 200px;
   font-size: 15px;
   font-weight: 400;
-  color: #004070;
+  color: white;
   cursor: pointer;
 
   margin-bottom: 8px;
@@ -69,6 +69,7 @@ const ForgetPassWord = styled.div`
 `;
 
 const SignUp = styled.div`
+ 
   width: 100px;
   height: 35px;
   background-color: white;

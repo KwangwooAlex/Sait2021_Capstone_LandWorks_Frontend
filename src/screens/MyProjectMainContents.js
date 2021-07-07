@@ -9,8 +9,9 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import FormError from "../components/auth/FormError";
-
-import { useTable } from "react-table";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -91,6 +92,28 @@ const RightSection = styled.div`
 `;
 
 const MainContents = styled.div`
+`;
+
+const NavBar = styled.div`
+  display: flex;
+  margin-right: 40px;
+  text-align: center;
+`;
+
+const Letter = styled.div`
+  padding: 5px;
+  width: 100px;
+  cursor: pointer;
+  border-bottom: 2px solid #FFB41E;
+  margin-right: 10px;
+  &:hover {
+    color: #004070;
+    background-color: #FFEBC4;
+    /*border-top: black 2px solid;*/
+  }
+  &.selected {
+    background-color: #FFB41E;
+  }
 `;
 
 const NewProjectBtn = styled.button`
@@ -279,7 +302,10 @@ const Tbody = styled.thead`
 const Tr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
+  justify-content: center;
+  align-items: center;
 `;
+
 const Th = styled.th`
   font-weight: 600;
   padding: 10px;
@@ -297,14 +323,57 @@ const Td = styled.td`
   width: 100%;
   &.check { width: 10px; }
   &.num { width: 40px; }
-  &.pEdit { width: 50px; }
+  &.pName {margin-left: 20px;}
+  &.pEdit { width: 50px;}
 `;
-const CheckInput = styled.input``;
+
+const CheckLabel = styled.label``;
+const CheckInput = styled.input`
+  border: 1px solid gray;
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
+`;
+// padding: 5px 10px;
+//   border-radius: 5px;
+//   font-size: 13px;
+//   height: 20px;
+//   width: 200px;
+
+const EditPBtn = styled.button`
+  border: none;
+  outline: none;
+  background-color: white;
+  cursor:pointer;
+`;
+const DeletePBtn = styled.button`
+  border: none;
+  outline: none;
+  background-color: white;
+  cursor:pointer;
+`;
+
+const EditpName = styled.input`
+  border: 1px solid gray;
+  width: 100%;
+`;
+const EditpDesc = styled.input`
+  border: 1px solid gray;
+  width: 100%;
+`;
+const EditpStatus = styled.input`
+  border: 1px solid gray;
+  width: 100%;
+`;
+const EditpSecurity = styled.input`
+  border: 1px solid gray;
+  width: 100%;
+`;
 
 function MyProjectMainContents() {
 
   const [submitData, setSubmitData] = useState({});
-  const {teamName} = useParams();
+  const {teamName, projectId} = useParams();
   console.log("projects");
   console.log("submitData",submitData);
 
@@ -406,11 +475,62 @@ function MyProjectMainContents() {
 
   const handleStatus = (e)=>{
    setStatus(e.value);
-  }
+  };
 
   const handleSecurity = (e)=>{
     setSecurity(e.value);
-  }
+  };
+
+  const [isEdit, setIsEdit] = useState(false);
+
+  const handleEditList = (e) => {
+    setIsEdit(true);
+    if(isEdit) {
+      setIsEdit(false);
+    }
+  };
+
+  // const { handleEditSubmit } = useForm({
+  //   mode: "onChange",
+  // });
+
+  useEffect(( ) => {
+    setValue("projectName", teamData?.seeTeam?.project?.projectName);
+    setValue("description", teamData?.seeTeam?.project?.description);
+    setValue("projectStatus", teamData?.seeTeam?.project?.projectStatus);
+    setValue("projectSecurity", teamData?.seeTeam?.project?.projectSecurity);
+  },[teamData, setValue]);
+
+  const handleEditChange = (e) => {
+    if(e.target.name === "projectName"){
+      setValue("projectName", e.target.value);
+    }
+    if(e.target.name === "description"){
+      setValue("description", e.target.value);
+    }
+    if(e.target.name === "projectStatus"){
+      setValue("projectStatus", e.target.value);
+    }
+    if(e.target.name === "projectSecurity"){
+      setValue("projectSecurity", e.target.value);
+    }
+  };
+
+  // const onEditValid = (data) =>  {
+  //   handleEditList();    
+  //   console.log("editData", data);
+  //   if (loading) {
+  //     return;
+  //   }
+  //   createProject({
+  //     variables: { 
+  //       ...data,
+  //     },
+  //   });
+  //   refetch();
+  // };
+
+  // const onEditInvalid = (data) => {};
 
 
   return (
@@ -423,7 +543,14 @@ function MyProjectMainContents() {
         MY PROJECT
       </MainTitle> 
       <RightSection>
-
+        <NavBar>
+          <Link to={`/myProject/${teamName}`}>
+            <Letter className="selected">My Project</Letter>
+          </Link>
+          <Link to={`/members/${teamName}`}>
+            <Letter>Members</Letter>
+          </Link>
+        </NavBar>
         <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
       </RightSection>
     </MainHeader>
@@ -431,7 +558,7 @@ function MyProjectMainContents() {
     <MainContents>
     <AllBtn> 
       <LeftBtn> 
-        <NewProjectBtn onClick={handleOpenModal}>New Project</NewProjectBtn>     
+        <NewProjectBtn onClick={handleOpenModal}>New Project</NewProjectBtn>    
         <Modal isOpen={isModalOpen} style={customStyles}>
           <ModalHeader>NEW PROJECT</ModalHeader>
            <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
@@ -588,40 +715,96 @@ function MyProjectMainContents() {
           <DeleteBtn>Delete Project</DeleteBtn>
       </RightBtn>
     </AllBtn>
-
       <TableContainer className="sortable">
         <Thead>
             <Tr>
-              {/* <Th>No.</Th>
-              <Th>Type</Th> */}
-              <Th className="check"><CheckInput type="checkbox"></CheckInput></Th>
+              <Th className="check"><CheckInput type="checkbox" id="checkBox" name="checkBox" /></Th>
               <Th className="num">No.</Th>
               <Th className="pName">Name</Th>
-              {/* <Th>Type</Th> */}
               <Th className="pDesc">Description</Th>
               <Th className="pStatus">Status</Th>
               <Th className="pSecurity">Security</Th>
               <Th className="pEdit">Edit</Th>
               <Th className="pEdit">Delete</Th>
-
             </Tr>
         </Thead>
         <Tbody>
-            {teamData?.seeTeam?.project?.map((projects) => (
+          {/* <form onSubmit={handleEditSubmit(onEditValid, onEditInvalid)}> */}
+            {teamData?.seeTeam?.project?.map((projects, index) => (
               <Link to={`/myProject/${teamName}/${projects?.id}`}>
               <Tr key={projects.id}>
-                <Td className="check">O</Td>
-                <Td className="num">0001</Td>
-                <Td className="pName">{projects.projectName}</Td>
-                {/* <Td>{projects.projectType}</Td> */}
-                <Td className="pDesc">{projects.description}</Td>
-                <Td className="pStatus">{projects.projectStatus}</Td>
-                <Td className="pSecurity">{projects.securityLevel}</Td>
-                <Td className="pEdit">Edit</Td>
-                <Td className="pEdit">Delete</Td>
+                <Td className="check" onClick={ (event) => event.preventDefault() } >
+                  <CheckInput type="checkbox" id="checkBox" name="checkBox" />
+                </Td>
+                <Td className="num">{index+1}</Td>
+                <Td className="pName">
+                  {isEdit ? (
+                  <EditpName 
+                    ref={register}
+                    type="text" 
+                    name="projectName"
+                    placeholder={projects.projectName}
+                    value={watch("projectName")}
+                    onClick={ (event) => event.preventDefault() }
+                    onChange={handleEditChange}
+                  />
+                  ): <>{projects.projectName}</>}
+                </Td>
+                <Td className="pDesc">
+                  {isEdit ? (
+                  <EditpDesc 
+                    ref={register}
+                    type="text" 
+                    name="description"
+                    placeholder={projects.description}
+                    value={watch("description")}
+                    onClick={ (event) => event.preventDefault() }
+                    onChange={handleEditChange}
+                  />
+                  ): <>{projects.description}</>}
+                </Td>
+                <Td className="pStatus">
+                  {isEdit ? (
+                  <EditpStatus 
+                    ref={register}
+                    type="text" 
+                    name="projectStatus"
+                    placeholder={projects.projectStatus}
+                    value={watch("projectStatus")}
+                    onClick={ (event) => event.preventDefault() }
+                    onChange={handleEditChange}
+                  />
+                  ): <>{projects.projectStatus}</>}
+                </Td>
+                <Td className="pSecurity">
+                  {isEdit ? (
+                  <EditpSecurity 
+                    ref={register}
+                    type="text"
+                    name="securityLevel" 
+                    placeholder={projects.securityLevel}
+                    value={watch("securityLevel")}
+                    onClick={ (event) => event.preventDefault() }
+                    onChange={handleEditChange}
+                  />
+                  ): <>{projects.securityLevel}</>}
+                </Td>
+                <Td className="pEdit" onClick={ (event) => event.preventDefault() }>
+                  {isEdit ? (
+                    // <SaveAltIcon type="submit"/>
+                    <SaveAltIcon onClick={handleEditList}/>
+                  ): 
+                  <EditPBtn onClick={handleEditList}><EditIcon /></EditPBtn>
+                  } 
+                </Td>
+                <Td className="pEdit" onClick={ (event) => event.preventDefault() }>
+                  <DeletePBtn><DeleteIcon /></DeletePBtn>
+                </Td> 
               </Tr>
               </Link>
-            ))}
+              ))}
+              
+              {/* </form> */}
         </Tbody>
       </TableContainer>
     </MainContents> 

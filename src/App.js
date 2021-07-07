@@ -66,23 +66,23 @@ function App() {
               ) : (
                 <Login />
               )}
-            </Route>
-
-            <Route path={`/myProject/:teamName/:projectId/members`}>
-              {isLoggedInProject ? (
-                <Layout>
-                  <Members />
-                </Layout>
-              ) : (
-                <Login />
-              )}
-            </Route>
-       
+            </Route>       
 
             <Route path={`/myProject/:teamName/:projectId`}>
               {isLoggedInProject ? (
                 <Layout>
                   <Overview />
+                </Layout>
+              ) : (
+                <Login />
+              )}
+            </Route>
+
+            {/* <Route path={`/myProject/:teamName/:projectId/members`}> */}
+            <Route path={`/members/:teamName`}>
+              {isLoggedInProject ? (
+                <Layout>
+                  <Members />
                 </Layout>
               ) : (
                 <Login />

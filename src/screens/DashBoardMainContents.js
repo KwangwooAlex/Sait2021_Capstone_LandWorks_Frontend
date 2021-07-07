@@ -4,7 +4,7 @@ const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
   /* background-color: black; */
-  width: 85%;
+  width: 90%;
 `;
 
 const MainTitle = styled.div`

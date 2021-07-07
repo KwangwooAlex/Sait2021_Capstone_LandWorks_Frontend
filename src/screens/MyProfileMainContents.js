@@ -219,8 +219,6 @@ function MyProfileMainContents() {
 
   // const { data: userData, refetch:userDataRefetch } = useUser();
   const { data: userData, refetch } = useQuery(ME_QUERY);
-
-
   
   const [disabled, setDisabled] = useState(true);
   const [activeEditBtn, setActiveEditBtn] = useState("Edit");

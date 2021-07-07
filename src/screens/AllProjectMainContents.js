@@ -9,7 +9,8 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import FormError from "../components/auth/FormError";
-
+// import EditIcon from '@material-ui/icons/Edit';
+// import DeleteIcon from '@material-ui/icons/Delete';
 import { useTable } from "react-table";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
@@ -322,6 +323,7 @@ const Td = styled.td`
   width: 100%;
   &.check { width: 10px; }
   &.num { width: 40px; }
+  &.pName {margin-left: 20px;}
   &.pEdit { width: 50px; }
 `;
 const CheckInput = styled.input``;
@@ -354,16 +356,17 @@ function AllProjectMainContents() {
         <Thead>
             <Tr>
               {/* <Th>No.</Th>
-              <Th>Type</Th> */}
+              <Th>Type</Th>
               <Th className="check"><CheckInput type="checkbox"></CheckInput></Th>
-              <Th className="num">No.</Th>
+              <Th className="num">No.</Th> */}
               <Th className="pName">Name</Th>
               {/* <Th>Type</Th> */}
               <Th className="pDesc">Description</Th>
+              <Th className="pTeam">Team</Th>
               <Th className="pStatus">Status</Th>
               <Th className="pSecurity">Security</Th>
-              <Th className="pEdit">Edit</Th>
-              <Th className="pEdit">Delete</Th>
+              {/* <Th className="pEdit">Edit</Th>
+              <Th className="pEdit">Delete</Th> */}
 
             </Tr>
         </Thead>
@@ -371,17 +374,17 @@ function AllProjectMainContents() {
             {data?.seeAllMyTeam?.map((projects) => (
                 <>
                 {projects.project.map((allProject) => (
-              <Link to={`/myProject/${teamName}/${allProject?.id}`}>
+              <Link to={`/myProject/${projects?.teamName}/${allProject?.id}`}>
               <Tr key={projects.project.id}>
-                <Td className="check">O</Td>
-                <Td className="num">0001</Td>
+                {/* <Td className="check" onClick={ (event) => event.preventDefault() }>O</Td>
+                <Td className="num">{index+1}</Td> */}
                 <Td className="pName">{allProject.projectName}</Td>
-                {/* <Td>{projects.projectType}</Td> */}
                 <Td className="pDesc">{allProject.description}</Td>
+                <Td className="pDesc">{projects.teamName}</Td>
                 <Td className="pStatus">{allProject.projectStatus}</Td>
                 <Td className="pSecurity">{allProject.securityLevel}</Td>
-                <Td className="pEdit">Edit</Td>
-                <Td className="pEdit">Delete</Td>
+                {/* <Td className="pEdit"><EditIcon /></Td>
+                <Td className="pEdit"><DeleteIcon /></Td> */}
               </Tr>
               </Link>
             ))}

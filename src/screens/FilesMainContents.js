@@ -6,6 +6,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../components/auth/Input";
+import EditIcon from '@material-ui/icons/Edit';
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -331,6 +332,8 @@ const ModalCancelBtn = styled.button`
   const Tr = styled.tr`
     display: flex;
     border-bottom: 1px solid gray;
+    justify-content: center;
+  align-items: center;
   `;
   const Th = styled.th`
     /* background-color: lightblue; */
@@ -350,6 +353,7 @@ const ModalCancelBtn = styled.button`
     width: 100%;
     &.check { width: 10px; }
     &.num { width: 40px; }
+    &.fName {margin-left: 20px;}
     &.fEdit { width: 50px; }
   `;
   const CheckInput = styled.input``;
@@ -410,9 +414,9 @@ function FilesMainContents() {
           <Link to={`/myProject/${teamName}/${projectId}/files`}>
             <Letter className="selected">Files</Letter>
           </Link>
-          <Link to={`/myProject/${teamName}/${projectId}/members`}>
+          {/* <Link to={`/myProject/${teamName}/${projectId}/members`}>
           <Letter>Members</Letter>
-          </Link>
+          </Link> */}
         </NavBar>
         <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
       </RightSection>
@@ -463,15 +467,15 @@ function FilesMainContents() {
           </Tr>
         </Thead>
         <Tbody>
-          {teamData?.seeTeam?.project?.map((projects) => (
+          {teamData?.seeTeam?.project?.map((projects, index) => (
             <Link to={`/myProject/${teamName}/${projects?.id}`}>
-            <Tr key={projects.id}>
+            <Tr key={projects.id, index}>
               <Td className="check">O</Td>
-              <Td className="num">0001</Td>
+              <Td className="num">{index+1}</Td>
               <Td className="fName">{projects.projectName}</Td>
               <Td className="fUpdateBy">Update by</Td>
               <Td className="fLast">Last Update</Td>
-              <Td className="fEdit">Edit</Td>
+              <Td className="fEdit"><EditIcon /></Td>
             </Tr>
             </Link>
           ))}

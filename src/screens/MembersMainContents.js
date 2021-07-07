@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -347,6 +349,8 @@ const ListTbody = styled.thead`
 const ListTr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
+  justify-content: center;
+  align-items: center;
 `;
 const ListTh = styled.th`
   /* background-color: lightblue; */
@@ -374,6 +378,16 @@ const ListTd = styled.td`
 `;
 const CheckInput = styled.input``;
 
+const MeditBtn = styled.button`
+  background-color: white;
+  border: none;
+  cursor: pointer;
+`;
+const DeleteMBtn = styled.button`
+  background-color: white;
+  border: none;
+  cursor: pointer;
+`;
 
 
 function MembersMainContents() {
@@ -433,6 +447,7 @@ function MembersMainContents() {
 
   const onSaveInvalid = (data) => {};
 
+
   return (
     <Container>
     <TeamName>  
@@ -446,13 +461,16 @@ function MembersMainContents() {
       </MainTitle> 
       <RightSection>
         <NavBar>
-          <Link to={`/myProject/${teamName}/${projectId}/overview`}> 
+          {/* <Link to={`/myProject/${teamName}/${projectId}/overview`}> 
             <Letter>Overview</Letter>
           </Link>
           <Link to={`/myProject/${teamName}/${projectId}/files`}>
             <Letter>Files</Letter>
+          </Link> */}
+          <Link to={`/myProject/${teamName}`}>
+            <Letter >My Project</Letter>
           </Link>
-          <Link to={`/myProject/${teamName}/${projectId}/members`}>
+          <Link to={`/members/${teamName}`}>
           <Letter className="selected">Members</Letter>
           </Link>
         </NavBar>
@@ -555,7 +573,6 @@ function MembersMainContents() {
           </form>
         </ModalBody>
       </Modal>
-      <EditBtn>Edit</EditBtn>
     </TopBtn>
 
     <ListTableContainer className="sortable">
@@ -580,8 +597,8 @@ function MembersMainContents() {
               <ListTd className="lName">{member.username}</ListTd>
               <ListTd className="lRole">Project Manager</ListTd>
               <ListTd className="lMail">{member.email}</ListTd>
-              <ListTd className="lEdit">Edit</ListTd>
-              <ListTd className="lDelete">Delete</ListTd>
+              <ListTd className="lEdit"><MeditBtn><EditIcon /></MeditBtn></ListTd>
+              <ListTd className="lDelete"><DeleteMBtn ><DeleteIcon /></DeleteMBtn></ListTd>
             </ListTr>
           ))}
         </ListTbody>

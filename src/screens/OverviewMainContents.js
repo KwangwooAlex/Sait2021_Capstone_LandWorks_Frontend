@@ -24,7 +24,7 @@ const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
   /* background-color: black; */
-  width: 85%;
+  width: 90%;
 `;
 
 
@@ -180,9 +180,9 @@ return (
           <Link to={`/myProject/${teamName}/${projectId}/files`}>
             <Letter>Files</Letter>
           </Link>
-          <Link to={`/myProject/${teamName}/${projectId}/members`}>
+          {/* <Link to={`/myProject/${teamName}/${projectId}/members`}>
             <Letter>Members</Letter>
-          </Link>
+          </Link> */}
         </NavBar>
         <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
       </RightSection>
