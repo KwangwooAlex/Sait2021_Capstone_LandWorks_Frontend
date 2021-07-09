@@ -30,8 +30,8 @@ const Container = styled.main`
 
 const TeamName = styled.div`
   color: Black;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: 15px;
+  font-weight: 600;
+  font-size: 20px;
   width: 100%;
   height: 40px;
   border-bottom: black 2px solid;

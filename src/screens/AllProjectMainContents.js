@@ -342,7 +342,7 @@ function AllProjectMainContents() {
   <Container>
     <MainHeader>
       <MainTitle>
-        ALL MY PROJECT List
+        ALL MY PROJECT LIST
       </MainTitle> 
       <RightSection>
 
@@ -359,6 +359,7 @@ function AllProjectMainContents() {
               <Th>Type</Th>
               <Th className="check"><CheckInput type="checkbox"></CheckInput></Th>
               <Th className="num">No.</Th> */}
+              <Th className="num">No.</Th>
               <Th className="pName">Name</Th>
               {/* <Th>Type</Th> */}
               <Th className="pDesc">Description</Th>
@@ -373,11 +374,12 @@ function AllProjectMainContents() {
         <Tbody>
             {data?.seeAllMyTeam?.map((projects) => (
                 <>
-                {projects.project.map((allProject) => (
+                {projects.project.map((allProject, index) => (
               <Link to={`/myProject/${projects?.teamName}/${allProject?.id}`}>
               <Tr key={projects.project.id}>
                 {/* <Td className="check" onClick={ (event) => event.preventDefault() }>O</Td>
                 <Td className="num">{index+1}</Td> */}
+                <Td className="num">{index+1}</Td>
                 <Td className="pName">{allProject.projectName}</Td>
                 <Td className="pDesc">{allProject.description}</Td>
                 <Td className="pDesc">{projects.teamName}</Td>

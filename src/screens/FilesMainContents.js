@@ -44,8 +44,8 @@ const Container = styled.main`
 
 const TeamName = styled.div`
   color: Black;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: 15px;
+  font-weight: 600;
+  font-size: 20px;
   width: 100%;
   height: 40px;
   border-bottom: black 2px solid;
@@ -366,6 +366,7 @@ function FilesMainContents() {
   ); 
 
   console.log("teamData", teamData?.seeTeam?.project);
+  console.log("PName", teamData?.seeTeam?.project?.projectName);
 
   const { projectId } = useParams();
   const { data: projectData} = useQuery(SEE_PROJECT_QUERY, {
@@ -400,11 +401,12 @@ function FilesMainContents() {
       <Link to={`/myProject/${teamName}`}> 
         {teamName} 
       </Link>
-         - {projectId}
+         {/* - {projectId} */}
+         {teamData?.seeTeam?.project?.projectName}
     </TeamName>
     <MainHeader>
       <MainTitle>
-        Files
+        FILES
       </MainTitle> 
       <RightSection>
         <NavBar>

@@ -100,8 +100,8 @@ const Container = styled.main`
 
 const TeamName = styled.div`
   color: Black;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: 15px;
+  font-weight: 600;
+  font-size: 20px;
   width: 100%;
   height: 40px;
   border-bottom: black 2px solid;
@@ -199,7 +199,7 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "700px",
-    height: "500px",
+    height: "670px",
   },
 };
 
@@ -208,14 +208,17 @@ const ModalHeader = styled.h4`
   padding: 10px;
   background: #004070;
   color: white;
-  font-size: 13px;
+  font-size: 13px;  
+  width: 100%;
 `;
+
 
 const ModalBody = styled.div`
   margin: 20px 30px;
 `;
 
-const ModalInfo = styled.div``;
+const ModalInfo = styled.div`
+`;
 
 const SearchSection = styled.div``;
 const ResultSection = styled.div``;
@@ -298,7 +301,8 @@ const PlusBtn = styled.button``;
 const MinusBtn = styled.button``;
 
 const ModalBtn = styled.div`
-  margin: 20px auto;
+  padding-top: 20px;
+  padding-bottom: 25px;
 `;
 
 const CancelModalBtn = styled.button`

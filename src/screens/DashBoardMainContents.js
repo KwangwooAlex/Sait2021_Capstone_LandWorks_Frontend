@@ -32,6 +32,7 @@ const FirstLine = styled.div`
   justify-content: space-between;
   margin-top: 40px;
 `;
+
 const SecondLine = styled.div`
   margin-top: 40px;
   width: 100%;

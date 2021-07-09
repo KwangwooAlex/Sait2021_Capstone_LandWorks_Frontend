@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Container = styled.main`
   margin-right: auto;
-  height: 1500px;
+  height: 100%;
   background-color: #004070;
   min-width: 200px;
   display: flex;
@@ -109,7 +109,7 @@ function DashBoardLeftMenu() {
           <ICON>
             <FontAwesomeIcon icon={faPeopleCarry} size="lg" />
           </ICON>
-          <Letter>MY Team</Letter>
+          <Letter>MY TEAM</Letter>
         </MyTeam>
       </Link>
       <Link to="/allProject">
@@ -117,7 +117,7 @@ function DashBoardLeftMenu() {
           <ICON>
             <FontAwesomeIcon icon={faProjectDiagram} size="lg" />
           </ICON>
-          <Letter>All Project</Letter>
+          <Letter>All PROJECT</Letter>
         </MyTeam>
       </Link>
 

@@ -65,12 +65,13 @@ const Container = styled.main`
 
 const TeamName = styled.div`
   color: Black;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: 15px;
+  font-weight: 600;
+  font-size: 20px;
   width: 100%;
   height: 40px;
   border-bottom: black 2px solid;
   box-sizing: border-box;
+  
 `; 
 
 const MainHeader = styled.div`
@@ -161,7 +162,21 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "600px",
-    height: "500px",
+    height: "530px",
+  },
+};
+
+const summaryCustomStyles = {
+  content: {
+    padding: "0",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "600px",
+    height: "370px",
   },
 };
 
@@ -246,6 +261,8 @@ const DesLabel = styled.label`
 
 const Description = styled.textarea`
   padding: 10px;
+  width: 100%;
+  height: 100px;
 `;
 
 const ModalBtn = styled.div`
@@ -280,7 +297,24 @@ const CancelBtn = styled.button`
   font-weight: bold;
 `;
 
-const InputResult = styled.div``;
+const SummaryLabel = styled.label`
+  display: flex;
+  /* flex-direction: column; */
+  margin-bottom: 15px;
+  width: 100%;
+  &.dateLabel {
+    width: 80%;
+  }
+`;
+
+const InputResult = styled.div`
+ margin-left: 10px;
+ font-weight: 600;
+ width: 80%;
+ &.desResult {
+  margin-left: 0px;
+ }
+`;
 
 /* const = styled.div``; */
 
@@ -633,20 +667,8 @@ function MyProjectMainContents() {
                       </ProjectLabel>
                     </EndD>
                   </ProcessDate>
-                  <DesLabel>Description</DesLabel>
-                  <Description
-                    type="text"
-                    cols='70'
-                    rows='5'
-                    ref={register}
-                    // onChange={handleChange}
-                    value={watch("description")}
-                    name="description"
-                    placeholder="Let people know what this team is all about..."
-                    hasError={Boolean(errors?.description?.message)}
-                  />
 
-                  <ProjectLabel>Security Level: </ProjectLabel>
+                  <ProjectLabel>Security Level: 
                     <SelectStatus 
                       options = {optionSecurity}
                       name="securityLevel"
@@ -654,6 +676,20 @@ function MyProjectMainContents() {
                       value={watch("securityLevel")}   
                       onChange={handleSecurity}                   
                     />
+                    </ProjectLabel>
+
+                  <DesLabel>Description</DesLabel>
+                  <Description
+                    type="text"
+                    // cols='70'
+                    // rows='5'
+                    ref={register}
+                    // onChange={handleChange}
+                    value={watch("description")}
+                    name="description"
+                    placeholder="Let people know what this team is all about..."
+                    hasError={Boolean(errors?.description?.message)}
+                  />
                   
               </ModalInfo>
               <ModalBtn>         
@@ -664,42 +700,45 @@ function MyProjectMainContents() {
             </form>
         </Modal>    
 
-        <Modal isOpen={isSummaryOpen} style={customStyles}>
+        <Modal isOpen={isSummaryOpen} style={summaryCustomStyles}>
           <ModalHeader>NEW PROJECT</ModalHeader>
           
           <ModalBody> 
               <ModalInfo>
-              <ProjectLabel>Project name: 
+              <SummaryLabel>Project name: 
                     <InputResult>{submitData?.projectName}</InputResult>
-                  </ProjectLabel>
+                  </SummaryLabel>
 
-                  <ProjectLabel>Project Status: 
+                  <SummaryLabel>Project Status: 
                   <InputResult>{status}</InputResult>
-                  </ProjectLabel>
+                  </SummaryLabel>
 
-                  <ProjectLabel>Project Type: 
+                  <SummaryLabel>Project Type: 
                   <InputResult>{submitData?.projectType}</InputResult>
-                  </ProjectLabel>
+                  </SummaryLabel>
 
                   <ProcessDate>
                     <StartD>
-                      <ProjectLabel>Start Date: 
+                      <SummaryLabel className="dateLabel">Start Date: 
                       <InputResult>{submitData?.projectName}</InputResult>
-                      </ProjectLabel>
+                      </SummaryLabel>
                     </StartD>
                     <EndD>
-                      <ProjectLabel>End Date: 
+                      <SummaryLabel className="dateLabel">End Date: 
                       <InputResult>{submitData?.projectName}</InputResult>
-                      </ProjectLabel>
+                      </SummaryLabel>
                     </EndD>
                   </ProcessDate>
 
-                  <DesLabel>Description: </DesLabel>
-                  <InputResult>{submitData?.description}</InputResult>
-
-                  <ProjectLabel>Security Level: 
+                  <SummaryLabel>Security Level: 
                   <InputResult>{security}</InputResult>
-                  </ProjectLabel>
+                  </SummaryLabel>
+
+                  <DesLabel>Description: </DesLabel>
+                  <InputResult className="desResult">
+                    {submitData?.description}
+                  </InputResult>
+
 
               </ModalInfo>
             <ModalBtn>         
@@ -718,7 +757,10 @@ function MyProjectMainContents() {
       <TableContainer className="sortable">
         <Thead>
             <Tr>
-              <Th className="check"><CheckInput type="checkbox" id="checkBox" name="checkBox" /></Th>
+              <Th className="check">
+                {/* <CheckInput type="checkbox" id="checkBox" name="checkBox" /> */}
+                
+              </Th>
               <Th className="num">No.</Th>
               <Th className="pName">Name</Th>
               <Th className="pDesc">Description</Th>
@@ -734,7 +776,8 @@ function MyProjectMainContents() {
               <Link to={`/myProject/${teamName}/${projects?.id}`}>
               <Tr key={projects.id}>
                 <Td className="check" onClick={ (event) => event.preventDefault() } >
-                  <CheckInput type="checkbox" id="checkBox" name="checkBox" />
+                  {/* <CheckInput type="checkbox" id="checkBox" name="checkBox" /> */}
+                  O
                 </Td>
                 <Td className="num">{index+1}</Td>
                 <Td className="pName">

@@ -94,6 +94,8 @@ const DesLabel = styled.label`
 
 const Description = styled.textarea`
   padding: 10px;
+  width: 100%;
+  height: 100px;
 `;
 
 const ModalBtn = styled.div`
@@ -138,6 +140,7 @@ const SaveTeam = styled.button`
   font-weight: bold;
 `;
 
+// Modal Size
 const customStyles = {
   content: {
     padding: "0",
@@ -147,7 +150,7 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    width: "500px",
+    width: "550px",
     height: "380px",
   },
 };
@@ -176,11 +179,13 @@ const TeamList = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 20px;
+  font-weight: 600px;
 `;
 
 const ListEachTeam = styled.li`
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Impact 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 15px;
+  font-weight: 600;
   border: 1px solid lightgray;
   padding: 15px;
   box-shadow: 0px 3px 6px gray;
@@ -278,8 +283,8 @@ function MyTeamMainContents() {
               <DesLabel>Description</DesLabel>
               <Description
                 type="text"
-                cols="57"
-                rows="5"
+                // cols="57"
+                // rows="5"
                 name="teamDescription"
                 placeholder="Let people know what this team is all about..."
               />
