@@ -164,6 +164,7 @@ const TopBtn = styled.div`
 const AddBtn = styled.button`
   margin-left: 10px;
   margin-top: 25px;
+  margin-bottom: 22px;
   border-radius: 20px;
   background: #004070;
   border: 1px solid;
@@ -332,9 +333,15 @@ const AddModalBtn = styled.button`
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
 `;
+const TableDiv = styled.div`
+  overflow: auto;
+  height: 420px;
+  width: 100%;
+  border: 1px solid lightgray; 
+`;
 
 const ListTableContainer = styled.table`
-  margin-top: 40px;
+  /* margin-top: 40px; */
   border: 1px solid white;    
   box-shadow: 0px 3px 6px gray;
   height: 600px;
@@ -355,6 +362,7 @@ const ListTr = styled.tr`
   border-bottom: 1px solid gray;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 const ListTh = styled.th`
   /* background-color: lightblue; */
@@ -363,23 +371,30 @@ const ListTh = styled.th`
   width: 100%;
   text-align: left;
   font-weight: 600;
-  &.check { width: 10px; }
-  &.num { width: 40px; }
-  &.lAvatar { width: 120px }
-  &.lEdit { width: 50px; }
-  &.lDelete { width: 50px; }
+  &.check { width: 3%; }
+  &.lAvatar { width: 5%; }
+  &.lName { width: 30%; }
+  &.lRole { width: 25%; }
+  &.lMail { width: 20%; }
+  &.lEdit { width: 7%; }
+  &.lDelete { width: 10%; }
 `;
+
 const ListTd = styled.td`
   cursor: pointer;
   padding: 10px;
   margin: 10px;
   width: 100%;
-  &.check { width: 10px; }
-  &.num { width: 40px; }
-  &.lAvatar { width: 40px }
-  &.lEdit { width: 50px; }
-  &.lDelete { width: 50px; }
+  text-align: left;
+  &.check { width: 3%; }
+  &.lAvatar { width: 5%; }
+  &.lName { width: 30%; }
+  &.lRole { width: 25%; }
+  &.lMail { width: 20%; }
+  &.lEdit { width: 7%; }
+  &.lDelete { width: 10%; }
 `;
+
 const CheckInput = styled.input``;
 
 const MeditBtn = styled.button`
@@ -392,6 +407,7 @@ const DeleteMBtn = styled.button`
   border: none;
   cursor: pointer;
 `;
+
 
 
 function MembersMainContents() {
@@ -578,7 +594,8 @@ function MembersMainContents() {
         </ModalBody>
       </Modal>
     </TopBtn>
-
+    
+    <TableDiv>
     <ListTableContainer className="sortable">
         <ListThead>
           <ListTr>
@@ -607,7 +624,7 @@ function MembersMainContents() {
           ))}
         </ListTbody>
       </ListTableContainer>
-    
+      </TableDiv>
     </Container>
   )
 }

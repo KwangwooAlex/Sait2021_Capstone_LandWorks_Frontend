@@ -183,6 +183,7 @@ const summaryCustomStyles = {
 const AllBtn =  styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
 const RightBtn = styled.div`
@@ -317,15 +318,20 @@ const InputResult = styled.div`
 `;
 
 /* const = styled.div``; */
-
+const TableDiv = styled.div`
+  overflow: auto;
+  height: 420px;
+  width: 100%;
+  border: 1px solid lightgray; 
+`;
 const TableContainer = styled.table`
-  margin-top: 40px;
   border: 1px solid white;    
   box-shadow: 0px 3px 6px gray;
-  height: 600px;
+  height: 500px;
   width: 100%;
   padding:0;
   border-collapse: collapse;
+  
 `;
 const Thead = styled.thead`
   background-color: lightgray;
@@ -346,19 +352,29 @@ const Th = styled.th`
   margin: 0 10px;
   width: 100%;
   text-align: left;
-  &.check { width: 10px; }
-  &.num { width: 40px; }
-  &.pEdit { width: 50px; }
+  &.check { width: 3%; }
+  &.num { width: 5%; }
+  &.pName { width: 25%; }
+  &.pDesc { width: 25%; }
+  &.pStatus { width: 12%; }
+  &.pSecurity { width: 13%; }
+  &.pEdit { width: 7%; }
+  &.pDelete { width: 10%; }
 `;
 const Td = styled.td`
   cursor: pointer;
   padding: 10px;
-  margin: 10px;
+  margin: 5px 10px;
   width: 100%;
-  &.check { width: 10px; }
-  &.num { width: 40px; }
-  &.pName {margin-left: 20px;}
-  &.pEdit { width: 50px;}
+  text-align: left;
+  &.check { width: 3%; }
+  &.num { width: 5%; }
+  &.pName { width: 25%; }
+  &.pDesc { width: 25%; }
+  &.pStatus { width: 12%; }
+  &.pSecurity { width: 13%; }
+  &.pEdit { width: 7%; }
+  &.pDelete { width: 10%; }
 `;
 
 const CheckLabel = styled.label``;
@@ -754,6 +770,7 @@ function MyProjectMainContents() {
           <DeleteBtn>Delete Project</DeleteBtn>
       </RightBtn>
     </AllBtn>
+      <TableDiv>
       <TableContainer className="sortable">
         <Thead>
             <Tr>
@@ -767,7 +784,7 @@ function MyProjectMainContents() {
               <Th className="pStatus">Status</Th>
               <Th className="pSecurity">Security</Th>
               <Th className="pEdit">Edit</Th>
-              <Th className="pEdit">Delete</Th>
+              <Th className="pDelete">Delete</Th>
             </Tr>
         </Thead>
         <Tbody>
@@ -840,7 +857,7 @@ function MyProjectMainContents() {
                   <EditPBtn onClick={handleEditList}><EditIcon /></EditPBtn>
                   } 
                 </Td>
-                <Td className="pEdit" onClick={ (event) => event.preventDefault() }>
+                <Td className="pDelete" onClick={ (event) => event.preventDefault() }>
                   <DeletePBtn><DeleteIcon /></DeletePBtn>
                 </Td> 
               </Tr>
@@ -850,6 +867,7 @@ function MyProjectMainContents() {
               {/* </form> */}
         </Tbody>
       </TableContainer>
+      </TableDiv>
     </MainContents> 
   </Container>
   )

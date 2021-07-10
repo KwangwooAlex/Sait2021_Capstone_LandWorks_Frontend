@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../components/auth/Input";
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -104,6 +105,7 @@ const InputSearch = styled.input`
 const SixBtn = styled.div`
 display: flex;
 justify-content: space-between;
+margin-bottom: 20px;
 `;
 
 const FourBtn = styled.div`
@@ -170,19 +172,6 @@ const CopyBtn = styled.button`
   cursor: pointer;
 `;
 
-const MoveBtn = styled.button`
-margin-top: 25px;
-  border-radius: 20px;
-  background: #004070;
-  border: 1px solid;
-  color: white;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
-`;
-
 const DeleteBtn = styled.button`
 margin-left: 10px;
   margin-top: 25px;
@@ -226,6 +215,7 @@ const customStylesNewFolder = {
 
 
 const UploadModalContainer = styled.div``;
+
 const NewFolderModalContainer = styled.div``;
 
 const ModalHeader = styled.h4`
@@ -239,6 +229,7 @@ const ModalHeader = styled.h4`
 const ModalBody = styled.div`
   margin: 20px 30px;
 `;
+
 const ModalInfo = styled.div``;
 
 const UploadHeader = styled.h3`
@@ -311,53 +302,79 @@ const ModalCancelBtn = styled.button`
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
   `;
+const TableDiv = styled.div`
+overflow: auto;
+height: 425px;
+width: 100%;
+border: 1px solid lightgray; 
+`;
 
-  const TableContainer = styled.table`
-    margin-top: 40px;
-    border: 1px solid white;    
-    box-shadow: 0px 3px 6px gray;
-    height: 600px;
-    width: 100%;
-    padding:0;
-    border-collapse: collapse;
+const TableContainer = styled.table`
+  border: 1px solid white;    
+  box-shadow: 0px 3px 6px gray;
+  height: 600px;
+  width: 100%;
+  padding:0;
+  border-collapse: collapse;
     /* overflow-y: scroll;  */
   `;
 
-  const Thead = styled.thead`
+const Thead = styled.thead`
     background-color: #F3F3F3;
   `;
-  const Tbody = styled.thead`
+const Tbody = styled.thead`
 
   `;
   const Tr = styled.tr`
     display: flex;
     border-bottom: 1px solid gray;
     justify-content: center;
-  align-items: center;
+    align-items: center;
+    width: 100%;
   `;
   const Th = styled.th`
-    /* background-color: lightblue; */
     padding: 10px;
     margin: 0 10px;
     width: 100%;
     text-align: left;
     font-weight: 600;
-    &.check { width: 10px; }
-    &.num { width: 40px; }
-    &.fEdit { width: 50px; }
+    &.check { width: 3%; }
+    &.num { width: 5%; }
+    &.fName {width: 35%; }
+    &.fUpdateBy {width: 18%; }
+    &.fLast {width: 20%; }
+    &.fEdit { width: 7%; }
+    &.fDelete { width: 10%; }
   `;
   const Td = styled.td`
     cursor: pointer;
     padding: 10px;
     margin: 10px;
     width: 100%;
-    &.check { width: 10px; }
-    &.num { width: 40px; }
-    &.fName {margin-left: 20px;}
-    &.fEdit { width: 50px; }
+    text-align: left;
+    &.check { width: 3%; }
+    &.num { width: 5%; }
+    &.fName {width: 35%; }
+    &.fUpdateBy {width: 18%; }
+    &.fLast {width: 20%; }
+    &.fEdit { width: 7%; }
+    &.fDelete { width: 10%; }
   `;
-  const CheckInput = styled.input``;
 
+const CheckInput = styled.input``;
+
+const MeditBtn = styled.button`
+  background-color: white;
+  border: none;
+  cursor: pointer;
+`;
+
+const DeleteMBtn = styled.button`
+ 
+  background-color: white;
+  border: none;
+  cursor: pointer;
+`;
 function FilesMainContents() {
   const {teamName } = useParams();
   const { data: teamData} = useQuery(SEE_TEAM_QUERY, {
@@ -456,16 +473,20 @@ function FilesMainContents() {
         <DeleteBtn>Delete</DeleteBtn>
       </TwoBtn>
     </SixBtn>
-
+    <TableDiv>
     <TableContainer className="sortable">
         <Thead>
           <Tr>
-            <Th className="check"><CheckInput type="checkbox"></CheckInput></Th>
+            <Th className="check">
+              {/* <CheckInput type="checkbox"></CheckInput> */}
+              O
+            </Th>
             <Th className="num">No.</Th>
             <Th className="fName">Name</Th>
             <Th className="fUpdateBy">Update by</Th>
             <Th className="fLast">Last Update</Th>
             <Th className="fEdit">Edit</Th>
+            <Th className="fDelete">Delete</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -477,12 +498,14 @@ function FilesMainContents() {
               <Td className="fName">{projects.projectName}</Td>
               <Td className="fUpdateBy">Update by</Td>
               <Td className="fLast">Last Update</Td>
-              <Td className="fEdit"><EditIcon /></Td>
+              <Td className="fEdit"><MeditBtn><EditIcon /></MeditBtn></Td>
+              <Td className="fDelete"><DeleteMBtn ><DeleteIcon /></DeleteMBtn></Td>
             </Tr>
             </Link>
           ))}
         </Tbody>
       </TableContainer>
+      </TableDiv>
     </Container>
   )
 }

@@ -204,7 +204,7 @@ function Login() {
       </UnderHeader>
       <FormWrapper>
         <FormBox>
-          <FormTitle>WELCOME TO LWRM PROJECT</FormTitle>
+          <FormTitle>WELCOME TO LRMI PROJECT</FormTitle>
           <form onSubmit={handleSubmit(onSubmitValid, onSubmitInvalid)}>
             <FormError message={errors?.email?.message} />
             <FormError message={errors?.password?.message} />
