@@ -394,20 +394,16 @@ function FilesMainContents() {
   console.log("projectData", projectData );
 
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [isNewFolderOpen, setIsNewFolderOpen] = useState(false);
+
   // const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleUploadOpen = () => {
     setIsUploadOpen(true);
   };
 
-  const handleNewFolderOpen = () => {
-    setIsNewFolderOpen(true);
-  };
 
   const handleCancelBtnModal = () => {
     setIsUploadOpen(false);
-    setIsNewFolderOpen(false);
   };
 
 
@@ -418,8 +414,8 @@ function FilesMainContents() {
       <Link to={`/myProject/${teamName}`}> 
         {teamName} 
       </Link>
-         {/* - {projectId} */}
-         {teamData?.seeTeam?.project?.projectName}
+        {/* - {projectId} */}
+        {teamData?.seeTeam?.project?.projectName}
     </TeamName>
     <MainHeader>
       <MainTitle>

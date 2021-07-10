@@ -120,7 +120,7 @@ const InputSearch = styled.input`
 /* const = styled.div``; */
 const TableDiv = styled.div`
   overflow: auto;
-  height: 550px;
+  height: 480px;
   width: 100%;
   border: 1px solid lightgray; 
   margin-top: 30px;
@@ -135,7 +135,7 @@ const TableContainer = styled.table`
   border-collapse: collapse;
 `;
 const Thead = styled.thead`
-  background-color: lightgray;
+  background-color: #F3F3F3;
 `;
 const Tbody = styled.thead`
   

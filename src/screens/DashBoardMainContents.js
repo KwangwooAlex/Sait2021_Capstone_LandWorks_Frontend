@@ -38,6 +38,15 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
   }
 `;
 
+const SEE_PROJECT_QUERY = gql`
+  query seeProject($projectId: Int!) {
+    seeProject(projectId: $projectId) {
+      id
+      projectName
+    }
+  }
+`;
+
 const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
@@ -90,7 +99,7 @@ const ThirdLine = styled.div`
 const SmallBox = styled.div`
   margin-top: 40px;
   width: 100%;
-  height: 45%;
+  height: 40%;
 `;
 
 const FirstBox20 = styled.div`
@@ -99,28 +108,33 @@ const FirstBox20 = styled.div`
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* margin-top: 30px; */
 `;
 
 const CalDiv = styled.div`
   width: 100%;
-  height: 55%;
+  height: 60%;
 `;
 
-const SecondBox20 = styled.div`
+const CalBox20 = styled.div`
   width: 90%;
   height: 100%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
+  /* padding-bottom: 20px; */
 `;
-
 
 const TeamCalender = styled(Calendar)`
   margin: auto;
   width: 90%;
   height: 90%;
   border: none;
+  border-radius: 40px;
+  /* padding-bottom: 50px; */
 `;
 
 const SecondBox30 = styled.div`
@@ -187,7 +201,7 @@ const Th = styled.th`
 const Td = styled.td`
   cursor: pointer;
   padding: 10px;
-  margin: 10px;
+  margin: 5px 10px;
   width: 100%;
   text-align: left;
   &.num { width: 5%; }
@@ -252,7 +266,7 @@ const TeamTh = styled.th`
 const TeamTd = styled.td`
   cursor: pointer;
   padding: 10px;
-  margin: 10px;
+  margin: 3px 10px;
   width: 100%;
   text-align: left;
   &.tAvatar { width: 10%; }
@@ -263,11 +277,19 @@ const TeamTd = styled.td`
 function DashBoardMainContents() {
   const [value, onChange] = useState(new Date());
 
-  const {teamName} = useParams();
+  const {teamName, projectId} = useParams();
 
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
-  console.log("팀네임", data?.seeAllMyTeam);
+  const { data: list } = useQuery(SEE_PROJECT_QUERY);
 
+  // console.log("전체 팀", data?.seeAllMyTeam);
+  console.log("프로젝트 리스트", list);
+
+  let totalTeam = data?.seeAllMyTeam?.length;
+  // let totalProject = list?.seeProject?.length;
+  // let countProject = projectId?.length;
+
+  
   return (
     <Container>
       <MainTitle>DASHBOARD</MainTitle>
@@ -275,17 +297,27 @@ function DashBoardMainContents() {
 
         <FirstLine>
           <SmallBox>
-            <FirstBox20></FirstBox20>
-            <FirstBox20></FirstBox20>
-            <FirstBox20></FirstBox20>
+            <FirstBox20>On Active Project</FirstBox20>
+            <FirstBox20>Total Team {totalTeam}</FirstBox20>
+            <FirstBox20>Total Project {totalTeam}</FirstBox20>
+            {/* <FirstBox20>
+                {data?.seeAllMyTeam?.map((countP) => (
+              <FirstBox20 key={countP.project.id}>
+                  <>
+                    {countP.project.filter((allCountP) => (
+                    allCountP.projectId !== null
+                    ))}
+                  </>
+                  </FirstBox20>
+                  ))}
+            </FirstBox20> */}
           </SmallBox>
           <CalDiv>
-            <SecondBox20>
+            <CalBox20>
               <TeamCalender 
                 onChange={onChange}
-                value={value} 
-                />
-            </SecondBox20>
+                value={value}/>
+            </CalBox20>
           </CalDiv>          
         </FirstLine>
 

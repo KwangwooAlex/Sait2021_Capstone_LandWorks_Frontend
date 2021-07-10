@@ -275,6 +275,19 @@ function MyProfileMainContents() {
     }
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleSaveModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancelModal = () => {
+    setIsModalOpen(false);
+  };
+
   const handleEditClick = () => {
     setDisabled(!disabled);
     setInputChange(inputChange);
@@ -309,21 +322,6 @@ function MyProfileMainContents() {
   };
 
   const onSaveInvalid = (data) => {};
-
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleSaveModal = () => {
-    alert("Your changed has been saved.");
-    setIsModalOpen(false);
-  };
-
-  const handleCancelModal = () => {
-    setIsModalOpen(false);
-  };
 
   
   return (
@@ -467,9 +465,11 @@ function MyProfileMainContents() {
           </InputContainer>
 
           <ProfileImg>           
-            <FontAwesomeIcon icon={faUserCircle} size="9x" />            
+            <FontAwesomeIcon icon={faUserCircle} size="9x" /> 
+            {activeConfirmPassword && (           
             
-            <ProfileImgEdit onClick={handleOpenModal}>Edit</ProfileImgEdit>
+            <ProfileImgEdit onClick={handleOpenModal}>EditICON</ProfileImgEdit>
+            )}
             
             <Modal isOpen={isModalOpen} style={customStyles}>
             

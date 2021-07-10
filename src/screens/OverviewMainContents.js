@@ -111,8 +111,6 @@ const LineContainer = styled.div`
 const FirstLine = styled.div`
   width: 30%;
   height: 100%;
-  align-items: center;
-  justify-content: center;
   /* display: flex; */
   /* justify-content: space-between; */
 `;
@@ -137,17 +135,17 @@ const SmallBox = styled.div`
   margin-top: 25px;
   width: 100%;
   height: 30%;
-  align-items: center;
-  justify-content: center;
 `;
 
 const FirstBox20 = styled.div`
   width: 90%;
   height: 50%;
-  border-radius: 40px;
+  border-radius: 20px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* margin-top: 30px; */
 `;
 
@@ -248,8 +246,10 @@ const LETTER = styled.h3`
 `;
 
 const ChartImg = styled.img`
-width: 100%;
-height: 100%;
+margin: 25px auto;
+width: 95%;
+height: 75%;
+/* border: none; */
 `;
 function OverviewMainContents() {
   
@@ -291,8 +291,8 @@ return (
 
         <FirstLine>
           <SmallBox>
-            <FirstBox20><LETTER>Start Date: Today</LETTER></FirstBox20>
-            <FirstBox20><LETTER>End Date: Tomorrow</LETTER></FirstBox20>
+            <FirstBox20>Start Date: Today</FirstBox20>
+            <FirstBox20>End Date: Tomorrow</FirstBox20>
           </SmallBox>
           <CalDiv>
             <SecondBox20>

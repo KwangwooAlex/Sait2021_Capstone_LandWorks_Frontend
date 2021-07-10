@@ -54,6 +54,9 @@ const CREATE_PROJECT_MUTATION = gql`
   }
 `;
 
+// const DELETE_PROJECT_MUTATION = gql`
+
+// `;
 
 const Container = styled.main`
   padding: 40px 40px 0 40px;
@@ -163,6 +166,20 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     width: "600px",
     height: "530px",
+  },
+};
+
+const customStyle = {
+  content: {
+    padding: "0",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "400px",
+    height: "200px",
   },
 };
 
@@ -334,7 +351,7 @@ const TableContainer = styled.table`
   
 `;
 const Thead = styled.thead`
-  background-color: lightgray;
+  background-color: #F3F3F3;
 `;
 const Tbody = styled.thead`
   
@@ -419,6 +436,48 @@ const EditpSecurity = styled.input`
   border: 1px solid gray;
   width: 100%;
 `;
+const OkBtn = styled.button`
+  background: #004070;
+  border: 2x solid;
+  color: white;
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 85px;
+`;
+
+const CancelBtn2 = styled.button`
+  background: white;
+  border: 2x solid;
+  border-color:#B8B8B8;
+  color: #004070;
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 10px;
+`;
+
+const LETTER =styled.p`
+  text-align: center;
+  font-size: 25px;
+  font-weight: bolder;
+  color: red;
+`;
+
+const ModalBtn2 = styled.div`
+  margin: 40px auto; 
+  /* justify-content: space-between; */
+`;
+
+const ModalBody2 = styled.div`
+  margin: 30px 30px;
+`; 
 
 function MyProjectMainContents() {
 
@@ -446,12 +505,19 @@ function MyProjectMainContents() {
   const [createProject, { loading, error }] = useMutation(CREATE_PROJECT_MUTATION);
    
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDModalOpen, setIsDModalOpen] = useState(false);
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
+
+  const handleDeleteModal = () => {
+    setIsDModalOpen(true);
+   };
+  
+
 
   const handleCreateBtnModal = () => {
     alert("Your Project has been created.");
@@ -473,6 +539,13 @@ function MyProjectMainContents() {
     setIsModalOpen(false);
   };
 
+  const handleDCancelBtnModal = () => {
+    setIsDModalOpen(false);
+  };
+
+  const handleOkBtnModal = () => {
+    setIsModalOpen(false);
+  };
 
   const onSaveValid = (data) =>  {     
     handleNextBtnModal();
@@ -767,7 +840,17 @@ function MyProjectMainContents() {
 
       </LeftBtn>
       <RightBtn>
-          <DeleteBtn>Delete Project</DeleteBtn>
+          <DeleteBtn onClick={handleDeleteModal}>Delete Project</DeleteBtn>
+          <Modal isOpen={isDModalOpen} style={customStyle}>
+            <ModalHeader>DELETE PROJECT</ModalHeader>
+              <ModalBody2>
+                <LETTER>! Are you sure to delete?</LETTER>
+                <ModalBtn2>
+                  <OkBtn onClick={handleOkBtnModal}>Ok</OkBtn>
+                  <CancelBtn2 onClick={handleDCancelBtnModal}>Cancel</CancelBtn2>
+                </ModalBtn2>
+              </ModalBody2>
+          </Modal>
       </RightBtn>
     </AllBtn>
       <TableDiv>

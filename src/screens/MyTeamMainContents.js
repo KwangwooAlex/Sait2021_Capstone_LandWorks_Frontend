@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Input from "../components/auth/Input";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
+import SettingsIcon from '@material-ui/icons/Settings';
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -155,6 +156,20 @@ const customStyles = {
   },
 };
 
+const customStyle = {
+  content: {
+    padding: "0",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "400px",
+    height: "200px",
+  },
+};
+
 const TeamHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -198,6 +213,59 @@ const ListEachTeam = styled.li`
   list-style: none;
   height: 150px;
 `;
+
+const DeleteBtn = styled.button`
+  float: right;
+  cursor: pointer;
+  border: none;
+  background-color: white;
+  margin-bottom: -30px;
+  color: gray;
+`;
+
+const OkBtn = styled.button`
+  background: #004070;
+  border: 2x solid;
+  color: white;
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 85px;
+`;
+
+const CancelBtn2 = styled.button`
+  background: white;
+  border: 2x solid;
+  border-color:#B8B8B8;
+  color: #004070;
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 10px;
+`;
+
+const LETTER =styled.p`
+  text-align: center;
+  font-size: 25px;
+  font-weight: bolder;
+  color: red;
+`;
+
+const ModalBtn2 = styled.div`
+  margin: 40px auto; 
+  /* justify-content: space-between; */
+`;
+
+const ModalBody2 = styled.div`
+  margin: 30px 30px;
+`; 
+
 
 function MyTeamMainContents() {
   // const [TeamName, setTeamName] = useState("");
@@ -256,6 +324,20 @@ function MyTeamMainContents() {
   const onSaveInvalid = (data) => {};
   console.log("팀네임", data?.seeAllMyTeam?.teamName);
   
+  const [isDModalOpen, setIsDModalOpen] = useState(false);
+  
+  const handleDeleteModal = () => {
+    setIsDModalOpen(true);
+   };
+   
+  const handleDCancelBtnModal = () => {
+    setIsDModalOpen(false);
+  };
+
+  const handleOkBtnModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Container>
       <MainTitle>MY TEAM</MainTitle>
@@ -300,8 +382,9 @@ function MyTeamMainContents() {
       </Modal>
 
       <TeamBody>
-           {data?.seeAllMyTeam?.map((team) => (
+            {data?.seeAllMyTeam?.map((team) => (
               <ListEachTeam key={team.id}>
+                <DeleteBtn onClick={handleDeleteModal}><SettingsIcon/></DeleteBtn>
                 <Link to={`/myProject/${team.teamName}`}>
                   <TeamList>
                       {team.teamName}
@@ -310,6 +393,16 @@ function MyTeamMainContents() {
               </ListEachTeam>
             ))}
       </TeamBody>
+      <Modal isOpen={isDModalOpen} style={customStyle}>
+        <ModalHeader>DELETE PROJECT</ModalHeader>
+          <ModalBody2>
+            <LETTER>! Are you sure to delete?</LETTER>
+            <ModalBtn2>
+              <OkBtn onClick={handleOkBtnModal}>Ok</OkBtn>
+              <CancelBtn2 onClick={handleDCancelBtnModal}>Cancel</CancelBtn2>
+            </ModalBtn2>
+          </ModalBody2>
+      </Modal>
     </Container>
   );
 }
