@@ -159,6 +159,9 @@ const InputSearch = styled.input`
 `;
 
 const TopBtn = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
 const AddBtn = styled.button`
@@ -408,6 +411,80 @@ const DeleteMBtn = styled.button`
   cursor: pointer;
 `;
 
+const RightBtn = styled.div`
+`;
+
+const customStyle = {
+  content: {
+    padding: "0",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "400px",
+    height: "200px",
+  },
+};
+
+const DeleteBtn = styled.button`
+  margin-top: 25px;
+  border-radius: 20px;
+  background: white;
+  border: 1px solid;
+  color: #004070;
+  width: 150px;
+  height: 35px;
+  font-size: 15px;
+  box-shadow: 0px 2px 4px gray;
+  cursor: pointer;
+`;
+
+const OkBtn = styled.button`
+  background: #004070;
+  border: 2x solid;
+  color: white;
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+`;
+
+const CancelBtn2 = styled.button`
+  background: white;
+  border: 2x solid;
+  border-color:#B8B8B8;
+  color: #004070;
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+`;
+
+const ModalBtn2 = styled.div`
+  margin: 20px auto; 
+  /* justify-content: space-between; */
+  text-align: center;
+`;
+
+const ModalBody2 = styled.div`
+  margin: 30px 30px;
+`; 
+
+const DeleteNotice = styled.p`
+  line-height: 150%;
+  text-align: center;
+`;
+
+const B = styled.b`
+  font-weight: 600;
+`;
+
 
 
 function MembersMainContents() {
@@ -422,8 +499,9 @@ function MembersMainContents() {
   // const { data: searchData } = useQuery(SEARCH_USER_QUERY);
 
 
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDModalOpen, setIsDModalOpen] = useState(false);
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -440,6 +518,20 @@ function MembersMainContents() {
   const handleAddMember = () => {
     handleOpenModal();
   };
+
+  const handleDeleteModal = () => {
+    setIsDModalOpen(true);
+   };
+
+   const handleDCancelBtnModal = () => {
+    setIsDModalOpen(false);
+  };
+
+  const handleOkBtnModal = () => {
+    alert("Your members have been deleted.");
+    setIsDModalOpen(false);
+  };
+
 
   const { handleSubmit, setValue, watch, register } = useForm({
     mode: "onChange",
@@ -593,6 +685,22 @@ function MembersMainContents() {
           </form>
         </ModalBody>
       </Modal>
+    
+
+      <RightBtn>
+        <DeleteBtn onClick={handleDeleteModal}>Delete Project</DeleteBtn>
+          <Modal isOpen={isDModalOpen} style={customStyle}>
+            <ModalHeader>DELETE PROJECT</ModalHeader>
+              <ModalBody2>
+                <DeleteNotice>Are you sure you want to delete<br /> 
+                  the member <B>"sdfsf"</B>?</DeleteNotice>
+                <ModalBtn2>
+                  <CancelBtn2 onClick={handleDCancelBtnModal}>Cancel</CancelBtn2>
+                  <OkBtn onClick={handleOkBtnModal}>Ok</OkBtn>
+                </ModalBtn2>
+              </ModalBody2>
+          </Modal>
+        </RightBtn>
     </TopBtn>
     
     <TableDiv>

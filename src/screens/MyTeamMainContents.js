@@ -6,6 +6,10 @@ import Input from "../components/auth/Input";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import SettingsIcon from '@material-ui/icons/Settings';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -141,6 +145,11 @@ const SaveTeam = styled.button`
   font-weight: bold;
 `;
 
+// const SettingIcon = styled(SettingsIcon)`
+//   width: 5px;
+//   height: 5px;
+// `;
+
 // Modal Size
 const customStyles = {
   content: {
@@ -156,7 +165,7 @@ const customStyles = {
   },
 };
 
-const customStyle = {
+const settingCustomStyles = {
   content: {
     padding: "0",
     top: "50%",
@@ -165,8 +174,8 @@ const customStyle = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    width: "400px",
-    height: "200px",
+    width: "600px",
+    height: "470px",
   },
 };
 
@@ -214,47 +223,57 @@ const ListEachTeam = styled.li`
   height: 150px;
 `;
 
-const DeleteBtn = styled.button`
+const SettingBtn = styled.button`
   float: right;
   cursor: pointer;
   border: none;
   background-color: white;
   margin-bottom: -30px;
-  color: gray;
+  color: lightgray;
+  &:hover { color: gray; }
 `;
 
-const OkBtn = styled.button`
+const SetModalHeader = styled.div`
+  margin: 0;
+  padding: 10px;
   background: #004070;
-  border: 2x solid;
   color: white;
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
-  cursor: pointer;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: bold;
-  margin-left: 85px;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const CancelBtn2 = styled.button`
   background: white;
-  border: 2x solid;
-  border-color:#B8B8B8;
-  color: #004070;
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
+  padding: 0 auto;
+  font-size: 10px;
   cursor: pointer;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  margin-left: 10px;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const LETTER =styled.p`
-  text-align: center;
-  font-size: 25px;
-  font-weight: bolder;
-  color: red;
+const ModalMain = styled.div`
+  display: flex;
+`;
+
+const ModalNav = styled.div`
+  margin-right: 30px;
+`;
+
+const NavTitle = styled.h4`
+  /* border-right: 1px solid; */
+  padding: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid lightgray;
+  margin-top: 50px;
+  &:hover { background-color: lightgray; padding: 10px; }
+  &.aboutTeam { }
+  &.delete { margin-top: 40px; }
 `;
 
 const ModalBtn2 = styled.div`
@@ -263,13 +282,122 @@ const ModalBtn2 = styled.div`
 `;
 
 const ModalBody2 = styled.div`
-  margin: 30px 30px;
+  margin: 25px 30px;
 `; 
+
+const CheckDelete = styled.input``;
+
+const ModalSet = styled.div`
+  /* margin-top: 30px; */
+  width: 100%;
+`;
+const SetTitle = styled.h3`
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  border-bottom: 1px dashed;
+  padding-bottom: 13px;
+`;
+
+const MemberSetSub = styled.p`
+  margin-top: 10px;
+  /* padding: 0 20px; */
+`;
+
+const MemberL = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px; 
+  font-size: 12px;
+`;
+
+const TableDiv = styled.div`
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  margin: 15px auto;
+`;
+
+const ListTableContainer = styled.table`
+  /* margin-top: 40px; */
+  border: 1px solid white;    
+  /* box-shadow: 0px 3px 6px gray; */
+  height: 100%;
+  width: 100%;
+  padding:0;
+  border-collapse: collapse;
+  background-color: white;
+`;
+
+const ListThead = styled.thead`
+  background-color: #F8F8F8;
+`;
+// const file = [{id:"", projectName:""},{}]
+const ListTbody = styled.thead`
+
+`;
+const ListTr = styled.tr`
+  display: flex;
+  border-bottom: 1px solid gray;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+const ListTh = styled.th`
+  /* background-color: lightblue; */
+  padding: 5px 10px;
+  margin: 0 10px;
+  width: 100%;
+  text-align: left;
+  font-size: 11px;
+  /* font-weight: 600; */
+  &.lAvatar { width: 7%; }
+  &.lName { width: 48%; }
+  &.lRole { width: 45%; }
+`;
+
+const ListTd = styled.td`
+  cursor: pointer;
+  padding: 10px;
+  margin: 0 10px;
+  width: 100%;
+  text-align: left;
+  &.lAvatar { width: 5%; }
+  &.lName { width: 48%; }
+  &.lRole { width: 45%; }
+`;
+
+const DeleteSetSub = styled.p`
+  margin-left: 30px;
+  line-height: 150%;
+`;
+
+const DeleteBtn = styled.button`
+  margin-top: 50px;
+  margin-left: 30px;
+  width: 80%;
+  border: none;
+  height: 40px;
+  &:hover { 
+    background-color: red; 
+    color: white; 
+    font-weight: 600;
+  }
+`;
+
+const B = styled.b`
+  font-weight: 600;
+`;
 
 
 function MyTeamMainContents() {
   // const [TeamName, setTeamName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -325,17 +453,43 @@ function MyTeamMainContents() {
   console.log("팀네임", data?.seeAllMyTeam?.teamName);
   
   const [isDModalOpen, setIsDModalOpen] = useState(false);
+  const [isAbout, setIsAbout] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   
-  const handleDeleteModal = () => {
+  const handleSettingModal = () => {
     setIsDModalOpen(true);
+    setIsAbout({ bgColor: "lightgray" });
    };
    
-  const handleDCancelBtnModal = () => {
+  const handleXBtnModal = () => {
     setIsDModalOpen(false);
+    setIsAbout(true);
+    setIsDelete(false);
   };
 
-  const handleOkBtnModal = () => {
-    setIsModalOpen(false);
+  const settingAboutClick = () => {
+    setIsAbout(true);
+    setIsAbout({ bgColor: "lightgray" });
+    setIsDelete(false);
+  };
+
+  const settingDeleteClick = () => {
+    setIsAbout(false);
+    setIsDelete(true);
+    setIsDelete({ bgColor: "lightgray" });
+  };
+
+  const handleDeleteBtnModal = () => {
+    alert("Your team has been deleted.");
+    setIsDModalOpen(false);
+    setIsAbout(true);
+    setIsDelete(false);
+  };
+
+  const [showName, setShowName] = useState('');
+
+  const handleShowName = (e) => {
+    
   };
 
   return (
@@ -382,27 +536,90 @@ function MyTeamMainContents() {
       </Modal>
 
       <TeamBody>
-            {data?.seeAllMyTeam?.map((team) => (
-              <ListEachTeam key={team.id}>
-                <DeleteBtn onClick={handleDeleteModal}><SettingsIcon/></DeleteBtn>
-                <Link to={`/myProject/${team.teamName}`}>
-                  <TeamList>
-                      {team.teamName}
-                  </TeamList>  
-                </Link>
-              </ListEachTeam>
-            ))}
+        {data?.seeAllMyTeam?.map((team) => (
+          <ListEachTeam key={team.id}>
+            <SettingBtn onClick={handleSettingModal}><SettingsIcon/></SettingBtn>
+              <Link to={`/myProject/${team.teamName}`}>
+                <TeamList>
+                  {team.teamName}
+                </TeamList> 
+              </Link>
+                
+                <Modal isOpen={isDModalOpen} style={settingCustomStyles}>
+                  <SetModalHeader>MANAGE TEAM
+                      <CancelBtn2 onClick={handleXBtnModal}>X</CancelBtn2>
+                  </SetModalHeader>
+
+                  {/* 팀 멤버 리스트 / 팀 삭제 */}
+                    <ModalBody2>
+                      <ModalMain>
+                        <ModalNav>
+                          <NavTitle 
+                            onClick={settingAboutClick} 
+                            style={{backgroundColor: isAbout.bgColor}}
+                            className="aboutTeam">
+                            ABOUT TEAM
+                          </NavTitle>
+                          <NavTitle 
+                            onClick={settingDeleteClick} 
+                            className="delete"
+                            style={{backgroundColor: isDelete.bgColor}}>
+                            DELETE TEAM
+                          </NavTitle>
+                        </ModalNav>
+
+                        {isAbout &&
+                          <ModalSet>
+                            <SetTitle>ABOUT TEAM INFORMATION</SetTitle>
+                            <MemberSetSub>Team Name: <B>{team.teamName}</B> </MemberSetSub>
+                            <MemberL>
+                              <MemberSetSub>Member list:</MemberSetSub>
+                              <MemberSetSub>Total of members (12)</MemberSetSub>
+                            </MemberL>
+                            <TableDiv>
+                              <ListTableContainer className="sortable">
+                                <ListThead>
+                                  <ListTr>
+                                    <ListTh className="lAvatar"></ListTh>
+                                    <ListTh className="lName">Name</ListTh>
+                                    <ListTh className="lRole">Role</ListTh>
+                                  </ListTr>
+                                </ListThead>
+                                <ListTbody>
+                                  {data?.seeAllMyTeam?.teamMember?.map((member) => (
+                                    <ListTr key={member.id}>
+                                      <ListTd className="lAvatar">
+                                        <FontAwesomeIcon icon={faUserCircle} size="2x" />
+                                      </ListTd>
+                                      <ListTd className="lName">{member.username}</ListTd>
+                                      <ListTd className="lRole">Project Manager</ListTd>                     
+                                    </ListTr>
+                                  ))}
+                                </ListTbody>
+                              </ListTableContainer>
+                            </TableDiv>
+                          </ModalSet>
+                        }
+
+                        {isDelete &&
+                          <ModalSet>
+                            <SetTitle>DELETE TEAM</SetTitle>
+                            <DeleteSetSub>Are you sure you want to delete the team <B>"Alex"</B>?<br/>
+                              If you click <B>"Delete Team"</B> button, your all projects <br/>
+                              and files for this team will be delete.</DeleteSetSub>
+                            {/* <CheckDelete type="radio">I agree with deleting everything</CheckDelete> */}
+                            <DeleteBtn onClick={handleDeleteBtnModal}>Delete Team</DeleteBtn>
+                          </ModalSet>
+                        } 
+
+                      </ModalMain>
+                    </ModalBody2>
+                </Modal> 
+          </ListEachTeam>
+        ))}
       </TeamBody>
-      <Modal isOpen={isDModalOpen} style={customStyle}>
-        <ModalHeader>DELETE PROJECT</ModalHeader>
-          <ModalBody2>
-            <LETTER>! Are you sure to delete?</LETTER>
-            <ModalBtn2>
-              <OkBtn onClick={handleOkBtnModal}>Ok</OkBtn>
-              <CancelBtn2 onClick={handleDCancelBtnModal}>Cancel</CancelBtn2>
-            </ModalBtn2>
-          </ModalBody2>
-      </Modal>
+
+
     </Container>
   );
 }

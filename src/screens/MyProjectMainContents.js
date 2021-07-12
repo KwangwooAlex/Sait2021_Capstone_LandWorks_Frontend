@@ -193,7 +193,7 @@ const summaryCustomStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "600px",
-    height: "370px",
+    height: "440px",
   },
 };
 
@@ -236,9 +236,9 @@ const InputText =styled.input`
   display: flex;
   border: 1px solid lightgray;
   border-radius: 5px;
-  margin-left: 15px;
+  margin-left: 20px;
   padding: 5px;
-  width: 500px;  
+  width: 75%;  
 `;
 
 const SelectStatus = styled(Select)`
@@ -317,30 +317,39 @@ const CancelBtn = styled.button`
 
 const SummaryLabel = styled.label`
   display: flex;
-  /* flex-direction: column; */
   margin-bottom: 15px;
   width: 100%;
   &.dateLabel {
-    width: 80%;
+    width: 70%;
   }
+  /* &.endDate {
+  margin-left: -100px;
+ } */
 `;
 
 const InputResult = styled.div`
  margin-left: 10px;
  font-weight: 600;
- width: 80%;
+ width: 20%;
  &.desResult {
   margin-left: 0px;
+  overflow: auto;
+  height: 100px;
+  border: 1px dashed;
+  width: 100%;
+  padding: 5px;
+  margin-top: -10px;
  }
+
 `;
 
-/* const = styled.div``; */
 const TableDiv = styled.div`
   overflow: auto;
   height: 420px;
   width: 100%;
   border: 1px solid lightgray; 
 `;
+
 const TableContainer = styled.table`
   border: 1px solid white;    
   box-shadow: 0px 3px 6px gray;
@@ -446,7 +455,6 @@ const OkBtn = styled.button`
   cursor: pointer;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  margin-left: 85px;
 `;
 
 const CancelBtn2 = styled.button`
@@ -460,24 +468,28 @@ const CancelBtn2 = styled.button`
   cursor: pointer;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  margin-left: 10px;
-`;
-
-const LETTER =styled.p`
-  text-align: center;
-  font-size: 25px;
-  font-weight: bolder;
-  color: red;
 `;
 
 const ModalBtn2 = styled.div`
-  margin: 40px auto; 
+  margin: 20px auto; 
   /* justify-content: space-between; */
+  text-align: center;
 `;
 
 const ModalBody2 = styled.div`
   margin: 30px 30px;
 `; 
+
+const DeleteNotice = styled.p`
+  line-height: 150%;
+  text-align: center;
+`;
+
+const B = styled.b`
+  font-weight: 600;
+`;
+
+
 
 function MyProjectMainContents() {
 
@@ -518,7 +530,6 @@ function MyProjectMainContents() {
    };
   
 
-
   const handleCreateBtnModal = () => {
     alert("Your Project has been created.");
     setIsSummaryOpen(false);
@@ -539,12 +550,14 @@ function MyProjectMainContents() {
     setIsModalOpen(false);
   };
 
+
   const handleDCancelBtnModal = () => {
     setIsDModalOpen(false);
   };
 
   const handleOkBtnModal = () => {
-    setIsModalOpen(false);
+    alert("Your projects have been deleted.");
+    setIsDModalOpen(false);
   };
 
   const onSaveValid = (data) =>  {     
@@ -770,13 +783,10 @@ function MyProjectMainContents() {
                   <DesLabel>Description</DesLabel>
                   <Description
                     type="text"
-                    // cols='70'
-                    // rows='5'
                     ref={register}
-                    // onChange={handleChange}
                     value={watch("description")}
                     name="description"
-                    placeholder="Let people know what this team is all about..."
+                    placeholder="Let people know what this project is about..."
                     hasError={Boolean(errors?.description?.message)}
                   />
                   
@@ -813,8 +823,8 @@ function MyProjectMainContents() {
                       </SummaryLabel>
                     </StartD>
                     <EndD>
-                      <SummaryLabel className="dateLabel">End Date: 
-                      <InputResult>{submitData?.projectName}</InputResult>
+                      <SummaryLabel className="dateLabel endDate">End Date: 
+                      <InputResult className="endDate">{submitData?.projectName}</InputResult>
                       </SummaryLabel>
                     </EndD>
                   </ProcessDate>
@@ -844,10 +854,11 @@ function MyProjectMainContents() {
           <Modal isOpen={isDModalOpen} style={customStyle}>
             <ModalHeader>DELETE PROJECT</ModalHeader>
               <ModalBody2>
-                <LETTER>! Are you sure to delete?</LETTER>
+                <DeleteNotice>Are you sure you want to delete<br /> 
+                  the project <B>"project2"</B>?</DeleteNotice>
                 <ModalBtn2>
-                  <OkBtn onClick={handleOkBtnModal}>Ok</OkBtn>
                   <CancelBtn2 onClick={handleDCancelBtnModal}>Cancel</CancelBtn2>
+                  <OkBtn onClick={handleOkBtnModal}>Ok</OkBtn>
                 </ModalBtn2>
               </ModalBody2>
           </Modal>
@@ -871,83 +882,83 @@ function MyProjectMainContents() {
             </Tr>
         </Thead>
         <Tbody>
-          {/* <form onSubmit={handleEditSubmit(onEditValid, onEditInvalid)}> */}
-            {teamData?.seeTeam?.project?.map((projects, index) => (
-              <Link to={`/myProject/${teamName}/${projects?.id}`}>
-              <Tr key={projects.id}>
-                <Td className="check" onClick={ (event) => event.preventDefault() } >
-                  {/* <CheckInput type="checkbox" id="checkBox" name="checkBox" /> */}
-                  O
-                </Td>
-                <Td className="num">{index+1}</Td>
-                <Td className="pName">
-                  {isEdit ? (
-                  <EditpName 
-                    ref={register}
-                    type="text" 
-                    name="projectName"
-                    placeholder={projects.projectName}
-                    value={watch("projectName")}
-                    onClick={ (event) => event.preventDefault() }
-                    onChange={handleEditChange}
-                  />
-                  ): <>{projects.projectName}</>}
-                </Td>
-                <Td className="pDesc">
-                  {isEdit ? (
-                  <EditpDesc 
-                    ref={register}
-                    type="text" 
-                    name="description"
-                    placeholder={projects.description}
-                    value={watch("description")}
-                    onClick={ (event) => event.preventDefault() }
-                    onChange={handleEditChange}
-                  />
-                  ): <>{projects.description}</>}
-                </Td>
-                <Td className="pStatus">
-                  {isEdit ? (
-                  <EditpStatus 
-                    ref={register}
-                    type="text" 
-                    name="projectStatus"
-                    placeholder={projects.projectStatus}
-                    value={watch("projectStatus")}
-                    onClick={ (event) => event.preventDefault() }
-                    onChange={handleEditChange}
-                  />
-                  ): <>{projects.projectStatus}</>}
-                </Td>
-                <Td className="pSecurity">
-                  {isEdit ? (
-                  <EditpSecurity 
-                    ref={register}
-                    type="text"
-                    name="securityLevel" 
-                    placeholder={projects.securityLevel}
-                    value={watch("securityLevel")}
-                    onClick={ (event) => event.preventDefault() }
-                    onChange={handleEditChange}
-                  />
-                  ): <>{projects.securityLevel}</>}
-                </Td>
-                <Td className="pEdit" onClick={ (event) => event.preventDefault() }>
-                  {isEdit ? (
-                    // <SaveAltIcon type="submit"/>
-                    <SaveAltIcon onClick={handleEditList}/>
-                  ): 
-                  <EditPBtn onClick={handleEditList}><EditIcon /></EditPBtn>
-                  } 
-                </Td>
-                <Td className="pDelete" onClick={ (event) => event.preventDefault() }>
-                  <DeletePBtn><DeleteIcon /></DeletePBtn>
-                </Td> 
-              </Tr>
-              </Link>
-              ))}
+
+          {teamData?.seeTeam?.project?.map((projects, index) => (
+            <Link to={`/myProject/${teamName}/${projects?.id}`}>
+            <Tr key={projects.id}>
+              <Td className="check" onClick={ (event) => event.preventDefault() } >
+                {/* <CheckInput type="checkbox" id="checkBox" name="checkBox" /> */}
+                O
+              </Td>
+              <Td className="num">{index+1}</Td>
+              <Td className="pName">
+                {isEdit ? (
+                <EditpName 
+                  ref={register}
+                  type="text" 
+                  name="projectName"
+                  placeholder={projects?.projectName}
+                  value={watch("projectName")}
+                  onClick={ (event) => event.preventDefault() }
+                  onChange={handleEditChange}
+                />
+                ): <>{projects?.projectName}</>}
+              </Td>
+              <Td className="pDesc">
+                {isEdit ? (
+                <EditpDesc 
+                  ref={register}
+                  type="text" 
+                  name="description"
+                  placeholder={projects?.description}
+                  value={watch("description")}
+                  onClick={ (event) => event.preventDefault() }
+                  onChange={handleEditChange}
+                />
+                ): <>{projects?.description}</>}
+              </Td>
+              <Td className="pStatus">
+                {isEdit ? (
+                <EditpStatus 
+                  ref={register}
+                  type="text" 
+                  name="projectStatus"
+                  placeholder={projects?.projectStatus}
+                  value={watch("projectStatus")}
+                  onClick={ (event) => event.preventDefault() }
+                  onChange={handleEditChange}
+                />
+                ): <>{projects?.projectStatus}</>}
+              </Td>
+              <Td className="pSecurity">
+                {isEdit ? (
+                <EditpSecurity 
+                  ref={register}
+                  type="text"
+                  name="securityLevel" 
+                  placeholder={projects?.securityLevel}
+                  value={watch("securityLevel")}
+                  onClick={ (event) => event.preventDefault() }
+                  onChange={handleEditChange}
+                />
+                ): <>{projects?.securityLevel}</>}
+              </Td>
+              <Td className="pEdit" onClick={ (event) => event.preventDefault() }>
+                {isEdit ? (
+                  <SaveAltIcon type="submit"/>
+                  // <SaveAltIcon onClick={handleEditList}/>
+                ): 
+                <EditPBtn onClick={handleEditList}><EditIcon /></EditPBtn>
+                } 
+              </Td>
+              <Td className="pDelete" onClick={ (event) => event.preventDefault() }>
+                <DeletePBtn><DeleteIcon /></DeletePBtn>
+              </Td> 
+            </Tr>
+            </Link>
+          ))}
               
-              {/* </form> */}
+          {/* </form> */}
         </Tbody>
       </TableContainer>
       </TableDiv>

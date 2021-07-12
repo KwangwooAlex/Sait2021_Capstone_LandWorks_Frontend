@@ -64,6 +64,7 @@ const MainTitle = styled.div`
   box-sizing: border-box;
 `;
 
+
 const LineContainer = styled.div`
   width: 100%;
   display: flex;
@@ -71,14 +72,14 @@ const LineContainer = styled.div`
   height: 500px;
   /* justify-content: center; */
   /* align-items: baseline; */
-`;
+  `;
 
 const FirstLine = styled.div`
   width: 30%;
   height: 100%;
   /* display: flex; */
   /* justify-content: space-between; */
-`;
+  `;
 
 const SecondLine = styled.div`
   margin-top: 40px;
@@ -86,7 +87,7 @@ const SecondLine = styled.div`
   height: 100%;
   display: flex;
   /* justify-content: space-between; */
-`;
+  `;
 
 const ThirdLine = styled.div`
   margin-top: 40px;
@@ -94,13 +95,13 @@ const ThirdLine = styled.div`
   height: 100%;
   display: flex;
   /* justify-content: space-between; */
-`;
+  `;
 
 const SmallBox = styled.div`
   margin-top: 40px;
   width: 100%;
   height: 40%;
-`;
+  `;
 
 const FirstBox20 = styled.div`
   width: 90%;
@@ -110,9 +111,26 @@ const FirstBox20 = styled.div`
   margin-right: 25px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  font-weight: 600;
+  `;
+
+const TotalNum = styled.div`
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 50%;
+  /* padding: 5px; */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  /* margin-top: 30px; */
+  &.onActive { background-color: #12B700; color: white; }
+  &.totalTeam { background-color: #FF50B9; color: white; }
+  &.totalProject { background-color: #00B0FF; color: white; }
 `;
+// #FF50B9   #12B700   #FFB41E   #00B0FF
 
 const CalDiv = styled.div`
   width: 100%;
@@ -126,6 +144,9 @@ const CalBox20 = styled.div`
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
   /* padding-bottom: 20px; */
+  /* display: flex;
+  align-items: center;
+  justify-content: space-between; */
 `;
 
 const TeamCalender = styled(Calendar)`
@@ -282,7 +303,7 @@ function DashBoardMainContents() {
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
   const { data: list } = useQuery(SEE_PROJECT_QUERY);
 
-  // console.log("전체 팀", data?.seeAllMyTeam);
+  console.log("전체 팀", data?.seeAllMyTeam?.length);
   console.log("프로젝트 리스트", list);
 
   let totalTeam = data?.seeAllMyTeam?.length;
@@ -297,20 +318,9 @@ function DashBoardMainContents() {
 
         <FirstLine>
           <SmallBox>
-            <FirstBox20>On Active Project</FirstBox20>
-            <FirstBox20>Total Team {totalTeam}</FirstBox20>
-            <FirstBox20>Total Project {totalTeam}</FirstBox20>
-            {/* <FirstBox20>
-                {data?.seeAllMyTeam?.map((countP) => (
-              <FirstBox20 key={countP.project.id}>
-                  <>
-                    {countP.project.filter((allCountP) => (
-                    allCountP.projectId !== null
-                    ))}
-                  </>
-                  </FirstBox20>
-                  ))}
-            </FirstBox20> */}
+            <FirstBox20>On Active Project <TotalNum className="onActive">11</TotalNum></FirstBox20>
+            <FirstBox20>Total Team <TotalNum className="totalTeam">{totalTeam}</TotalNum></FirstBox20>
+            <FirstBox20>Total Project <TotalNum className="totalProject">120</TotalNum></FirstBox20>
           </SmallBox>
           <CalDiv>
             <CalBox20>
