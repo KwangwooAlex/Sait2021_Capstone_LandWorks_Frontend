@@ -8,6 +8,31 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Chart from "../asset/chart.PNG";
 
+export const SEE_ALL_MY_TEAM_QUERY = gql`
+  query seeAllMyTeam {
+    seeAllMyTeam {
+      teamName
+      description
+      teamMember {
+        id
+        username
+      }
+      role {
+        teamId
+        userId
+        roleName
+      }
+      project {
+        id
+        projectName
+        projectStatus
+        projectType
+        description
+        securityLevel
+      }
+    }
+  }
+`;
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -32,6 +57,32 @@ const SEE_TEAM_QUERY = gql`
   }
 `;
 
+const ME_QUERY = gql`
+  query me {
+    me {
+      username
+      email
+      companyName
+      phoneNumber
+      avatar
+      birth
+      country
+      state
+      city
+      Street
+    }
+  }
+`;
+
+const SEE_PROJECT_QUERY = gql`
+  query seeProject($projectId: Int!) {
+    seeProject (projectId: $projectId) {
+      id
+      projectName
+    }
+  }
+`;
+
 const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
@@ -39,15 +90,10 @@ const Container = styled.main`
   width: 90%;
 `;
 
-
 const TeamName = styled.div`
-  color: Black;
+  color: gray;
   font-weight: 600;
   font-size: 20px;
-  width: 100%;
-  height: 40px;
-  border-bottom: black 2px solid;
-  box-sizing: border-box;
 `; 
 
 const MainHeader = styled.div`
@@ -245,6 +291,27 @@ const LETTER = styled.h3`
   align-items: center;
   justify-content: center;
 `;
+const LETTERS = styled.h4`
+  color: Black;
+  font-weight: 600;
+  font-size: 20px;
+  margin-left: 15px;
+`;
+
+const ProjectOverview = styled.div`
+  color: Black;
+  font-weight: 600;
+  font-size: 20px;
+  margin-left: 15px;
+`;
+
+const TeamPath = styled.div`
+  display: flex;
+  border-bottom: black 2px solid;
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px; 
+`;
 
 const ChartImg = styled.img`
 margin: 25px auto;
@@ -252,22 +319,56 @@ width: 95%;
 height: 75%;
 /* border: none; */
 `;
+
+const Avatar = styled.img`
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 50%;
+`;
+
 function OverviewMainContents() {
   
-  const {teamName,projectId} = useParams();
-  const { data: teamData} = useQuery(SEE_TEAM_QUERY, {
-    variables: { teamName: teamName },
+  const {teamName, projectId} = useParams();
+
+  const { data: userData } = useQuery(ME_QUERY);
+
+  const { data: teamData} = useQuery(SEE_TEAM_QUERY ); 
+
+  const { data: projectData} = useQuery(SEE_PROJECT_QUERY, {
+    variables: { projectId: 1 },
     }
-  ); 
+  );  
+
+  const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
+
+  console.log("경로", teamData?.seeTeam);
   // {`/myProject/${teamName}/${projects?.id}`}
+
+  // const [isProject, setIsProject] = useState();
+
+  // const handleProjectName = () => {
+  //   if ()
+  // }
+
+
   
 return (
     <Container>
-    <TeamName>  
-      <Link to={`/myProject/${teamName}`}> 
-        {teamName} 
-      </Link>
-    </TeamName>
+    <TeamPath>
+      <TeamName>  
+        <Link to={`/myProject/${teamName}`}> 
+          {teamName}
+        </Link>
+      </TeamName>
+      <LETTERS>></LETTERS>
+      {/* 수정해야함 */}
+      <ProjectOverview>
+        <Link to={`/myProject/${teamName}/${projectId}`}> 
+          {projectData?.seeProject?.projectName}
+        </Link>    
+      </ProjectOverview>
+    </TeamPath>
     <MainHeader>
       <MainTitle>
         OVERVIEW
@@ -319,7 +420,7 @@ return (
                   {teamData?.seeTeam?.teamMember?.map((member) => (
                     <ListTr key={member.id}>
                       <ListTd className="lAvatar">
-                        <FontAwesomeIcon icon={faUserCircle} size="2x" />
+                        <Avatar src={userData?.me?.avatar} />
                       </ListTd>
                       <ListTd className="lName">{member.username}</ListTd>
                       <ListTd className="lRole">Project Manager</ListTd>                     

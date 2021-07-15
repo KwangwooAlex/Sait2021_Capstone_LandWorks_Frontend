@@ -248,7 +248,7 @@ function MyProfileMainContents() {
     setValue("country", userData?.me?.country);
     setValue("state", userData?.me?.state);
     setValue("city", userData?.me?.city);
-    setValue("street", userData?.me?.street);
+    setValue("Street", userData?.me?.Street);
   },[userData, setValue]);
 
   const handleChange = (e) => {
@@ -279,8 +279,8 @@ function MyProfileMainContents() {
     if(e.target.name === "city"){
       setValue("city", e.target.value);
     }
-    if(e.target.name === "street"){
-      setValue("street", e.target.value);
+    if(e.target.name === "Street"){
+      setValue("Street", e.target.value);
     }
   };
 

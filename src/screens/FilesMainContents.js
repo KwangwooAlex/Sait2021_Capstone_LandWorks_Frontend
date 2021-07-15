@@ -208,6 +208,7 @@ const UploadHeader = styled.h3`
   border-bottom: 1px solid lightgray;
   padding-bottom: 10px;
 `;
+
 const NewFolderHeader = styled.h4`
   border-bottom: 1px solid lightgray;
   padding-bottom: 10px;
@@ -411,20 +412,17 @@ const B = styled.b`
 
 
 function FilesMainContents() {
-  const {teamName } = useParams();
+  const {teamName, projectId} = useParams();
   const { data: teamData} = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName },
     }
   ); 
 
   console.log("teamData", teamData?.seeTeam?.project);
-  console.log("PName", teamData?.seeTeam?.project?.projectName);
+  // console.log("PName", teamData?.seeTeam?.project?.projectName);
 
-  const { projectId } = useParams();
-  const { data: projectData} = useQuery(SEE_PROJECT_QUERY, {
-    variables: { projectId },
-    }
-  );  
+  // const { projectId } = useParams();
+  const { data: projectData} = useQuery(SEE_PROJECT_QUERY);  
 
   console.log("projectData", projectData );
 
@@ -456,16 +454,24 @@ function FilesMainContents() {
     setIsUploadOpen(false);
   };
 
+  const [isProject, setIsProject] = useState('');
+  
+  const handlePName = () => {
+  if (teamData?.seeTeam?.filter(
+    (projects) => projects.projectId === projectId
+  ))
+   return <Letter>{teamData?.seeTeam?.project?.projectName}</Letter>
+  };
+
 
 
   return (
     <Container>
     <TeamName>  
       <Link to={`/myProject/${teamName}`}> 
-        {teamName} 
+        {teamName} > 
       </Link>
-        {/* - {projectId} */}
-        {teamData?.seeTeam?.project?.projectName}
+
     </TeamName>
     <MainHeader>
       <MainTitle>
@@ -479,9 +485,6 @@ function FilesMainContents() {
           <Link to={`/myProject/${teamName}/${projectId}/files`}>
             <Letter className="selected">Files</Letter>
           </Link>
-          {/* <Link to={`/myProject/${teamName}/${projectId}/members`}>
-          <Letter>Members</Letter>
-          </Link> */}
         </NavBar>
         <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
       </RightSection>

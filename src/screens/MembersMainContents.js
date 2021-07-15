@@ -89,6 +89,22 @@ const ADD_ROLE_MUTATION = gql`
   }
 `;
 
+const ME_QUERY = gql`
+  query me {
+    me {
+      username
+      email
+      companyName
+      phoneNumber
+      avatar
+      birth
+      country
+      state
+      city
+      Street
+    }
+  }
+`;
 
 const Container = styled.main`
   padding: 40px 40px 0 40px;
@@ -483,6 +499,12 @@ const B = styled.b`
   font-weight: 600;
 `;
 
+const Avatar = styled.img`
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 50%;
+`;
 
 
 function MembersMainContents() {
@@ -491,6 +513,7 @@ function MembersMainContents() {
     variables: { teamName: teamName },
     }
   ); 
+  const { data: userData } = useQuery(ME_QUERY);
   console.log("MEMBER", teamData?.seeTeam?.teamMember);
 
   // const [username, setUsername] = useState('');
@@ -636,7 +659,7 @@ function MembersMainContents() {
                         : 
                         <> */}
                           <Td className="mAvatar">
-                            <FontAwesomeIcon icon={faUserCircle} size="2x" />
+                          <Avatar src={userData?.me?.avatar} />
                           </Td>
                           <Td className="mName"></Td>
                           <Td className="mTeam"></Td>
@@ -664,7 +687,7 @@ function MembersMainContents() {
                     <Tbody>
                       <Tr>
                         <Td className="mAvatar">
-                          <FontAwesomeIcon icon={faUserCircle} size="2x" />
+                          <Avatar src={userData?.me?.avatar} />
                         </Td>
                         <Td className="mName"></Td>
                         <Td className="mTeam"></Td>
@@ -716,7 +739,7 @@ function MembersMainContents() {
           {teamData?.seeTeam?.teamMember?.map((member) => (
             <ListTr key={member.id}>
                <ListTd className="lAvatar">
-                <FontAwesomeIcon icon={faUserCircle} size="2x" />
+                <Avatar src={userData?.me?.avatar} />
               </ListTd>
               <ListTd className="lName">{member.username}</ListTd>
               <ListTd className="lRole">Project Manager</ListTd>

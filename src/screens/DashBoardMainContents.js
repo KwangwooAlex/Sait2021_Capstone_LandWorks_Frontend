@@ -17,6 +17,7 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
     seeAllMyTeam {
       teamName
+      description
       teamMember {
         id
         username
@@ -50,7 +51,6 @@ const SEE_PROJECT_QUERY = gql`
 const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
-  /* background-color: black; */
   width: 90%;
 `;
 
@@ -78,7 +78,6 @@ const FirstLine = styled.div`
   width: 30%;
   height: 100%;
   /* display: flex; */
-  /* justify-content: space-between; */
   `;
 
 const SecondLine = styled.div`
@@ -86,7 +85,6 @@ const SecondLine = styled.div`
   width: 40%;
   height: 100%;
   display: flex;
-  /* justify-content: space-between; */
   `;
 
 const ThirdLine = styled.div`
@@ -94,7 +92,6 @@ const ThirdLine = styled.div`
   width: 40%;
   height: 100%;
   display: flex;
-  /* justify-content: space-between; */
   `;
 
 const SmallBox = styled.div`
@@ -121,7 +118,6 @@ const TotalNum = styled.div`
   font-size: 15px;
   font-weight: 600;
   border-radius: 50%;
-  /* padding: 5px; */
   width: 40px;
   height: 40px;
   display: flex;
@@ -131,7 +127,6 @@ const TotalNum = styled.div`
   &.totalTeam { background-color: #FF50B9; color: white; }
   &.totalProject { background-color: #00B0FF; color: white; }
 `;
-// #FF50B9   #12B700   #FFB41E   #00B0FF
 
 const CalDiv = styled.div`
   width: 100%;
@@ -304,7 +299,7 @@ function DashBoardMainContents() {
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
   const { data: list } = useQuery(SEE_PROJECT_QUERY);
 
-  console.log("전체 팀", data?.seeAllMyTeam?.length);
+  console.log("전체 팀", data?.seeAllMyTeam);
   console.log("프로젝트 리스트", list);
 
   let totalTeam = data?.seeAllMyTeam?.length;
@@ -327,7 +322,7 @@ function DashBoardMainContents() {
             <CalBox20>
               <TeamCalender 
                 onChange={onChange}
-                value={value}/>
+                value={value} />
             </CalBox20>
           </CalDiv>          
         </FirstLine>
@@ -339,7 +334,6 @@ function DashBoardMainContents() {
             <TeamTable>
               <TeamThead>
                 <TeamTr>
-                  <TeamTh className="tAvatar"></TeamTh>
                   <TeamTh className="tName">Name</TeamTh>
                   <TeamTh className="tDesc">Description</TeamTh>
                 </TeamTr>
@@ -347,15 +341,12 @@ function DashBoardMainContents() {
               <TeamTbody>
                 {data?.seeAllMyTeam?.map((team) => (
                 <Link to={`/myProject/${team.teamName}`}>
-                <TeamTr key={team.id}>
-                  <TeamTd className="tAvatar">
-                    <FontAwesomeIcon icon={faUserCircle} size="2x" />
-                  </TeamTd>
-                  <TeamTd className="tName">{team.teamName}</TeamTd>
-                  <TeamTd className="tDesc">{team.description}</TeamTd>
-                </TeamTr>
+                  <TeamTr key={team.id}>
+                    <TeamTd className="tName">{team.teamName}</TeamTd>
+                    <TeamTd className="tDesc">{team.description}</TeamTd>
+                  </TeamTr>
                 </Link>
-              ))}
+                ))}
               </TeamTbody>
             </TeamTable>
           </TeamBody>

@@ -15,6 +15,7 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
     seeAllMyTeam {
       teamName
+      description
       teamMember {
         id
         username
@@ -32,8 +33,14 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
 `;
 
 const CREATE_TEAM_MUTATION = gql`
-  mutation createTeam($teamName: String!) {
-    createTeam(teamName: $teamName) {
+  mutation createTeam(
+    $teamName: String!
+    $description: String
+  ) {
+    createTeam(
+      teamName: $teamName
+      description: $description
+    ) {
       ok
       error
       id
@@ -415,22 +422,22 @@ function MyTeamMainContents() {
     handleOpenModal();
   };
 
-  const { data, refetch } = useQuery(SEE_ALL_MY_TEAM_QUERY);
+  const { data: allTeamData, refetch } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
-  console.log("전체팀보자", data);
+  console.log("전체팀보자", allTeamData);
 
   const { handleSubmit, setValue, watch, register } = useForm({
     mode: "onChange",
   });
 
   useEffect(() => {
-    setValue("teamName", data?.seeAllMyTeam?.teamName);
-  }, [data, setValue]);
+    setValue("teamName", allTeamData?.seeAllMyTeam?.teamName);
+  }, [allTeamData, setValue]);
 
   const handleChange = (e) => {
     if (e.target.name === "teamName") {
       setValue("teamName", e.target.value);
-    }
+    };
   };
 
   const [createTeam, { loading }] = useMutation(CREATE_TEAM_MUTATION);
@@ -450,7 +457,7 @@ function MyTeamMainContents() {
   };
 
   const onSaveInvalid = (data) => {};
-  console.log("팀네임", data?.seeAllMyTeam?.teamName);
+  // console.log("팀네임", data?.seeAllMyTeam?.teamName);
   
   const [isDModalOpen, setIsDModalOpen] = useState(false);
   const [isAbout, setIsAbout] = useState(false);
@@ -507,7 +514,7 @@ function MyTeamMainContents() {
         <ModalBody>
           <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
             <ModalInfo>
-              <TeamLabel>Team name</TeamLabel>
+              <TeamLabel>Team name
               <Input
                 ref={register}
                 type="text"
@@ -516,14 +523,18 @@ function MyTeamMainContents() {
                 placeholder="Enter the team name..."
                 onChange={handleChange}
               />
-              <DesLabel>Description</DesLabel>
+              </TeamLabel>
+
+              <DesLabel>Description
               <Description
+                ref={register}
                 type="text"
-                // cols="57"
-                // rows="5"
-                name="teamDescription"
+                // name="description"
+                value={watch("description")}
                 placeholder="Let people know what this team is all about..."
+                onChange={handleChange}
               />
+              </DesLabel>
             </ModalInfo>
 
             <ModalBtn>
@@ -536,7 +547,7 @@ function MyTeamMainContents() {
       </Modal>
 
       <TeamBody>
-        {data?.seeAllMyTeam?.map((team) => (
+        {allTeamData?.seeAllMyTeam?.map((team) => (
           <ListEachTeam key={team.id}>
             <SettingBtn onClick={handleSettingModal}><SettingsIcon/></SettingBtn>
               <Link to={`/myProject/${team.teamName}`}>
@@ -586,7 +597,7 @@ function MyTeamMainContents() {
                                   </ListTr>
                                 </ListThead>
                                 <ListTbody>
-                                  {data?.seeAllMyTeam?.teamMember?.map((member) => (
+                                  {allTeamData?.seeAllMyTeam?.teamMember?.map((member) => (
                                     <ListTr key={member.id}>
                                       <ListTd className="lAvatar">
                                         <FontAwesomeIcon icon={faUserCircle} size="2x" />

@@ -85,7 +85,7 @@ const LogoutFn = () => {
 
 function DashBoardHeader() {
 
-  const { data: userData, refetch } = useQuery(ME_QUERY);
+  const { data: userData } = useQuery(ME_QUERY);
 
 
   return (
