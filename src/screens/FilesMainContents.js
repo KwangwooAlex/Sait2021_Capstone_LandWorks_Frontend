@@ -123,7 +123,7 @@ const UploadBtn = styled.button`
   background: #004070;
   border: 1px solid;
   color: white;
-  width: 100px;
+  width: 120px;
   height: 35px;
   font-size: 15px;
   box-shadow: 0px 2px 4px gray;
@@ -137,21 +137,7 @@ const DownloadBtn = styled.button`
   background: #004070;
   border: 1px solid;
   color: white;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
-`;
-
-const NewFolderBtn = styled.button`
-  margin-left: 10px;
-  margin-top: 25px;
-  border-radius: 20px;
-  background: #004070;
-  border: 1px solid;
-  color: white;
-  width: 100px;
+  width: 120px;
   height: 35px;
   font-size: 15px;
   box-shadow: 0px 2px 4px gray;
@@ -165,21 +151,7 @@ const CopyBtn = styled.button`
   background: #004070;
   border: 1px solid;
   color: white;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
-`;
-
-const DeleteBtn = styled.button`
-margin-left: 10px;
-  margin-top: 25px;
-  border-radius: 20px;
-  background: #004070;
-  border: 1px solid;
-  color: white;
-  width: 100px;
+  width: 120px;
   height: 35px;
   font-size: 15px;
   box-shadow: 0px 2px 4px gray;
@@ -544,7 +516,6 @@ function FilesMainContents() {
       </FourBtn>
 
       <RightBtn>
-          <DeleteBtn onClick={handleDeleteModal}>Delete</DeleteBtn>
           <Modal isOpen={isDModalOpen} style={customStyle}>
             <ModalHeader>DELETE FILES</ModalHeader>
               <ModalBody2>
@@ -562,10 +533,6 @@ function FilesMainContents() {
     <TableContainer className="sortable">
         <Thead>
           <Tr>
-            <Th className="check">
-              {/* <CheckInput type="checkbox"></CheckInput> */}
-              O
-            </Th>
             <Th className="num">No.</Th>
             <Th className="fName">Name</Th>
             <Th className="fUpdateBy">Update by</Th>
@@ -578,7 +545,6 @@ function FilesMainContents() {
           {teamData?.seeTeam?.project?.map((projects, index) => (
             <Link to={`/myProject/${teamName}/${projects?.id}`}>
             <Tr key={projects.id, index}>
-              <Td className="check">O</Td>
               <Td className="num">{index+1}</Td>
               <Td className="fName">{projects.projectName}</Td>
               <Td className="fUpdateBy">Update by</Td>

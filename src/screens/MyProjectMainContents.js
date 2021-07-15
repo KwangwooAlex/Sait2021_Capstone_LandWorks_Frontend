@@ -133,19 +133,6 @@ const NewProjectBtn = styled.button`
   cursor: pointer;  
 `;
 
-const DeleteBtn = styled.button`
-  margin-top: 25px;
-  border-radius: 20px;
-  background: white;
-  border: 1px solid;
-  color: #004070;
-  width: 150px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
-`;
-
 const InputSearch = styled.input`
   border: 1px solid gray;
   padding: 5px 10px;
@@ -850,7 +837,6 @@ function MyProjectMainContents() {
 
       </LeftBtn>
       <RightBtn>
-          <DeleteBtn onClick={handleDeleteModal}>Delete Project</DeleteBtn>
           <Modal isOpen={isDModalOpen} style={customStyle}>
             <ModalHeader>DELETE PROJECT</ModalHeader>
               <ModalBody2>
@@ -868,10 +854,6 @@ function MyProjectMainContents() {
       <TableContainer className="sortable">
         <Thead>
             <Tr>
-              <Th className="check">
-                {/* <CheckInput type="checkbox" id="checkBox" name="checkBox" /> */}
-                
-              </Th>
               <Th className="num">No.</Th>
               <Th className="pName">Name</Th>
               <Th className="pDesc">Description</Th>
@@ -886,10 +868,6 @@ function MyProjectMainContents() {
           {teamData?.seeTeam?.project?.map((projects, index) => (
             <Link to={`/myProject/${teamName}/${projects?.id}`}>
             <Tr key={projects.id}>
-              <Td className="check" onClick={ (event) => event.preventDefault() } >
-                {/* <CheckInput type="checkbox" id="checkBox" name="checkBox" /> */}
-                O
-              </Td>
               <Td className="num">{index+1}</Td>
               <Td className="pName">
                 {isEdit ? (

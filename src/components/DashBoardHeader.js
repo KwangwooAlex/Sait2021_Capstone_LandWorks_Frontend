@@ -3,6 +3,24 @@ import styled from "styled-components";
 import avatar from "../asset/avatarTT.PNG";
 import questionMark from "../asset/questionMark.PNG";
 import logout from "../asset/logout.PNG";
+import { gql, useQuery } from "@apollo/client";
+
+const ME_QUERY = gql`
+  query me {
+    me {
+      username
+      email
+      companyName
+      phoneNumber
+      avatar
+      birth
+      country
+      state
+      city
+      Street
+    }
+  }
+`;
 
 const Container = styled.main`
   margin: 0 auto;
@@ -29,6 +47,7 @@ const Avatar = styled.img`
   width: 30px;
   height: 30px;
   cursor: pointer;
+  border-radius: 50%;
 `;
 
 const QuestionMark = styled.img`
@@ -65,6 +84,10 @@ const LogoutFn = () => {
 };
 
 function DashBoardHeader() {
+
+  const { data: userData, refetch } = useQuery(ME_QUERY);
+
+
   return (
     <Container>
       <LeftMenu>
@@ -75,7 +98,7 @@ function DashBoardHeader() {
       </Link>
       <RightMenu>
         <Link to="/myProfile">
-          <Avatar src={avatar} />
+          <Avatar src={userData?.me?.avatar} />
         </Link>
         <QuestionMark src={questionMark} />
         <Logout src={logout} onClick={LogoutFn} />

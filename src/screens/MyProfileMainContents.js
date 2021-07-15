@@ -5,9 +5,7 @@ import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import Modal from "react-modal";
-import {
-  faUserCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import EditIcon from '@material-ui/icons/Edit';
 import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
@@ -119,7 +117,12 @@ const InfoSubTitle = styled.h5`
   margin-top: 25px;
 `;
 
-const ProfileImgEdit = styled.button``;
+const ProfileImgEdit = styled.span`
+  border: none;
+  background: none;
+  margin-left: -15px;
+  cursor: pointer;
+`;
 
 const customStyles = {
   content: {
@@ -214,6 +217,12 @@ const SaveEditImg = styled.button`
   font-weight: bold;
   `;
 
+const AvatarImg = styled.img`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 1px solid lightgray;
+`;
 
 function MyProfileMainContents() {
 
@@ -465,10 +474,10 @@ function MyProfileMainContents() {
           </InputContainer>
 
           <ProfileImg>           
-            <FontAwesomeIcon icon={faUserCircle} size="9x" /> 
+            <AvatarImg src={userData?.me?.avatar} /> 
             {activeConfirmPassword && (           
             
-            <ProfileImgEdit onClick={handleOpenModal}>EditICON</ProfileImgEdit>
+            <ProfileImgEdit onClick={handleOpenModal}><EditIcon />  </ProfileImgEdit>
             )}
             
             <Modal isOpen={isModalOpen} style={customStyles}>
@@ -480,12 +489,12 @@ function MyProfileMainContents() {
                 
                   <UploadInput>
                     <ImgInput type="file" /> 
-                    <FontAwesomeIcon className="uploadIcon" icon={faUpload} size="2x" />  
+                    <FontAwesomeIcon className="uploadIcon" icon={faUpload} size="2x" />
                     <UploadLabel>Upload Picture</UploadLabel>
                   </UploadInput>
                 </UploadSection>
                   <ShowImg>
-                    <FontAwesomeIcon icon={faUserCircle} size="9x" />
+                    <AvatarImg src={userData?.me?.avatar} /> 
                   </ShowImg>                 
               </PhotoInfo>
 

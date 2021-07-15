@@ -105,10 +105,11 @@ const SmallBox = styled.div`
 
 const FirstBox20 = styled.div`
   width: 90%;
-  height: 30%;
+  height: 25%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -165,18 +165,16 @@ const TopBtn = styled.div`
 `;
 
 const AddBtn = styled.button`
-  margin-left: 10px;
   margin-top: 25px;
-  margin-bottom: 22px;
   border-radius: 20px;
   background: #004070;
   border: 1px solid;
   color: white;
-  width: 100px;
+  width: 150px;
   height: 35px;
   font-size: 15px;
   box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
+  cursor: pointer; 
 `;
 
 const EditBtn = styled.button`
@@ -688,7 +686,6 @@ function MembersMainContents() {
     
 
       <RightBtn>
-        <DeleteBtn onClick={handleDeleteModal}>Delete Project</DeleteBtn>
           <Modal isOpen={isDModalOpen} style={customStyle}>
             <ModalHeader>DELETE PROJECT</ModalHeader>
               <ModalBody2>
@@ -707,7 +704,6 @@ function MembersMainContents() {
     <ListTableContainer className="sortable">
         <ListThead>
           <ListTr>
-            <ListTh className="check"></ListTh>
             <ListTh className="lAvatar"></ListTh>
             <ListTh className="lName">Name</ListTh>
             <ListTh className="lRole">Role</ListTh>
@@ -719,8 +715,7 @@ function MembersMainContents() {
         <ListTbody>
           {teamData?.seeTeam?.teamMember?.map((member) => (
             <ListTr key={member.id}>
-              <ListTd className="check">O</ListTd>
-              <ListTd className="lAvatar">
+               <ListTd className="lAvatar">
                 <FontAwesomeIcon icon={faUserCircle} size="2x" />
               </ListTd>
               <ListTd className="lName">{member.username}</ListTd>

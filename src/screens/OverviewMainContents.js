@@ -139,10 +139,11 @@ const SmallBox = styled.div`
 
 const FirstBox20 = styled.div`
   width: 90%;
-  height: 50%;
+  height: 45%;
   border-radius: 20px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
