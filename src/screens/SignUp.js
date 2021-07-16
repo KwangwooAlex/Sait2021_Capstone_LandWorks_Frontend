@@ -145,7 +145,7 @@ function SignUp() {
       <UnderHeader></UnderHeader>
       <FormWrapper>
         <FormSignUpBox>
-          <FormTitle>WELCOME TO LWRM PROJECT</FormTitle>
+          <FormTitle>WELCOME TO LRMI PROJECT</FormTitle>
           <FormSubtitle>Create an account</FormSubtitle>
           <form onSubmit={handleSubmit(onSubmitValid, onSubmitInvalid)}>
             <FormError message={errors?.email?.message} />

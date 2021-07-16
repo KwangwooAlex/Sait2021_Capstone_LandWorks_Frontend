@@ -2,10 +2,6 @@ import React from 'react'
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import { gql, useQuery } from '@apollo/client';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserCircle,
-} from "@fortawesome/free-solid-svg-icons";
 import Chart from "../asset/chart.PNG";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
@@ -79,6 +75,8 @@ const SEE_PROJECT_QUERY = gql`
     seeProject (projectId: $projectId) {
       id
       projectName
+      startDate
+      endDate
     }
   }
 `;
@@ -333,16 +331,21 @@ function OverviewMainContents() {
 
   const { data: userData } = useQuery(ME_QUERY);
 
-  const { data: teamData} = useQuery(SEE_TEAM_QUERY ); 
-
-  const { data: projectData} = useQuery(SEE_PROJECT_QUERY, {
-    variables: { projectId: 1 },
+  const { data: teamData} = useQuery(SEE_TEAM_QUERY, {
+    variables: { teamName: teamName },
+    }
+  ); 
+  const { data: projectData } = useQuery(SEE_PROJECT_QUERY, {
+    variables: { projectId: +projectId },
     }
   );  
 
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
-  console.log("경로", teamData?.seeTeam);
+  
+  // console.log("teamData", teamData);
+  console.log("projectData", projectData?.seeProject?.startDate);
+  console.log("projectId", typeof(projectId));
   // {`/myProject/${teamName}/${projects?.id}`}
 
   // const [isProject, setIsProject] = useState();
@@ -393,7 +396,7 @@ return (
 
         <FirstLine>
           <SmallBox>
-            <FirstBox20>Start Date: Today</FirstBox20>
+            <FirstBox20>Start Date: { projectData?.seeProject?.startDate} </FirstBox20>
             <FirstBox20>End Date: Tomorrow</FirstBox20>
           </SmallBox>
           <CalDiv>

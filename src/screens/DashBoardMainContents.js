@@ -44,6 +44,8 @@ const SEE_PROJECT_QUERY = gql`
     seeProject(projectId: $projectId) {
       id
       projectName
+      startDate
+      endDate
     }
   }
 `;
@@ -69,7 +71,7 @@ const LineContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  height: 500px;
+  height: 83%;
   /* justify-content: center; */
   /* align-items: baseline; */
   `;
@@ -147,11 +149,15 @@ const CalBox20 = styled.div`
 
 const TeamCalender = styled(Calendar)`
   margin: auto;
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
   border: none;
   border-radius: 40px;
   /* padding-bottom: 50px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const SecondBox30 = styled.div`
@@ -175,16 +181,38 @@ const TableDiv = styled.div`
   margin: 20px auto;
   padding: 0px;
   overflow: auto;
-  height: 400px;
+  height: 80%;
   width: 99%;
-  border-radius: 0 0 40px 40px;
+  /* border-radius: 0 0 40px 40px; */
 `;
+
+const TeamBody = styled.div`
+  margin: 20px auto;
+  padding: 0px;
+  overflow: auto;
+  height: 80%;
+  width: 99%;
+  /* overflow: auto; */
+  /* border-radius: 0 0 40px 40px; */
+`;
+
+const TeamTable = styled.table`
+  border: 1px solid white;    
+  /* box-shadow: 0px 3px 6px gray; */
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  position: relative;
+  border-collapse: collapse;
+  /* border-radius: 0 0 40px 40px; */
+`;
+
 
 const TableContainer = styled.table`
   /* margin-top: 40px; */
   border: 1px solid white;    
-  box-shadow: 0px 3px 6px gray;
-  height: 200px;
+  /* box-shadow: 0px 3px 6px gray; */
+  height: 100%;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
@@ -196,8 +224,8 @@ const Thead = styled.thead`
 `;
 
 const Tbody = styled.thead`
-  
 `;
+
 const Tr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
@@ -235,24 +263,8 @@ const LETTER = styled.h3`
   /* font-style:italic */
 `;
 
-const TeamBody = styled.div`
-  margin: 20px auto;
-  padding: 0px;
-  overflow: auto;
-  height: 400px;
-  width: 99%;
-  border-radius: 0 0 40px 40px;
-`;
 
-const TeamTable = styled.table`
-  border: 1px solid white;    
-  box-shadow: 0px 3px 6px gray;
-  height: 200px;
-  width: 100%;
-  padding: 0;
-  border-collapse: collapse;
-  /* border-radius: 0 0 40px 40px; */
-`;
+
 
 const TeamThead = styled.thead`
   background-color: #FFEFCE;
@@ -315,11 +327,26 @@ function DashBoardMainContents() {
         <FirstLine>
           <SmallBox>
             <FirstBox20>On Active Project <TotalNum className="onActive">11</TotalNum></FirstBox20>
-            <FirstBox20>Total Team <TotalNum className="totalTeam">{totalTeam}</TotalNum></FirstBox20>
-            <FirstBox20>Total Project <TotalNum className="totalProject">120</TotalNum></FirstBox20>
+            <FirstBox20>
+              Total Team 
+                <TotalNum className="totalTeam">
+                  <Link to={`/myTeam`}>
+                    {totalTeam}
+                  </Link>
+                </TotalNum>
+            </FirstBox20>
+            <FirstBox20>
+              Total Project 
+              <TotalNum className="totalProject">
+                <Link to={`/allProject`}>
+                    12
+                </Link>
+              </TotalNum>
+            </FirstBox20>
           </SmallBox>
           <CalDiv>
             <CalBox20>
+              {/* <LETTER> Calender </LETTER> */}
               <TeamCalender 
                 onChange={onChange}
                 value={value} />

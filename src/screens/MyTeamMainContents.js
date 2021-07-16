@@ -14,6 +14,7 @@ import {
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
     seeAllMyTeam {
+      id
       teamName
       description
       teamMember {
@@ -44,6 +45,21 @@ const CREATE_TEAM_MUTATION = gql`
       ok
       error
       id
+    }
+  }
+`;
+
+const SEE_TEAM_QUERY = gql`
+  query seeTeam($teamName: String!) {
+    seeTeam(teamName: $teamName) {
+      id
+      teamName
+      teamMember {
+        id
+        username
+        email
+        avatar
+  		}
     }
   }
 `;
@@ -401,9 +417,12 @@ const B = styled.b`
 
 
 function MyTeamMainContents() {
-  // const [TeamName, setTeamName] = useState("");
+  const [teamName, setTeamName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  // const [teamId, setTeamId] = useState();
+  const [isDModalOpen, setIsDModalOpen] = useState(false);
+  const [isAbout, setIsAbout] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -422,7 +441,12 @@ function MyTeamMainContents() {
     handleOpenModal();
   };
 
-  const { data: allTeamData, refetch } = useQuery(SEE_ALL_MY_TEAM_QUERY);
+  const { data: teamData, refetch} = useQuery(SEE_TEAM_QUERY, {
+    variables: { teamName: teamName },
+    }); 
+  console.log("teamData!!!!",teamData);
+
+  const { data: allTeamData } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
   console.log("전체팀보자", allTeamData);
 
@@ -458,13 +482,12 @@ function MyTeamMainContents() {
 
   const onSaveInvalid = (data) => {};
   // console.log("팀네임", data?.seeAllMyTeam?.teamName);
+ 
   
-  const [isDModalOpen, setIsDModalOpen] = useState(false);
-  const [isAbout, setIsAbout] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
-  
-  const handleSettingModal = () => {
+  const handleSettingModal = (teamName) => {
+    console.log("teamName", teamName);
     setIsDModalOpen(true);
+    setTeamName(teamName);
     setIsAbout({ bgColor: "lightgray" });
    };
    
@@ -491,12 +514,6 @@ function MyTeamMainContents() {
     setIsDModalOpen(false);
     setIsAbout(true);
     setIsDelete(false);
-  };
-
-  const [showName, setShowName] = useState('');
-
-  const handleShowName = (e) => {
-    
   };
 
   return (
@@ -529,7 +546,7 @@ function MyTeamMainContents() {
               <Description
                 ref={register}
                 type="text"
-                // name="description"
+                name="description"
                 value={watch("description")}
                 placeholder="Let people know what this team is all about..."
                 onChange={handleChange}
@@ -549,7 +566,7 @@ function MyTeamMainContents() {
       <TeamBody>
         {allTeamData?.seeAllMyTeam?.map((team) => (
           <ListEachTeam key={team.id}>
-            <SettingBtn onClick={handleSettingModal}><SettingsIcon/></SettingBtn>
+            <SettingBtn onClick={()=>handleSettingModal(team.teamName)}><SettingsIcon/></SettingBtn>
               <Link to={`/myProject/${team.teamName}`}>
                 <TeamList>
                   {team.teamName}
@@ -582,10 +599,10 @@ function MyTeamMainContents() {
                         {isAbout &&
                           <ModalSet>
                             <SetTitle>ABOUT TEAM INFORMATION</SetTitle>
-                            <MemberSetSub>Team Name: <B>{team.teamName}</B> </MemberSetSub>
+                            <MemberSetSub>Team Name: <B>{teamData?.seeTeam?.teamName}</B> </MemberSetSub>
                             <MemberL>
                               <MemberSetSub>Member list:</MemberSetSub>
-                              <MemberSetSub>Total of members (12)</MemberSetSub>
+                              <MemberSetSub>Total of members ({(teamData?.seeTeam?.teamMember).length})</MemberSetSub>
                             </MemberL>
                             <TableDiv>
                               <ListTableContainer className="sortable">
@@ -615,7 +632,7 @@ function MyTeamMainContents() {
                         {isDelete &&
                           <ModalSet>
                             <SetTitle>DELETE TEAM</SetTitle>
-                            <DeleteSetSub>Are you sure you want to delete the team <B>"Alex"</B>?<br/>
+                            <DeleteSetSub>Are you sure you want to delete the team <B>{teamData?.seeTeam?.teamName}</B>?<br/>
                               If you click <B>"Delete Team"</B> button, your all projects <br/>
                               and files for this team will be delete.</DeleteSetSub>
                             {/* <CheckDelete type="radio">I agree with deleting everything</CheckDelete> */}

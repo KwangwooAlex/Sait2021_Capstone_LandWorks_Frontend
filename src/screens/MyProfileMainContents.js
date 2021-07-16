@@ -20,6 +20,11 @@ const EDIT_PROFILE_MUTATION = gql`
     $phoneNumber: String
     $password: String
     $avatar: String
+    $birth: String
+    $country: String
+    $state: String
+    $city: String
+    $Street: String
   ) {
     editProfile(
       username: $username
@@ -28,6 +33,12 @@ const EDIT_PROFILE_MUTATION = gql`
       phoneNumber: $phoneNumber
       password: $password
       avatar: $avatar
+      birth: $birth
+      country: $country
+      state: $state
+      city: $city
+      Street: $Street
+
     ) {
       ok
       error
@@ -35,6 +46,10 @@ const EDIT_PROFILE_MUTATION = gql`
     }
   }
 `;
+// $birth: String
+
+// birth: $birth
+
 
 const ME_QUERY = gql`
   query me {
