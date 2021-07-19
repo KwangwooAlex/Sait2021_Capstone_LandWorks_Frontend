@@ -308,8 +308,6 @@ const ModalBody2 = styled.div`
   margin: 25px 30px;
 `; 
 
-const CheckDelete = styled.input``;
-
 const ModalSet = styled.div`
   /* margin-top: 30px; */
   width: 100%;
@@ -345,9 +343,7 @@ const TableDiv = styled.div`
 `;
 
 const ListTableContainer = styled.table`
-  /* margin-top: 40px; */
   border: 1px solid white;    
-  /* box-shadow: 0px 3px 6px gray; */
   height: 100%;
   width: 100%;
   padding:0;
@@ -358,7 +354,7 @@ const ListTableContainer = styled.table`
 const ListThead = styled.thead`
   background-color: #F8F8F8;
 `;
-// const file = [{id:"", projectName:""},{}]
+
 const ListTbody = styled.thead`
 
 `;
@@ -370,7 +366,6 @@ const ListTr = styled.tr`
   width: 100%;
 `;
 const ListTh = styled.th`
-  /* background-color: lightblue; */
   padding: 5px 10px;
   margin: 0 10px;
   width: 100%;
@@ -417,6 +412,7 @@ const B = styled.b`
 
 
 function MyTeamMainContents() {
+  
   const [teamName, setTeamName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [teamId, setTeamId] = useState();
@@ -602,7 +598,7 @@ function MyTeamMainContents() {
                             <MemberSetSub>Team Name: <B>{teamData?.seeTeam?.teamName}</B> </MemberSetSub>
                             <MemberL>
                               <MemberSetSub>Member list:</MemberSetSub>
-                              <MemberSetSub>Total of members ({(teamData?.seeTeam?.teamMember).length})</MemberSetSub>
+                              <MemberSetSub>Total of members ({(teamData?.seeTeam?.teamMember)?.length})</MemberSetSub>
                             </MemberL>
                             <TableDiv>
                               <ListTableContainer className="sortable">
@@ -614,7 +610,7 @@ function MyTeamMainContents() {
                                   </ListTr>
                                 </ListThead>
                                 <ListTbody>
-                                  {allTeamData?.seeAllMyTeam?.teamMember?.map((member) => (
+                                  {teamData?.seeTeam?.teamMember?.map((member) => (
                                     <ListTr key={member.id}>
                                       <ListTd className="lAvatar">
                                         <FontAwesomeIcon icon={faUserCircle} size="2x" />
@@ -632,10 +628,10 @@ function MyTeamMainContents() {
                         {isDelete &&
                           <ModalSet>
                             <SetTitle>DELETE TEAM</SetTitle>
-                            <DeleteSetSub>Are you sure you want to delete the team <B>{teamData?.seeTeam?.teamName}</B>?<br/>
+                            <DeleteSetSub>Are you sure you want to delete the team <B>{teamData?.seeTeam?.teamName}</B><br/>
                               If you click <B>"Delete Team"</B> button, your all projects <br/>
                               and files for this team will be delete.</DeleteSetSub>
-                            {/* <CheckDelete type="radio">I agree with deleting everything</CheckDelete> */}
+
                             <DeleteBtn onClick={handleDeleteBtnModal}>Delete Team</DeleteBtn>
                           </ModalSet>
                         } 

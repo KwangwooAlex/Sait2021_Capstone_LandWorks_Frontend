@@ -289,6 +289,7 @@ const LETTER = styled.h3`
   align-items: center;
   justify-content: center;
 `;
+
 const LETTERS = styled.h4`
   color: Black;
   font-weight: 600;
@@ -296,7 +297,7 @@ const LETTERS = styled.h4`
   margin-left: 15px;
 `;
 
-const ProjectOverview = styled.div`
+const ProjectPath = styled.div`
   color: Black;
   font-weight: 600;
   font-size: 20px;
@@ -366,11 +367,11 @@ return (
       </TeamName>
       <LETTERS>></LETTERS>
       {/* 수정해야함 */}
-      <ProjectOverview>
+      <ProjectPath>
         <Link to={`/myProject/${teamName}/${projectId}`}> 
           {projectData?.seeProject?.projectName}
         </Link>    
-      </ProjectOverview>
+      </ProjectPath>
     </TeamPath>
     <MainHeader>
       <MainTitle>
@@ -384,9 +385,6 @@ return (
           <Link to={`/myProject/${teamName}/${projectId}/files`}>
             <Letter>Files</Letter>
           </Link>
-          {/* <Link to={`/myProject/${teamName}/${projectId}/members`}>
-            <Letter>Members</Letter>
-          </Link> */}
         </NavBar>
         <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
       </RightSection>
@@ -397,7 +395,7 @@ return (
         <FirstLine>
           <SmallBox>
             <FirstBox20>Start Date: { projectData?.seeProject?.startDate} </FirstBox20>
-            <FirstBox20>End Date: Tomorrow</FirstBox20>
+            <FirstBox20>End Date: { projectData?.seeProject?.endDate}</FirstBox20>
           </SmallBox>
           <CalDiv>
             <SecondBox20>
@@ -409,7 +407,9 @@ return (
 
         <SecondLine>
           <SecondBox30> 
-            <LETTER> MEMBER LIST </LETTER>       
+            <Link to={`/members/${teamName}`}>
+              <LETTER> MEMBER LIST </LETTER>    
+            </Link>   
             <TableDiv>
               <ListTableContainer className="sortable">
                 <ListThead>

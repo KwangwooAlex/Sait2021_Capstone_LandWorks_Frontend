@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
-import { Link, useParams } from "react-router-dom";
-import Select from 'react-select';
-import DatePicker from "react-datepicker";
+import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { gql, useQuery } from "@apollo/client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserCircle,
-} from "@fortawesome/free-solid-svg-icons";
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 
@@ -39,17 +33,6 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
   }
 `;
 
-const SEE_PROJECT_QUERY = gql`
-  query seeProject($projectId: Int!) {
-    seeProject(projectId: $projectId) {
-      id
-      projectName
-      startDate
-      endDate
-    }
-  }
-`;
-
 const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
@@ -66,20 +49,16 @@ const MainTitle = styled.div`
   box-sizing: border-box;
 `;
 
-
 const LineContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
   height: 83%;
-  /* justify-content: center; */
-  /* align-items: baseline; */
   `;
 
 const FirstLine = styled.div`
   width: 30%;
   height: 100%;
-  /* display: flex; */
   `;
 
 const SecondLine = styled.div`
@@ -141,10 +120,6 @@ const CalBox20 = styled.div`
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
-  /* padding-bottom: 20px; */
-  /* display: flex;
-  align-items: center;
-  justify-content: space-between; */
 `;
 
 const TeamCalender = styled(Calendar)`
@@ -153,7 +128,6 @@ const TeamCalender = styled(Calendar)`
   height: 100%;
   border: none;
   border-radius: 40px;
-  /* padding-bottom: 50px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -177,13 +151,11 @@ const ThirdBox60 = styled.div`
 `;
 
 const TableDiv = styled.div`
-  /* margin-top: 1px; */
   margin: 20px auto;
   padding: 0px;
   overflow: auto;
   height: 80%;
   width: 99%;
-  /* border-radius: 0 0 40px 40px; */
 `;
 
 const TeamBody = styled.div`
@@ -192,31 +164,24 @@ const TeamBody = styled.div`
   overflow: auto;
   height: 80%;
   width: 99%;
-  /* overflow: auto; */
-  /* border-radius: 0 0 40px 40px; */
 `;
 
 const TeamTable = styled.table`
   border: 1px solid white;    
-  /* box-shadow: 0px 3px 6px gray; */
   height: 100%;
   width: 100%;
   padding: 0;
   position: relative;
   border-collapse: collapse;
-  /* border-radius: 0 0 40px 40px; */
 `;
 
 
 const TableContainer = styled.table`
-  /* margin-top: 40px; */
   border: 1px solid white;    
-  /* box-shadow: 0px 3px 6px gray; */
   height: 100%;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  /* border-radius: 0 0 40px 40px; */
 `;
 
 const Thead = styled.thead`
@@ -260,11 +225,7 @@ const LETTER = styled.h3`
   margin-left: 25px;
   font-weight: bolder;
   font-size: large;
-  /* font-style:italic */
 `;
-
-
-
 
 const TeamThead = styled.thead`
   background-color: #FFEFCE;
@@ -306,17 +267,19 @@ const TeamTd = styled.td`
 function DashBoardMainContents() {
   const [value, onChange] = useState(new Date());
 
-  const {teamName, projectId} = useParams();
+  // const {teamName, projectId} = useParams();
 
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
-  const { data: list } = useQuery(SEE_PROJECT_QUERY);
+
+  // AllMyProject 필요함 (전체 리스트를 보고 총 프로젝트 수를 알 수 있다)
+  // seeProject는 프로젝트 하나만 볼 수 있는거기 때문에 X
+  // const { data: list } = useQuery(SEE_PROJECT_QUERY);
 
   console.log("전체 팀", data?.seeAllMyTeam);
-  console.log("프로젝트 리스트", list);
+
 
   let totalTeam = data?.seeAllMyTeam?.length;
-  // let totalProject = list?.seeProject?.length;
-  // let countProject = projectId?.length;
+
 
   
   return (
@@ -326,6 +289,7 @@ function DashBoardMainContents() {
 
         <FirstLine>
           <SmallBox>
+            {/* 하드코딩 부분 수정해야함 - Total On Active project 숫자 */}
             <FirstBox20>On Active Project <TotalNum className="onActive">11</TotalNum></FirstBox20>
             <FirstBox20>
               Total Team 
@@ -335,6 +299,7 @@ function DashBoardMainContents() {
                   </Link>
                 </TotalNum>
             </FirstBox20>
+            {/* 하드코딩 부분 수정해야함 - TotalProject 숫자 */}
             <FirstBox20>
               Total Project 
               <TotalNum className="totalProject">
@@ -346,7 +311,6 @@ function DashBoardMainContents() {
           </SmallBox>
           <CalDiv>
             <CalBox20>
-              {/* <LETTER> Calender </LETTER> */}
               <TeamCalender 
                 onChange={onChange}
                 value={value} />

@@ -42,15 +42,10 @@ const Container = styled.main`
   width: 90%;
 `;
 
-
 const TeamName = styled.div`
-  color: Black;
+  color: gray;
   font-weight: 600;
   font-size: 20px;
-  width: 100%;
-  height: 40px;
-  border-bottom: black 2px solid;
-  box-sizing: border-box;
 `; 
 
 const MainHeader = styled.div`
@@ -71,10 +66,19 @@ const RightSection = styled.div`
   display: flex;
 `;
 
+
 const NavBar = styled.div`
   display: flex;
   margin-right: 40px;
   text-align: center;
+`;
+
+const TeamPath = styled.div`
+  display: flex;
+  border-bottom: black 2px solid;
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px; 
 `;
 
 const Letter = styled.div`
@@ -91,6 +95,20 @@ const Letter = styled.div`
   &.selected {
     background-color: #FFB41E;
   }
+`;
+
+const LETTERS = styled.h4`
+  color: Black;
+  font-weight: 600;
+  font-size: 20px;
+  margin-left: 15px;
+`;
+
+const ProjectPath = styled.div`
+  color: Black;
+  font-weight: 600;
+  font-size: 20px;
+  margin-left: 15px;
 `;
 
 const InputSearch = styled.input`
@@ -111,10 +129,6 @@ margin-bottom: 20px;
 const FourBtn = styled.div`
 display: flex;
 
-`;
-
-const TwoBtn = styled.div`
-display: flex;
 `;
 
 const UploadBtn = styled.button`
@@ -171,24 +185,9 @@ const customStyles = {
     height: "420px",
   },
 };
-const customStylesNewFolder = {
-  content: {
-    padding: "0",
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    width: "500px",
-    height: "250px",
-  },
-};
-
 
 const UploadModalContainer = styled.div``;
 
-const NewFolderModalContainer = styled.div``;
 
 const ModalHeader = styled.h4`
   margin: 0;
@@ -209,11 +208,6 @@ const UploadHeader = styled.h3`
   padding-bottom: 10px;
 `;
 
-const NewFolderHeader = styled.h4`
-  border-bottom: 1px solid lightgray;
-  padding-bottom: 10px;
-`;
-
 const UploadDes = styled.p`
   margin-top: 25px;
   margin-bottom: -15px;
@@ -225,16 +219,6 @@ const UploadInput = styled(Input)`
   align-items: center;
   justify-content: center;
   border-color: lightgray;
-`;
-
-const FolderInputLabel = styled.p`
-  margin-top: 25px;
-  margin-bottom: -15px;
-  font-size: 12px;
-`;
-
-const NewFolderInput = styled(Input)`
-
 `;
 
 const UploadBox = styled.div`
@@ -334,7 +318,6 @@ const Tbody = styled.thead`
     &.fDelete { width: 10%; }
   `;
 
-const CheckInput = styled.input``;
 
 const MeditBtn = styled.button`
   background-color: white;
@@ -349,102 +332,43 @@ const DeleteMBtn = styled.button`
   cursor: pointer;
 `;
 
-const customStyle = {
-  content: {
-    padding: "0",
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    width: "400px",
-    height: "200px",
-  },
-};
-
-const RightBtn = styled.div`
-`;
-
-const OkBtn = styled.button`
-  background: #004070;
-  border: 2x solid;
-  color: white;
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
-  cursor: pointer;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: bold;
-`;
-
-const CancelBtn2 = styled.button`
-  background: white;
-  border: 2x solid;
-  border-color:#B8B8B8;
-  color: #004070;
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
-  cursor: pointer;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: bold;
-`;
-
-const ModalBtn2 = styled.div`
-  margin: 20px auto; 
-  /* justify-content: space-between; */
-  text-align: center;
-`;
-
-const ModalBody2 = styled.div`
-  margin: 30px 30px;
-`; 
-
-const DeleteNotice = styled.p`
-  line-height: 150%;
-  text-align: center;
-`;
-
-const B = styled.b`
-  font-weight: 600;
+const EditFileName = styled.input`
+border: 1px solid gray;
+width: 80%;
 `;
 
 
 function FilesMainContents() {
+
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const [fileName, setFileName] = useState("");
+
+  const handleEditFile = (fileName) => {
+    setIsEditMode(true);
+    setFileName(fileName);
+    if (isEditMode) {
+      setIsEditMode(false);
+    }
+  }
+
   const {teamName, projectId} = useParams();
   const { data: teamData} = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName },
     }
   ); 
 
+  const { data: projectData } = useQuery(SEE_PROJECT_QUERY, {
+    variables: { projectId: +projectId },
+    }
+  );  
+
+  console.log("projectId", typeof(projectId));
   console.log("teamData", teamData?.seeTeam?.project);
-  // console.log("PName", teamData?.seeTeam?.project?.projectName);
-
-  // const { projectId } = useParams();
-  const { data: projectData} = useQuery(SEE_PROJECT_QUERY);  
-
   console.log("projectData", projectData );
 
-  const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [isDModalOpen, setIsDModalOpen] = useState(false);
-
-  const handleDeleteModal = () => {
-    setIsDModalOpen(true);
-   };
-
-   const handleDCancelBtnModal = () => {
-    setIsDModalOpen(false);
-  };
-
-  const handleOkBtnModal = () => {
-    alert("Your files have been deleted.");
-    setIsDModalOpen(false);
-  };
   
-
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleUploadOpen = () => {
     setIsUploadOpen(true);
   };
@@ -454,25 +378,22 @@ function FilesMainContents() {
     setIsUploadOpen(false);
   };
 
-  const [isProject, setIsProject] = useState('');
-  
-  const handlePName = () => {
-  if (teamData?.seeTeam?.filter(
-    (projects) => projects.projectId === projectId
-  ))
-   return <Letter>{teamData?.seeTeam?.project?.projectName}</Letter>
-  };
-
-
 
   return (
     <Container>
+       <TeamPath>
     <TeamName>  
       <Link to={`/myProject/${teamName}`}> 
-        {teamName} > 
+        {teamName}
       </Link>
-
     </TeamName>
+      <LETTERS>></LETTERS>
+      <ProjectPath>
+        <Link to={`/myProject/${teamName}/${projectId}`}> 
+          {projectData?.seeProject?.projectName}
+        </Link>    
+      </ProjectPath>
+      </TeamPath>
     <MainHeader>
       <MainTitle>
         FILES
@@ -518,19 +439,6 @@ function FilesMainContents() {
         <CopyBtn>Copy</CopyBtn>
       </FourBtn>
 
-      <RightBtn>
-          <Modal isOpen={isDModalOpen} style={customStyle}>
-            <ModalHeader>DELETE FILES</ModalHeader>
-              <ModalBody2>
-                <DeleteNotice>Are you sure you want to delete<br /> 
-                  the file <B>"project2"</B>?</DeleteNotice>
-                <ModalBtn2>
-                  <CancelBtn2 onClick={handleDCancelBtnModal}>Cancel</CancelBtn2>
-                  <OkBtn onClick={handleOkBtnModal}>Ok</OkBtn>
-                </ModalBtn2>
-              </ModalBody2>
-          </Modal>
-      </RightBtn>
     </SixBtn>
     <TableDiv>
     <TableContainer className="sortable">
@@ -545,15 +453,32 @@ function FilesMainContents() {
           </Tr>
         </Thead>
         <Tbody>
-          {teamData?.seeTeam?.project?.map((projects, index) => (
-            <Link to={`/myProject/${teamName}/${projects?.id}`}>
-            <Tr key={projects.id, index}>
+          {/* 파일업로드 파트 전체 수정해야함. 지금이건 프로젝트 리스트로 대신 하드코딩 해둔거임 */}
+          {teamData?.seeTeam?.project?.map((files, index) => (
+            <Link to={`/myProject/${teamName}/${files?.id}`}>
+            <Tr key={files.id, index}>
               <Td className="num">{index+1}</Td>
-              <Td className="fName">{projects.projectName}</Td>
+              <Td className="fName">
+                {isEditMode ? 
+                <EditFileName
+                // ref={register}
+                type="text" 
+                name="fileName"
+                // placeholder={projects.projectStatus}
+                // value={watch("projectStatus")}
+                onClick={ (event) => event.preventDefault() }
+                // onChange={handleEditChange}
+                /> : <>{files.projectName}</>
+              }
+              </Td>
               <Td className="fUpdateBy">Update by</Td>
               <Td className="fLast">Last Update</Td>
-              <Td className="fEdit"><MeditBtn><EditIcon /></MeditBtn></Td>
-              <Td className="fDelete"><DeleteMBtn ><DeleteIcon /></DeleteMBtn></Td>
+              <Td className="fEdit" onClick={ (event) => event.preventDefault() }>
+                <MeditBtn onClick={handleEditFile}><EditIcon /></MeditBtn>
+              </Td>
+              <Td className="fDelete" onClick={ (event) => event.preventDefault() }>
+                <DeleteMBtn ><DeleteIcon /></DeleteMBtn>
+              </Td>
             </Tr>
             </Link>
           ))}

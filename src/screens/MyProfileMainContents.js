@@ -46,10 +46,6 @@ const EDIT_PROFILE_MUTATION = gql`
     }
   }
 `;
-// $birth: String
-
-// birth: $birth
-
 
 const ME_QUERY = gql`
   query me {
@@ -71,7 +67,6 @@ const ME_QUERY = gql`
 const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
-  /* background-color: black; */
   width: 90%;
 `;
 
@@ -101,10 +96,9 @@ const EditBtn = styled.button`
 
 const InfoSection = styled.div`
   display: flex;
-  /* margin: 10% 25%; */
   justify-content: center;
   align-items: center;
-  margin-top: 7%;
+  margin-top: 5%;
   margin-left: 20%;
 `;
 
@@ -137,6 +131,7 @@ const ProfileImgEdit = styled.span`
   background: none;
   margin-left: -15px;
   cursor: pointer;
+  &:hover{ color: blue; }
 `;
 
 const customStyles = {
@@ -148,7 +143,7 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "500px",
-    height: "300px",
+    height: "310px",
   },
 };
 
@@ -163,7 +158,7 @@ const UploadSection = styled.div`
 
 const ImgTitle = styled.h1`
   font-family:Source Han Sans KR;
-  margin-top: 70px;
+  margin-top: 50px;
   text-align: left;
   font-weight: bold;
   margin-left: 20px;
@@ -178,7 +173,7 @@ const ImgInput = styled.input`
 const UploadInput = styled.div`
   margin-top: 20px;
   margin-left: 30px;
-  display: inline-block;
+  /* display: inline-block; */
   padding: 6px 12px;
   cursor: pointer;
   color: #004070;
@@ -187,7 +182,15 @@ const UploadInput = styled.div`
 `;
 
 const UploadLabel = styled.label`
-  margin-left: 10px;
+  /* margin-left: 10px; */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const UpImg = styled.div`
+  display: flex;
+  margin-right: 15px;
 `;
 
 const ProfileImg = styled.div`
@@ -233,6 +236,7 @@ const SaveEditImg = styled.button`
   `;
 
 const AvatarImg = styled.img`
+  margin-top: -20px;
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -241,7 +245,6 @@ const AvatarImg = styled.img`
 
 function MyProfileMainContents() {
 
-  // const { data: userData, refetch:userDataRefetch } = useUser();
   const { data: userData, refetch } = useQuery(ME_QUERY);
   
   const [disabled, setDisabled] = useState(true);
@@ -320,14 +323,11 @@ function MyProfileMainContents() {
       setActiveConfirmPassword(false);
       setActiveEditBtn("Edit");
       alert("Your profile has been saved.");
-      // setInputChange(setValue);
     } else {
       setActiveConfirmPassword(true);
       setActiveEditBtn("Save");
-      // setInputChange(setValue);  
     }
   };
-  // console.log("userData", userData);
 
   const [editProfile,{loading}] = useMutation(EDIT_PROFILE_MUTATION); 
 
@@ -353,7 +353,6 @@ function MyProfileMainContents() {
       <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}> 
       <MainTitle>
         MY PROFILE
-        {/* <EditBtn type="submit" onClick={handleEditClick}> */}
       </MainTitle>
         <EditBtn type="submit">
           {activeEditBtn}
@@ -427,8 +426,7 @@ function MyProfileMainContents() {
                     placeholder={userData?.me?.password}
                     disabled={disabled}
                     onChange={handleChange}
-                  />
-                    
+                  />                    
                 </>
               )}
             </AccountInfo>       
@@ -495,17 +493,16 @@ function MyProfileMainContents() {
             <ProfileImgEdit onClick={handleOpenModal}><EditIcon />  </ProfileImgEdit>
             )}
             
-            <Modal isOpen={isModalOpen} style={customStyles}>
-            
+            <Modal isOpen={isModalOpen} style={customStyles}>            
               <PhotoInfo>
               <UploadSection>
                 <ImgTitle>Change your profile picture</ImgTitle>
-
-                
+                  {/* 사진 업로드 */}
                   <UploadInput>
-                    <ImgInput type="file" /> 
-                    <FontAwesomeIcon className="uploadIcon" icon={faUpload} size="2x" />
-                    <UploadLabel>Upload Picture</UploadLabel>
+                    <UploadLabel>
+                      <ImgInput type="file" /> 
+                        <UpImg><FontAwesomeIcon className="uploadIcon" icon={faUpload} size="2x" /></UpImg>
+                      Upload Picture</UploadLabel>
                   </UploadInput>
                 </UploadSection>
                   <ShowImg>
@@ -516,9 +513,9 @@ function MyProfileMainContents() {
               <PhotoBtn>                      
                 <SaveEditImg onClick={handleSaveModal}>Save</SaveEditImg>
                 <CancelEditImg onClick={handleCancelModal}>Cancel</CancelEditImg>
-              </PhotoBtn> 
-              
+              </PhotoBtn>               
             </Modal>
+
           </ProfileImg>
         </InfoSection>
         </form>

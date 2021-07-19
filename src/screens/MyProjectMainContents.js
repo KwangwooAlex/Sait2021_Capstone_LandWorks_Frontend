@@ -84,9 +84,15 @@ const EDIT_PROJECT_MUTATION = gql`
   }
 `;
 
-// const DELETE_PROJECT_MUTATION = gql`
-
-// `;
+const DELETE_PROJECT_MUTATION = gql`
+  mutation deleteProject($projectId: Int!) {
+    deleteProject(projectId: $projectId) {
+      ok
+      error
+      id
+    }
+  }
+`;
 
 const Container = styled.main`
   padding: 40px 40px 0 40px;
@@ -186,20 +192,6 @@ const customStyles = {
   },
 };
 
-const customStyle = {
-  content: {
-    padding: "0",
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    width: "400px",
-    height: "200px",
-  },
-};
-
 const summaryCustomStyles = {
   content: {
     padding: "0",
@@ -220,8 +212,6 @@ const AllBtn =  styled.div`
   margin-bottom: 20px;
 `;
 
-const RightBtn = styled.div`
-`;
 
 const LeftBtn = styled.div`
 
@@ -369,7 +359,6 @@ const TableDiv = styled.div`
 
 const TableContainer = styled.table`
   border: 1px solid white;    
-  /* box-shadow: 0px 3px 6px gray; */
   height: 100%;
   width: 100%;
   padding:0;
@@ -395,43 +384,29 @@ const Th = styled.th`
   margin: 0 10px;
   width: 100%;
   text-align: left;
-  &.check { width: 3%; }
   &.num { width: 5%; }
   &.pName { width: 25%; }
   &.pDesc { width: 25%; }
   &.pStatus { width: 12%; }
-  &.pSecurity { width: 13%; }
+  &.pSecurity { width: 16%; }
   &.pEdit { width: 7%; }
   &.pDelete { width: 10%; }
 `;
+
 const Td = styled.td`
   cursor: pointer;
   padding: 10px;
   margin: 5px 10px;
   width: 100%;
   text-align: left;
-  &.check { width: 3%; }
   &.num { width: 5%; }
   &.pName { width: 25%; }
   &.pDesc { width: 25%; }
   &.pStatus { width: 12%; }
-  &.pSecurity { width: 13%; }
+  &.pSecurity { width: 16%; }
   &.pEdit { width: 7%; }
   &.pDelete { width: 10%; }
 `;
-
-const CheckLabel = styled.label``;
-const CheckInput = styled.input`
-  border: 1px solid gray;
-  border-radius: 50%;
-  height: 15px;
-  width: 15px;
-`;
-// padding: 5px 10px;
-//   border-radius: 5px;
-//   font-size: 13px;
-//   height: 20px;
-//   width: 200px;
 
 const EditPBtn = styled.button`
   border: none;
@@ -446,72 +421,39 @@ const DeletePBtn = styled.button`
   cursor:pointer;
 `;
 
-const EditpName = styled.input`
-  border: 1px solid gray;
-  width: 100%;
-`;
-const EditpDesc = styled.input`
-  border: 1px solid gray;
-  width: 100%;
-`;
-const EditpStatus = styled.input`
-  border: 1px solid gray;
-  width: 100%;
-`;
-const EditpSecurity = styled.input`
-  border: 1px solid gray;
-  width: 100%;
-`;
-const OkBtn = styled.button`
-  background: #004070;
-  border: 2x solid;
-  color: white;
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
-  cursor: pointer;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: bold;
-`;
-
-const CancelBtn2 = styled.button`
-  background: white;
-  border: 2x solid;
-  border-color:#B8B8B8;
-  color: #004070;
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
-  cursor: pointer;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: bold;
-`;
-
-const ModalBtn2 = styled.div`
-  margin: 20px auto; 
-  /* justify-content: space-between; */
-  text-align: center;
-`;
-
-const ModalBody2 = styled.div`
-  margin: 30px 30px;
-`; 
-
-const DeleteNotice = styled.p`
-  line-height: 150%;
-  text-align: center;
-`;
-
-const B = styled.b`
-  font-weight: 600;
-`;
+// const EditpName = styled.input`
+//   border: 1px solid gray;
+//   width: 100%;
+// `;
+// const EditpDesc = styled.input`
+//   border: 1px solid gray;
+//   width: 100%;
+// `;
+// const EditpStatus = styled.input`
+//   border: 1px solid gray;
+//   width: 100%;
+// `;
+// const EditpSecurity = styled.input`
+//   border: 1px solid gray;
+//   width: 100%;
+// `;
 
 
 
 function MyProjectMainContents() {
 
   const [submitData, setSubmitData] = useState({});
-  const {teamName, projectId} = useParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+
+  const [status, setStatus] = useState(null);
+  const [security, setSecurity] = useState(null);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const {teamName} = useParams();
   console.log("projects");
   console.log("submitData",submitData);
 
@@ -532,9 +474,6 @@ function MyProjectMainContents() {
   }; 
 
   const [createProject, { loading, error }] = useMutation(CREATE_PROJECT_MUTATION);
-   
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   
 
   const handleOpenModal = () => {
@@ -570,7 +509,7 @@ function MyProjectMainContents() {
     console.log("status", status);
     console.log("security", security);
     console.log("startDate", typeof(String(startDate)));
-    console.log("endDate", endDate);
+    console.log("endDate", typeof(String(endDate)));
     setSubmitData(data);
     if (loading) {
       return;
@@ -585,6 +524,7 @@ function MyProjectMainContents() {
       variables: { 
         ...submitData,
         startDate:String(startDate),
+        endDate:String(endDate),
         projectStatus:status,
         securityLevel:security,
         teamId:teamData.seeTeam.id,       
@@ -610,11 +550,6 @@ function MyProjectMainContents() {
     { value: 'Confidential', label: 'Confidential' },
   ];
 
-  const [status, setStatus] = useState(null);
-  const [security, setSecurity] = useState(null);
-
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
 
   const handleStatus = (e)=>{
    setStatus(e.value);
@@ -624,14 +559,12 @@ function MyProjectMainContents() {
     setSecurity(e.value);
   };
 
-  const [editProject] = useMutation(EDIT_PROJECT_MUTATION);
-
-  const [isEdit, setIsEdit] = useState(false);
+  // const [editProject] = useMutation(EDIT_PROJECT_MUTATION);
 
   const handleEditList = (e) => {
-    setIsEdit(true);
-    if(isEdit) {
-      setIsEdit(false);
+    setIsEditMode(true);
+    if(isEditMode) {
+      setIsEditMode(false);
     }
   };
 
@@ -639,27 +572,27 @@ function MyProjectMainContents() {
   //   mode: "onChange",
   // });
 
-  useEffect(( ) => {
-    setValue("projectName", teamData?.seeTeam?.project?.projectName);
-    setValue("description", teamData?.seeTeam?.project?.description);
-    setValue("projectStatus", teamData?.seeTeam?.project?.projectStatus);
-    setValue("projectSecurity", teamData?.seeTeam?.project?.projectSecurity);
-  },[teamData, setValue]);
+  // useEffect(( ) => {
+  //   setValue("projectName", teamData?.seeTeam?.project?.projectName);
+  //   setValue("description", teamData?.seeTeam?.project?.description);
+  //   setValue("projectStatus", teamData?.seeTeam?.project?.projectStatus);
+  //   setValue("projectSecurity", teamData?.seeTeam?.project?.projectSecurity);
+  // },[teamData, setValue]);
 
-  const handleEditChange = (e) => {
-    if(e.target.name === "projectName"){
-      setValue("projectName", e.target.value);
-    }
-    if(e.target.name === "description"){
-      setValue("description", e.target.value);
-    }
-    if(e.target.name === "projectStatus"){
-      setValue("projectStatus", e.target.value);
-    }
-    if(e.target.name === "projectSecurity"){
-      setValue("projectSecurity", e.target.value);
-    }
-  };
+  // const handleEditChange = (e) => {
+  //   if(e.target.name === "projectName"){
+  //     setValue("projectName", e.target.value);
+  //   }
+  //   if(e.target.name === "description"){
+  //     setValue("description", e.target.value);
+  //   }
+  //   if(e.target.name === "projectStatus"){
+  //     setValue("projectStatus", e.target.value);
+  //   }
+  //   if(e.target.name === "projectSecurity"){
+  //     setValue("projectSecurity", e.target.value);
+  //   }
+  // };
 
   // const onEditValid = (data) =>  {
   //   handleEditList();    
@@ -676,6 +609,17 @@ function MyProjectMainContents() {
   // };
 
   // const onEditInvalid = (data) => {};
+
+  // const [deleteProject] = useMutation(DELETE_PROJECT_MUTATION);
+  
+  // prrojectDelete
+  const [id, setId] = useState();
+  
+  const onRemove = (id) => {
+
+  };
+
+
 
 
   return (
@@ -830,12 +774,12 @@ function MyProjectMainContents() {
                   <ProcessDate>
                     <StartD>
                       <SummaryLabel className="dateLabel">Start Date: 
-                      <InputResult>{submitData?.startDate}</InputResult>
+                      <InputResult>{String(startDate)}</InputResult>
                       </SummaryLabel>
                     </StartD>
                     <EndD>
                       <SummaryLabel className="dateLabel endDate">End Date: 
-                      <InputResult className="endDate">{submitData?.endDate}</InputResult>
+                      <InputResult className="endDate">{String(endDate)}</InputResult>
                       </SummaryLabel>
                     </EndD>
                   </ProcessDate>
@@ -875,82 +819,29 @@ function MyProjectMainContents() {
             </Tr>
         </Thead>
 
-      {/* {isEditMode ?
-        <EditProjects /> : */}
+      {isEditMode ?
+        <EditProjects/> 
+        :
         <Tbody>
           {teamData?.seeTeam?.project?.map((projects, index) => (
             <Link to={`/myProject/${teamName}/${projects?.id}`}>
             <Tr key={projects.id}>
               <Td className="num">{index+1}</Td>
-              <Td className="pName">
-                  {isEdit ? (
-                  <EditpName 
-                    ref={register}
-                    type="text" 
-                    name="projectName"
-                    placeholder={projects.projectName}
-                    value={watch("projectName")}
-                    onClick={ (event) => event.preventDefault() }
-                    onChange={handleEditChange}
-                  />
-                  ): <>{projects.projectName}</>}
-                </Td>
-                <Td className="pDesc">
-                  {isEdit ? (
-                  <EditpDesc 
-                    ref={register}
-                    type="text" 
-                    name="description"
-                    placeholder={projects.description}
-                    value={watch("description")}
-                    onClick={ (event) => event.preventDefault() }
-                    onChange={handleEditChange}
-                  />
-                  ): <>{projects.description}</>}
-                </Td>
-                <Td className="pStatus">
-                  {isEdit ? (
-                  <EditpStatus 
-                    ref={register}
-                    type="text" 
-                    name="projectStatus"
-                    placeholder={projects.projectStatus}
-                    value={watch("projectStatus")}
-                    onClick={ (event) => event.preventDefault() }
-                    onChange={handleEditChange}
-                  />
-                  ): <>{projects.projectStatus}</>}
-                </Td>
-                <Td className="pSecurity">
-                  {isEdit ? (
-                  <EditpSecurity 
-                    ref={register}
-                    type="text"
-                    name="securityLevel" 
-                    placeholder={projects.securityLevel}
-                    value={watch("securityLevel")}
-                    onClick={ (event) => event.preventDefault() }
-                    onChange={handleEditChange}
-                  />
-                  ): <>{projects.securityLevel}</>}
-                </Td>
+              <Td className="pName">{projects.projectName}</Td>
+                <Td className="pDesc">{projects.description}</Td>
+                <Td className="pStatus">{projects.projectStatus}</Td>
+                <Td className="pSecurity">{projects.securityLevel}</Td>
                 <Td className="pEdit" onClick={ (event) => event.preventDefault() }>
-                  {isEdit ? (
-                    // <SaveAltIcon type="submit"/>
-                    <SaveAltIcon onClick={handleEditList}/>
-                  ): 
                   <EditPBtn onClick={handleEditList}><EditIcon /></EditPBtn>
-                  } 
                 </Td>
-                <Td className="pEdit" onClick={ (event) => event.preventDefault() }>
-                  <DeletePBtn><DeleteIcon /></DeletePBtn>
+                <Td className="pDelete" onClick={ (event) => event.preventDefault() }>
+                  <DeletePBtn onRemove={onRemove}><DeleteIcon /></DeletePBtn>
                 </Td> 
             </Tr>
             </Link>
           ))}
-
         </Tbody>
-        {/* } */}
+        }   
 
       </TableContainer>
       </TableDiv>

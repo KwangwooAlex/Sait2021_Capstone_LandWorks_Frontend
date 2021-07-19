@@ -30,33 +30,6 @@ const SEE_TEAM_QUERY = gql`
   }
 `;
 
-const CREATE_PROJECT_MUTATION = gql`
-  mutation createProject(
-    $teamId: Int!
-    $projectName: String!
-    $projectStatus: String!
-    $projectType: String!
-    $description: String!
-    $securityLevel: String!
-    $startDate: String
-    $endDate: String
-  ) {
-    createProject(
-      teamId: $teamId
-      projectName: $projectName
-      projectStatus: $projectStatus
-      projectType: $projectType
-      description: $description
-      securityLevel: $securityLevel
-      startDate: $startDate
-      endDate: $endDate
-    ) {
-      ok
-      error
-      id
-    }
-  }
-`;
 
 const EDIT_PROJECT_MUTATION = gql`
   mutation editProject(
@@ -86,12 +59,12 @@ const EDIT_PROJECT_MUTATION = gql`
 
 // `;
 
-const Container = styled.main`
-  padding: 40px 40px 0 40px;
-  height: 100%;
-  /* background-color: black; */
-  width: 90%;
-`;
+// const Container = styled.main`
+//   padding: 40px 40px 0 40px;
+//   height: 100%;
+//   /* background-color: black; */
+//   width: 90%;
+// `;
 
 
 const TableDiv = styled.div`
@@ -113,6 +86,7 @@ const TableContainer = styled.table`
 const Thead = styled.thead`
   background-color: #F3F3F3;
 `;
+
 const Tbody = styled.thead`
   
 `;
@@ -160,6 +134,7 @@ const EditPBtn = styled.button`
   background-color: white;
   cursor:pointer;
 `;
+
 const DeletePBtn = styled.button`
   border: none;
   outline: none;
@@ -195,7 +170,7 @@ function EditProjects() {
     variables: { teamName: teamName },
     }
   ); 
-  console.log("teamData", teamData?.seeTeam?.project);
+  console.log("teamDataEdit", teamData?.seeTeam?.project);
 
   const {handleSubmit, setValue, watch, register} = useForm({
     mode: "onChange",
@@ -205,13 +180,11 @@ function EditProjects() {
 
   const [editProject, loading] = useMutation(EDIT_PROJECT_MUTATION);
 
-  // const [isEditMode, setIsEditMode] = useState(false);
-  // // const [editValue, setEditValue] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(true);
 
-  // const handleEditList = (e) => {
-
-  //     setIsEditMode(false);
-  // }
+  const handleEditList = (e) => {
+      setIsEditMode(false);
+  };
 
   useEffect(( ) => {
     setValue("projectName", teamData?.seeTeam?.project?.projectName);
@@ -236,7 +209,7 @@ function EditProjects() {
   };
 
   const onEditValid = (data) =>  {
-    // handleEditList();    
+    handleEditList();    
     console.log("editData", data);
     if (loading) {
       return;
@@ -255,67 +228,86 @@ function EditProjects() {
 
   return (
   
-    <Tbody>
+    // <TableDiv>
+    // <TableContainer className="sortable">
+    //   <Thead>
+    //       <Tr>
+    //         <Th className="num">No.</Th>
+    //         <Th className="pName">Name</Th>
+    //         <Th className="pDesc">Description</Th>
+    //         <Th className="pStatus">Status</Th>
+    //         <Th className="pSecurity">Security</Th>
+    //         <Th className="pEdit">Edit</Th>
+    //         <Th className="pDelete">Delete</Th>
+    //       </Tr>
+    //   </Thead>
+
       <form onSubmit={handleSubmit(onEditValid, onEditInvalid)}>
-      {teamData?.seeTeam?.project?.map((projects, index) => (
-        <Link to={`/myProject/${teamName}/${projects?.id}`}>
-        <Tr key={projects.id}>
-          <Td className="num">{index+1}</Td>
-          <Td className="pName">
-            <EditpName 
-              ref={register}
-              type="text" 
-              name="projectName"
-              placeholder={projects?.projectName}
-              value={watch("projectName")}
-              onClick={ (event) => event.preventDefault() }
-              onChange={handleEditChange}
-            />
-          </Td>
-          <Td className="pDesc">
-            <EditpDesc 
-              ref={register}
-              type="text" 
-              name="description"
-              placeholder={projects?.description}
-              value={watch("description")}
-              onClick={ (event) => event.preventDefault() }
-              onChange={handleEditChange}
-            />
-          </Td>
-          <Td className="pStatus">
-            <EditpStatus 
-              ref={register}
-              type="text" 
-              name="projectStatus"
-              placeholder={projects?.projectStatus}
-              value={watch("projectStatus")}
-              onClick={ (event) => event.preventDefault() }
-              onChange={handleEditChange}
-            />
-          </Td>
-          <Td className="pSecurity">
-            <EditpSecurity 
-              ref={register}
-              type="text"
-              name="securityLevel" 
-              placeholder={projects?.securityLevel}
-              value={watch("securityLevel")}
-              onClick={ (event) => event.preventDefault() }
-              onChange={handleEditChange}
-            />
-          </Td>
-          <Td className="pEdit" onClick={ (event) => event.preventDefault() }>
-              <SaveAltIcon type="submit"/>
-          </Td>
-          <Td className="pDelete" onClick={ (event) => event.preventDefault() }>
-            <DeletePBtn><DeleteIcon /></DeletePBtn>
-          </Td> 
-        </Tr>
-        </Link>
-      ))}              
+      <Tbody>
+        {teamData?.seeTeam?.project?.map((projects, index) => (
+          <Link to={`/myProject/${teamName}/${projects?.id}`}>
+          <Tr key={projects.id}>
+            <Td className="num">{index+1}</Td>
+            <Td className="pName">
+                <EditpName 
+                  ref={register}
+                  type="text" 
+                  name="projectName"
+                  placeholder={projects.projectName}
+                  value={watch("projectName")}
+                  onClick={ (event) => event.preventDefault() }
+                  onChange={handleEditChange}
+                />
+              </Td>
+              <Td className="pDesc">
+                <EditpDesc 
+                  ref={register}
+                  type="text" 
+                  name="description"
+                  placeholder={projects.description}
+                  value={watch("description")}
+                  onClick={ (event) => event.preventDefault() }
+                  onChange={handleEditChange}
+                />
+              </Td>
+              <Td className="pStatus">
+                <EditpStatus 
+                  ref={register}
+                  type="text" 
+                  name="projectStatus"
+                  placeholder={projects.projectStatus}
+                  value={watch("projectStatus")}
+                  onClick={ (event) => event.preventDefault() }
+                  onChange={handleEditChange}
+                />
+              </Td>
+              <Td className="pSecurity">
+                <EditpSecurity 
+                  ref={register}
+                  type="text"
+                  name="securityLevel" 
+                  placeholder={projects.securityLevel}
+                  value={watch("securityLevel")}
+                  onClick={ (event) => event.preventDefault() }
+                  onChange={handleEditChange}
+                />
+              </Td>
+              <Td className="pEdit" onClick={ (event) => event.preventDefault() }>
+                  <SaveAltIcon type="submit"/>
+              </Td>
+              <Td className="pEdit" onClick={ (event) => event.preventDefault() }>
+                <DeletePBtn><DeleteIcon /></DeletePBtn>
+              </Td> 
+          </Tr>
+          </Link>
+        ))}
+
+      </Tbody>
+
       </form>
-    </Tbody>
+
+    // </TableContainer>
+    // </TableDiv>
 
   )
 }

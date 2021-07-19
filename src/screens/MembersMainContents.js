@@ -11,6 +11,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -193,20 +195,6 @@ const AddBtn = styled.button`
   cursor: pointer; 
 `;
 
-const EditBtn = styled.button`
-  margin-left: 10px;
-  margin-top: 25px;
-  border-radius: 20px;
-  background: #004070;
-  border: 1px solid;
-  color: white;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
-`;
-
 const customStyles = {
   content: {
     padding: "0",
@@ -303,20 +291,46 @@ const Th = styled.th`
   width: 100%;
   text-align: left;
   font-weight: 600;
-  &.mAvatar { width: 50px; }
-  &.mBtn { width: 30px; }
+  &.mAvatar { width: 10%; }
+  &.mName { width: 30%; }
+  &.mTeam { width: 30%; }
+  &.mMail { width: 20%; }
+  &.mBtn { width: 10%; }
 `;
 const Td = styled.td`
-  cursor: pointer;
+  /* cursor: pointer; */
   padding: 5px;
   margin: 10px;
   width: 100%;
-  &.mAvatar { width: 50px; }
-  &.mBtn { width: 30px; }
+  &.mAvatar { width: 10%; }
+  &.mName { width: 30%; }
+  &.mTeam { width: 30%; }
+  &.mMail { width: 20%; }
+  &.mBtn { width: 10%; cursor: pointer; }
 `;
 
-const PlusBtn = styled.button``;
-const MinusBtn = styled.button``;
+const PlusBtn = styled.span`
+  width: 15px;
+  height: 15px;
+  padding: 12px;
+  border: 1px solid lightgray;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover { background-color: blue; color: white }
+`;
+const MinusBtn = styled.span`
+  width: 15px;
+  height: 15px;
+  padding: 12px;
+  border: 1px solid lightgray;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover { background-color: red; color: white }
+`;
 
 const ModalBtn = styled.div`
   padding-top: 20px;
@@ -398,7 +412,7 @@ const ListTh = styled.th`
 `;
 
 const ListTd = styled.td`
-  cursor: pointer;
+  /* cursor: pointer; */
   padding: 10px;
   margin: 10px;
   width: 100%;
@@ -408,11 +422,9 @@ const ListTd = styled.td`
   &.lName { width: 30%; }
   &.lRole { width: 25%; }
   &.lMail { width: 20%; }
-  &.lEdit { width: 7%; }
-  &.lDelete { width: 10%; }
+  &.lEdit { width: 7%; cursor: pointer; }
+  &.lDelete { width: 10%; cursor: pointer; }
 `;
-
-const CheckInput = styled.input``;
 
 const MeditBtn = styled.button`
   background-color: white;
@@ -441,19 +453,6 @@ const customStyle = {
     height: "200px",
   },
 };
-
-const DeleteBtn = styled.button`
-  margin-top: 25px;
-  border-radius: 20px;
-  background: white;
-  border: 1px solid;
-  color: #004070;
-  width: 150px;
-  height: 35px;
-  font-size: 15px;
-  box-shadow: 0px 2px 4px gray;
-  cursor: pointer;
-`;
 
 const OkBtn = styled.button`
   background: #004070;
@@ -506,8 +505,17 @@ const Avatar = styled.img`
   border-radius: 50%;
 `;
 
+const EditRole = styled.input`
+  border: 1px solid gray;
+  width: 80%;
+  padding: 5px;
+`;
+
 
 function MembersMainContents() {
+
+  // const [memberRole, setMemberRole] = useState("");
+
   const {teamName,projectId} = useParams();
   const { data: teamData, refetch} = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
@@ -522,6 +530,14 @@ function MembersMainContents() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDModalOpen, setIsDModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const handleEditRole = () => {
+    setIsEditMode(true);
+    if (isEditMode) {
+      setIsEditMode(false);
+    }
+  }
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -562,7 +578,7 @@ function MembersMainContents() {
   const [addTeamMember, {loading}] = useMutation(ADD_MEMBER_MUTATION);
 
   // const [deleteTeamMember] = useMutation(DELETE_MEMBER_MUTATION);
-  // const [addRole] = useMutation(ADD_ROLE_MUTATION );
+  const [addRole] = useMutation(ADD_ROLE_MUTATION );
 
   const onSaveValid = (data) => {
     handleAddBtnModal();
@@ -594,12 +610,6 @@ function MembersMainContents() {
       </MainTitle> 
       <RightSection>
         <NavBar>
-          {/* <Link to={`/myProject/${teamName}/${projectId}/overview`}> 
-            <Letter>Overview</Letter>
-          </Link>
-          <Link to={`/myProject/${teamName}/${projectId}/files`}>
-            <Letter>Files</Letter>
-          </Link> */}
           <Link to={`/myProject/${teamName}`}>
             <Letter >My Project</Letter>
           </Link>
@@ -664,7 +674,7 @@ function MembersMainContents() {
                           <Td className="mName"></Td>
                           <Td className="mTeam"></Td>
                           <Td className="mMail"></Td>
-                          <Td className="mBtn"><PlusBtn>+</PlusBtn></Td>
+                          <Td className="mBtn"><PlusBtn><AddIcon /></PlusBtn></Td>
                         {/* </> */}
                         {/* } */}
                       </Tr>
@@ -692,7 +702,7 @@ function MembersMainContents() {
                         <Td className="mName"></Td>
                         <Td className="mTeam"></Td>
                         <Td className="mMail"></Td>
-                        <Td className="mBtn"><MinusBtn>-</MinusBtn></Td>
+                        <Td className="mBtn"><MinusBtn><RemoveIcon /></MinusBtn></Td>
                       </Tr>
                     </Tbody>
                   </TableContainer>
@@ -742,9 +752,20 @@ function MembersMainContents() {
                 <Avatar src={userData?.me?.avatar} />
               </ListTd>
               <ListTd className="lName">{member.username}</ListTd>
-              <ListTd className="lRole">Project Manager</ListTd>
+              <ListTd className="lRole">
+              {isEditMode ? 
+              <EditRole
+                ref={register}
+                type="text" 
+                name="projectStatus"
+                // placeholder={projects.projectStatus}
+                value={watch("projectStatus")}
+                onClick={ (event) => event.preventDefault() }
+                // onChange={handleEditChange}
+              /> : <> Project Manager </>}
+              </ListTd>
               <ListTd className="lMail">{member.email}</ListTd>
-              <ListTd className="lEdit"><MeditBtn><EditIcon /></MeditBtn></ListTd>
+              <ListTd className="lEdit" onClick={handleEditRole}><MeditBtn><EditIcon /></MeditBtn></ListTd>
               <ListTd className="lDelete"><DeleteMBtn ><DeleteIcon /></DeleteMBtn></ListTd>
             </ListTr>
           ))}
