@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react';
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import { gql, useQuery } from '@apollo/client';
 import Chart from "../asset/chart.PNG";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -201,9 +203,21 @@ const CalDiv = styled.div`
   /* margin-top: 25px; */
 `;
 
+const TeamCalender = styled(Calendar)`
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
 const SecondBox20 = styled.div`
   width: 90%;
-  height: 90%;
+  height: 100%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
@@ -328,6 +342,8 @@ const Avatar = styled.img`
 
 function OverviewMainContents() {
   
+  const [value, onChange] = useState(new Date());
+
   const {teamName, projectId} = useParams();
 
   const { data: userData } = useQuery(ME_QUERY);
@@ -345,7 +361,7 @@ function OverviewMainContents() {
 
   
   // console.log("teamData", teamData);
-  console.log("projectData", projectData?.seeProject?.startDate);
+  console.log("projectData", projectData?.seeProject);
   console.log("projectId", typeof(projectId));
   // {`/myProject/${teamName}/${projects?.id}`}
 
@@ -355,7 +371,12 @@ function OverviewMainContents() {
   //   if ()
   // }
 
-
+  const {format} = require('date-fns');
+  const sDate = new Date(projectData?.seeProject?.startDate);
+  const eDate = new Date(projectData?.seeProject?.endDate);
+// console.log(`${format(date, 'dd.MM.yyyy')}`);
+  console.log(`${format(sDate, 'yyyy-MM-dd')?.toString()}`); 
+  console.log(`${format(eDate, 'yyyy-MM-dd')?.toString()}`);
   
 return (
     <Container>
@@ -394,12 +415,17 @@ return (
 
         <FirstLine>
           <SmallBox>
-            <FirstBox20>Start Date: { projectData?.seeProject?.startDate} </FirstBox20>
-            <FirstBox20>End Date: { projectData?.seeProject?.endDate}</FirstBox20>
+            {/* <FirstBox20>Start Date: { projectData?.seeProject?.startDate } </FirstBox20> */}
+            {/* <FirstBox20>Start Date: { `${format(sDate, 'yyyy-MM-dd')?.toString()}` } </FirstBox20> */}
+            <FirstBox20>Start Date: { `${format(sDate, 'yyyy-MM-dd')?.toString()}` } </FirstBox20>
+            <FirstBox20>End Date: { `${format(eDate, 'yyyy-MM-dd')?.toString()}` }</FirstBox20>
           </SmallBox>
           <CalDiv>
             <SecondBox20>
-            <ChartImg src={Chart} />
+            <TeamCalender 
+                onChange={onChange}
+                value={value} />
+            {/* <ChartImg src={Chart} /> */}
             </SecondBox20>
           </CalDiv>          
         </FirstLine>

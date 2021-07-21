@@ -137,6 +137,7 @@ function SignUp() {
   };
 
   const onSubmitInvalid = (data) => {};
+  
 
   return (
     <AuthLayout>

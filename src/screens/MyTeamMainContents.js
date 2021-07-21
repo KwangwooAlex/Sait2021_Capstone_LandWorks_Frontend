@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import FormError from "../components/auth/FormError";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -124,6 +125,7 @@ const Description = styled.textarea`
   padding: 10px;
   width: 100%;
   height: 100px;
+  margin-top: 25px;
 `;
 
 const ModalBtn = styled.div`
@@ -446,7 +448,7 @@ function MyTeamMainContents() {
 
   console.log("전체팀보자", allTeamData);
 
-  const { handleSubmit, setValue, watch, register } = useForm({
+  const { handleSubmit, setValue, watch, register, errors } = useForm({
     mode: "onChange",
   });
 
@@ -529,24 +531,28 @@ function MyTeamMainContents() {
             <ModalInfo>
               <TeamLabel>Team name
               <Input
-                ref={register}
+                ref={register({required: "Team name is required",})}
                 type="text"
                 name="teamName"
                 value={watch("teamName")}
                 placeholder="Enter the team name..."
                 onChange={handleChange}
+                hasError={Boolean(errors?.teamName?.message)}
               />
+              <FormError message={errors?.teamName?.message} />
               </TeamLabel>
 
               <DesLabel>Description
               <Description
-                ref={register}
+                ref={register({required: "Team description is required",})}
                 type="text"
                 name="description"
                 value={watch("description")}
                 placeholder="Let people know what this team is all about..."
                 onChange={handleChange}
+                hasError={Boolean(errors?.description?.message)}
               />
+              <FormError message={errors?.description?.message} />
               </DesLabel>
             </ModalInfo>
 

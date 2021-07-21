@@ -239,6 +239,10 @@ const ProjectLabel = styled.label`
   width: 100%;
 `;
 
+const ErrorSection = styled.div`
+  flex-direction: column;
+`;
+
 const InputText =styled.input`
   display: flex;
   border: 1px solid lightgray;
@@ -264,6 +268,7 @@ const StartD = styled.div`
 
 const EndD = styled.div`
   display: flex;
+  /* margin-left: 5px; */
 `;
 
 const DatePickerForm = styled(DatePicker)`
@@ -324,14 +329,11 @@ const CancelBtn = styled.button`
 
 const SummaryLabel = styled.label`
   display: flex;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   width: 100%;
   &.dateLabel {
-    width: 70%;
+    width: 200px;
   }
-  /* &.endDate {
-  margin-left: -100px;
- } */
 `;
 
 const InputResult = styled.div`
@@ -347,7 +349,9 @@ const InputResult = styled.div`
   padding: 5px;
   margin-top: -10px;
  }
-
+ &.dateResult {
+  width: 50%;
+ }
 `;
 
 const TableDiv = styled.div`
@@ -473,7 +477,7 @@ function MyProjectMainContents() {
     };
   }; 
 
-  const [createProject, { loading, error }] = useMutation(CREATE_PROJECT_MUTATION);
+  const [createProject, { loading }] = useMutation(CREATE_PROJECT_MUTATION);
   
 
   const handleOpenModal = () => {
@@ -619,6 +623,13 @@ function MyProjectMainContents() {
 
   };
 
+  const {format} = require('date-fns');
+  const sDate = new Date(startDate);
+  const eDate = new Date(endDate);
+// console.log(`${format(date, 'dd.MM.yyyy')}`);
+  console.log(`${format(sDate, 'yyyy-MM-dd')?.toString()}`);
+  console.log(`${format(eDate, 'yyyy-MM-dd')?.toString()}`);
+
 
 
 
@@ -652,18 +663,14 @@ function MyProjectMainContents() {
         <NewProjectBtn onClick={handleOpenModal}>New Project</NewProjectBtn>    
         <Modal isOpen={isModalOpen} style={customStyles}>
           <ModalHeader>NEW PROJECT</ModalHeader>
-           <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
+          <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
             <ModalBody>
-            <FormError message={errors?.projectName?.message} />
-            <FormError message={errors?.projectType?.message} />
-            <FormError message={errors?.description?.message} />
-              <ModalInfo>
- 
+              <ModalInfo> 
+                
+                  {/* <ErrorSection> */}
                   <ProjectLabel>Project name: 
                     <InputText
-                    ref={register({
-                    required: "Project Name is required",
-                    })}
+                    ref={register({required: "Project Name is required",})}
                       type="text"
                       name="projectName"
                       value={watch("projectName")}
@@ -672,6 +679,8 @@ function MyProjectMainContents() {
                       hasError={Boolean(errors?.projectName?.message)}
                     />
                   </ProjectLabel>
+                  <FormError message={errors?.projectName?.message} />
+                  {/* </ErrorSection> */}
 
                   <ProjectLabel>Project Status: 
                     <SelectStatus 
@@ -686,9 +695,7 @@ function MyProjectMainContents() {
 
                   <ProjectLabel>Project Type: 
                     <InputText
-                    ref={register({
-                    required: "Project Type is required",
-                    })}
+                    ref={register({required: "Project Type is required",})}
                       type="text"
                       name="projectType"
                       value={watch("projectType")}
@@ -697,6 +704,7 @@ function MyProjectMainContents() {
                       hasError={Boolean(errors?.projectType?.message)}
                     />
                   </ProjectLabel>
+                  <FormError message={errors?.projectType?.message} />
 
                   <ProcessDate>
                     <StartD>
@@ -736,14 +744,17 @@ function MyProjectMainContents() {
                     </ProjectLabel>
 
                   <DesLabel>Description</DesLabel>
+                  <>
                   <Description
                     type="text"
-                    ref={register}
+                    ref={register({required: "Project description is required",})}
                     value={watch("description")}
                     name="description"
                     placeholder="Let people know what this project is about..."
                     hasError={Boolean(errors?.description?.message)}
                   />
+                  <FormError message={errors?.description?.message} />
+                  </>
                   
               </ModalInfo>
               <ModalBtn>         
@@ -774,12 +785,13 @@ function MyProjectMainContents() {
                   <ProcessDate>
                     <StartD>
                       <SummaryLabel className="dateLabel">Start Date: 
-                      <InputResult>{String(startDate)}</InputResult>
+                      <InputResult className="dateResult">{`${format(sDate, 'yyyy-MM-dd')?.toString()}`}</InputResult>
+                      {/* <InputResult>{String(startDate)}</InputResult> */}
                       </SummaryLabel>
                     </StartD>
                     <EndD>
                       <SummaryLabel className="dateLabel endDate">End Date: 
-                      <InputResult className="endDate">{String(endDate)}</InputResult>
+                      <InputResult className="dateResult">{`${format(eDate, 'yyyy-MM-dd')?.toString()}`}</InputResult>
                       </SummaryLabel>
                     </EndD>
                   </ProcessDate>

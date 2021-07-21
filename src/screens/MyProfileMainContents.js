@@ -10,6 +10,7 @@ import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
+import FormError from "../components/auth/FormError";
 
 
 const EDIT_PROFILE_MUTATION = gql`
@@ -252,7 +253,7 @@ function MyProfileMainContents() {
   const [activeConfirmPassword, setActiveConfirmPassword] = useState(false);
   const [inputChange, setInputChange] = useState("");
 
-  const {handleSubmit, setValue, watch, register} = useForm({
+  const {handleSubmit, setValue, watch, register, errors} = useForm({
     mode: "onChange",
   });
 
@@ -360,50 +361,65 @@ function MyProfileMainContents() {
 
         <InfoSection>
           <InputContainer>
-          
             <AccountInfo>
               <InfoTitle>Account Information</InfoTitle>
               <InfoSubTitle>User Name</InfoSubTitle>
-              <Input
-                ref={register}
-                type="text"
-                name="username"
-                value={watch("username")}
-                placeholder={userData?.me?.username}
-                disabled={disabled}
-                onChange={handleChange}
-              />
+              <>
+                <Input
+                  ref={register({required: "Username is required",})}
+                  type="text"
+                  name="username"
+                  value={watch("username")}
+                  placeholder={userData?.me?.username}
+                  disabled={disabled}
+                  onChange={handleChange}
+                  hasError={Boolean(errors?.username?.message)}
+                />
+                <FormError message={errors?.username?.message} />
+              </> 
               <InfoSubTitle>Company Name</InfoSubTitle>
-              <Input
-                ref={register}
-                type="text"
-                name="companyName"
-                value={watch("companyName")}
-                placeholder={userData?.me?.companyName}
-                disabled={disabled}
-                onChange={handleChange}
-              />
+              <>
+                <Input
+                  ref={register({required: "Company name is required",})}
+                  type="text"
+                  name="companyName"
+                  value={watch("companyName")}
+                  placeholder={userData?.me?.companyName}
+                  disabled={disabled}
+                  onChange={handleChange}
+                  hasError={Boolean(errors?.companyName?.message)}
+                />
+                <FormError message={errors?.companyName?.message} />
+              </>
               <InfoSubTitle>Email</InfoSubTitle>
-              <Input
-                ref={register}
-                type="email"
-                name="email"
-                value={watch("email")}
-                placeholder={userData?.me?.email}
-                disabled={disabled}
-                onChange={handleChange}
-              />
+              <>
+                <Input
+                  ref={register({required: "Email is required",})}
+                  type="email"
+                  name="email"
+                  value={watch("email")}
+                  placeholder={userData?.me?.email}
+                  disabled={disabled}
+                  onChange={handleChange}
+                  hasE
+                  hasError={Boolean(errors?.email?.message)}
+                />
+                <FormError message={errors?.email?.message} />
+              </>
               <InfoSubTitle>Phone Number</InfoSubTitle>
-              <Input
-                ref={register}
-                type="number"
-                name="phoneNumber"
-                value={watch("phoneNumber")}
-                placeholder={userData?.me?.phoneNumber}
-                disabled={disabled}
-                onChange={handleChange}
-              />
-
+              <>
+                <Input
+                  ref={register({required: "Phone number is required",})}
+                  type="number"
+                  name="phoneNumber"
+                  value={watch("phoneNumber")}
+                  placeholder={userData?.me?.phoneNumber}
+                  disabled={disabled}
+                  onChange={handleChange}
+                  hasError={Boolean(errors?.phoneNumber?.message)}
+                />
+                <FormError message={errors?.phoneNumber?.message} />
+              </>
 
               {activeConfirmPassword && (
                 <>
