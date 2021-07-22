@@ -5,6 +5,7 @@ import {
   makeVar,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { createUploadLink } from "apollo-upload-client";
 
 const TOKEN = "TOKEN_CAPSTONE";
 
@@ -22,8 +23,8 @@ export const logUserOut = () => {
   window.location.reload();
 };
 
-const httpLink = createHttpLink({
-  uri: "http://localhost:4002/graphql",
+const uploadHttpLink = createUploadLink({
+  uri: "http://localhost:4001/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -36,7 +37,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 export const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(uploadHttpLink),
   cache: new InMemoryCache({
     typePolicies: {},
   }),

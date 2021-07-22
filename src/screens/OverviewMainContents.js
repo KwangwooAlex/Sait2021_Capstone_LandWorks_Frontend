@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery } from "@apollo/client";
 import Chart from "../asset/chart.PNG";
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -42,7 +42,7 @@ const SEE_TEAM_QUERY = gql`
         username
         email
         avatar
-  		}
+      }
       project {
         id
         projectName
@@ -50,7 +50,7 @@ const SEE_TEAM_QUERY = gql`
         projectType
         description
         securityLevel
-  		}
+      }
     }
   }
 `;
@@ -74,7 +74,7 @@ const ME_QUERY = gql`
 
 const SEE_PROJECT_QUERY = gql`
   query seeProject($projectId: Int!) {
-    seeProject (projectId: $projectId) {
+    seeProject(projectId: $projectId) {
       id
       projectName
       startDate
@@ -94,7 +94,7 @@ const TeamName = styled.div`
   color: gray;
   font-weight: 600;
   font-size: 20px;
-`; 
+`;
 
 const MainHeader = styled.div`
   display: flex;
@@ -103,7 +103,6 @@ const MainHeader = styled.div`
 `;
 
 const MainTitle = styled.div`
-
   color: #004070;
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-size: 20px;
@@ -124,15 +123,15 @@ const Letter = styled.div`
   padding: 5px;
   width: 100px;
   cursor: pointer;
-  border-bottom: 2px solid #FFB41E;
+  border-bottom: 2px solid #ffb41e;
   margin-right: 10px;
   &:hover {
     color: #004070;
-    background-color: #FFEBC4;
+    background-color: #ffebc4;
     /*border-top: black 2px solid;*/
   }
   &.selected {
-    background-color: #FFB41E;
+    background-color: #ffb41e;
   }
 `;
 
@@ -250,22 +249,20 @@ const TableDiv = styled.div`
 
 const ListTableContainer = styled.table`
   /* margin-top: 40px; */
-  border: 1px solid white;    
+  border: 1px solid white;
   box-shadow: 0px 3px 6px gray;
   height: 100%;
   width: 100%;
-  padding:0;
+  padding: 0;
   border-collapse: collapse;
   /* overflow-y: scroll;  */
 `;
 
 const ListThead = styled.thead`
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
 `;
 // const file = [{id:"", projectName:""},{}]
-const ListTbody = styled.thead`
-
-`;
+const ListTbody = styled.thead``;
 const ListTr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
@@ -280,9 +277,15 @@ const ListTh = styled.th`
   width: 100%;
   text-align: left;
   font-weight: 600;
-  &.lAvatar { width: 7%; }
-  &.lName { width: 48%; }
-  &.lRole { width: 45%; }
+  &.lAvatar {
+    width: 7%;
+  }
+  &.lName {
+    width: 48%;
+  }
+  &.lRole {
+    width: 45%;
+  }
 `;
 
 const ListTd = styled.td`
@@ -291,15 +294,21 @@ const ListTd = styled.td`
   margin: 5px 10px;
   width: 100%;
   text-align: left;
-  &.lAvatar { width: 5%; }
-  &.lName { width: 48%; }
-  &.lRole { width: 45%; }
+  &.lAvatar {
+    width: 5%;
+  }
+  &.lName {
+    width: 48%;
+  }
+  &.lRole {
+    width: 45%;
+  }
 `;
 const LETTER = styled.h3`
   margin-top: 25px;
   margin-left: 25px;
   font-weight: bolder;
-  font-size: large; 
+  font-size: large;
   align-items: center;
   justify-content: center;
 `;
@@ -323,14 +332,14 @@ const TeamPath = styled.div`
   border-bottom: black 2px solid;
   box-sizing: border-box;
   width: 100%;
-  height: 40px; 
+  height: 40px;
 `;
 
 const ChartImg = styled.img`
-margin: 25px auto;
-width: 95%;
-height: 75%;
-/* border: none; */
+  margin: 25px auto;
+  width: 95%;
+  height: 75%;
+  /* border: none; */
 `;
 
 const Avatar = styled.img`
@@ -340,29 +349,29 @@ const Avatar = styled.img`
   border-radius: 50%;
 `;
 
+const DateBox = styled.div`
+  height: 100%;
+`;
+
 function OverviewMainContents() {
-  
   const [value, onChange] = useState(new Date());
 
-  const {teamName, projectId} = useParams();
+  const { teamName, projectId } = useParams();
 
   const { data: userData } = useQuery(ME_QUERY);
 
-  const { data: teamData} = useQuery(SEE_TEAM_QUERY, {
+  const { data: teamData } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
-    }
-  ); 
+  });
   const { data: projectData } = useQuery(SEE_PROJECT_QUERY, {
     variables: { projectId: +projectId },
-    }
-  );  
+  });
 
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
-  
   // console.log("teamData", teamData);
   console.log("projectData", projectData?.seeProject);
-  console.log("projectId", typeof(projectId));
+  console.log("projectId", typeof projectId);
   // {`/myProject/${teamName}/${projects?.id}`}
 
   // const [isProject, setIsProject] = useState();
@@ -371,71 +380,75 @@ function OverviewMainContents() {
   //   if ()
   // }
 
-  const {format} = require('date-fns');
+  const { format } = require("date-fns");
   const sDate = new Date(projectData?.seeProject?.startDate);
   const eDate = new Date(projectData?.seeProject?.endDate);
-// console.log(`${format(date, 'dd.MM.yyyy')}`);
-  console.log(`${format(sDate, 'yyyy-MM-dd')?.toString()}`); 
-  console.log(`${format(eDate, 'yyyy-MM-dd')?.toString()}`);
-  
-return (
+  console.log("sDate", sDate);
+  // console.log(`${format(date, 'dd.MM.yyyy')}`);
+  // console.log(format(sDate, "yyyy-MM-dd")?.toString());
+  // console.log(format(eDate, "yyyy-MM-dd")?.toString());
+
+  return (
     <Container>
-    <TeamPath>
-      <TeamName>  
-        <Link to={`/myProject/${teamName}`}> 
-          {teamName}
-        </Link>
-      </TeamName>
-      <LETTERS>></LETTERS>
-      {/* 수정해야함 */}
-      <ProjectPath>
-        <Link to={`/myProject/${teamName}/${projectId}`}> 
-          {projectData?.seeProject?.projectName}
-        </Link>    
-      </ProjectPath>
-    </TeamPath>
-    <MainHeader>
-      <MainTitle>
-        OVERVIEW
-      </MainTitle> 
-      <RightSection>
-        <NavBar>
-          <Link to={`/myProject/${teamName}/${projectId}/overview`}> 
-            <Letter className="selected">Overview</Letter>
+      <TeamPath>
+        <TeamName>
+          <Link to={`/myProject/${teamName}`}>{teamName}</Link>
+        </TeamName>
+        <LETTERS>></LETTERS>
+        {/* 수정해야함 */}
+        <ProjectPath>
+          <Link to={`/myProject/${teamName}/${projectId}`}>
+            {projectData?.seeProject?.projectName}
           </Link>
-          <Link to={`/myProject/${teamName}/${projectId}/files`}>
-            <Letter>Files</Letter>
-          </Link>
-        </NavBar>
-        <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
-      </RightSection>
-    </MainHeader>
+        </ProjectPath>
+      </TeamPath>
+      <MainHeader>
+        <MainTitle>OVERVIEW</MainTitle>
+        <RightSection>
+          <NavBar>
+            <Link to={`/myProject/${teamName}/${projectId}/overview`}>
+              <Letter className="selected">Overview</Letter>
+            </Link>
+            <Link to={`/myProject/${teamName}/${projectId}/files`}>
+              <Letter>Files</Letter>
+            </Link>
+          </NavBar>
+          <InputSearch
+            type="text"
+            placeholder="Search Project..."
+          ></InputSearch>
+        </RightSection>
+      </MainHeader>
 
       <LineContainer>
-
         <FirstLine>
           <SmallBox>
             {/* <FirstBox20>Start Date: { projectData?.seeProject?.startDate } </FirstBox20> */}
             {/* <FirstBox20>Start Date: { `${format(sDate, 'yyyy-MM-dd')?.toString()}` } </FirstBox20> */}
-            <FirstBox20>Start Date: { `${format(sDate, 'yyyy-MM-dd')?.toString()}` } </FirstBox20>
-            <FirstBox20>End Date: { `${format(eDate, 'yyyy-MM-dd')?.toString()}` }</FirstBox20>
+            {projectData !== undefined && (
+              <DateBox>
+                <FirstBox20>
+                  Start Date: {`${format(sDate, "yyyy-MM-dd")?.toString()}`}
+                </FirstBox20>
+                <FirstBox20>
+                  End Date: {`${format(eDate, "yyyy-MM-dd")?.toString()}`}
+                </FirstBox20>
+              </DateBox>
+            )}
           </SmallBox>
           <CalDiv>
             <SecondBox20>
-            <TeamCalender 
-                onChange={onChange}
-                value={value} />
-            {/* <ChartImg src={Chart} /> */}
+              <TeamCalender onChange={onChange} value={value} />
+              {/* <ChartImg src={Chart} /> */}
             </SecondBox20>
-          </CalDiv>          
+          </CalDiv>
         </FirstLine>
 
-
         <SecondLine>
-          <SecondBox30> 
+          <SecondBox30>
             <Link to={`/members/${teamName}`}>
-              <LETTER> MEMBER LIST </LETTER>    
-            </Link>   
+              <LETTER> MEMBER LIST </LETTER>
+            </Link>
             <TableDiv>
               <ListTableContainer className="sortable">
                 <ListThead>
@@ -452,7 +465,7 @@ return (
                         <Avatar src={userData?.me?.avatar} />
                       </ListTd>
                       <ListTd className="lName">{member.username}</ListTd>
-                      <ListTd className="lRole">Project Manager</ListTd>                     
+                      <ListTd className="lRole">Project Manager</ListTd>
                     </ListTr>
                   ))}
                 </ListTbody>
@@ -463,15 +476,12 @@ return (
 
         <ThirdLine>
           <ThirdBox60>
-            <LETTER> FILE LIST </LETTER>  
+            <LETTER> FILE LIST </LETTER>
           </ThirdBox60>
         </ThirdLine>
-
       </LineContainer>
-
-    
     </Container>
-  )
+  );
 }
 
-export default OverviewMainContents
+export default OverviewMainContents;

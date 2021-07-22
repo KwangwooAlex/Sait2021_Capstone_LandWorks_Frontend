@@ -5,13 +5,10 @@ import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import Modal from "react-modal";
-import EditIcon from '@material-ui/icons/Edit';
-import {
-  faUpload,
-} from "@fortawesome/free-solid-svg-icons";
+import EditIcon from "@material-ui/icons/Edit";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import FormError from "../components/auth/FormError";
-
 
 const EDIT_PROFILE_MUTATION = gql`
   mutation editProfile(
@@ -20,12 +17,12 @@ const EDIT_PROFILE_MUTATION = gql`
     $companyName: String
     $phoneNumber: String
     $password: String
-    $avatar: String
     $birth: String
     $country: String
     $state: String
     $city: String
     $Street: String
+    $avatar: Upload
   ) {
     editProfile(
       username: $username
@@ -33,17 +30,25 @@ const EDIT_PROFILE_MUTATION = gql`
       companyName: $companyName
       phoneNumber: $phoneNumber
       password: $password
-      avatar: $avatar
       birth: $birth
       country: $country
       state: $state
       city: $city
       Street: $Street
-
+      avatar: $avatar
     ) {
       ok
       error
       id
+    }
+  }
+`;
+
+const UPLOAD_AVATAR_MUTATION = gql`
+  mutation uploadAvatar($file: Upload!) {
+    uploadAvatar(file: $file) {
+      ok
+      error
     }
   }
 `;
@@ -132,7 +137,9 @@ const ProfileImgEdit = styled.span`
   background: none;
   margin-left: -15px;
   cursor: pointer;
-  &:hover{ color: blue; }
+  &:hover {
+    color: blue;
+  }
 `;
 
 const customStyles = {
@@ -153,12 +160,10 @@ const PhotoInfo = styled.div`
   justify-content: space-between;
 `;
 
-const UploadSection = styled.div`
-
-`;
+const UploadSection = styled.div``;
 
 const ImgTitle = styled.h1`
-  font-family:Source Han Sans KR;
+  font-family: Source Han Sans KR;
   margin-top: 50px;
   text-align: left;
   font-weight: bold;
@@ -168,7 +173,7 @@ const ImgTitle = styled.h1`
 
 const ImgInput = styled.input`
   align-items: center;
-  display: none; 
+  display: none;
 `;
 
 const UploadInput = styled.div`
@@ -178,7 +183,7 @@ const UploadInput = styled.div`
   padding: 6px 12px;
   cursor: pointer;
   color: #004070;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 15px;
 `;
 
@@ -206,24 +211,24 @@ const ShowImg = styled.div`
 
 const PhotoBtn = styled.div`
   margin-top: 40px;
-`; 
+`;
 
 const CancelEditImg = styled.button`
   background: white;
   border: 2x solid;
-  border-color:#B8B8B8;
+  border-color: #b8b8b8;
   color: #004070;
   float: right;
   width: 80px;
-  height: 30px; 
+  height: 30px;
   font-size: 15px;
   cursor: pointer;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  `;
+`;
 
 const SaveEditImg = styled.button`
-  margin-left:18px;
+  margin-left: 18px;
   background: #004070;
   border: none;
   color: white;
@@ -232,9 +237,9 @@ const SaveEditImg = styled.button`
   height: 30px;
   font-size: 15px;
   cursor: pointer;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  `;
+`;
 
 const AvatarImg = styled.img`
   margin-top: -20px;
@@ -245,19 +250,35 @@ const AvatarImg = styled.img`
 `;
 
 function MyProfileMainContents() {
-
   const { data: userData, refetch } = useQuery(ME_QUERY);
-  
+
   const [disabled, setDisabled] = useState(true);
   const [activeEditBtn, setActiveEditBtn] = useState("Edit");
   const [activeConfirmPassword, setActiveConfirmPassword] = useState(false);
   const [inputChange, setInputChange] = useState("");
-
-  const {handleSubmit, setValue, watch, register, errors} = useForm({
+  const [avatar, setAvatar] = useState();
+  const [avatarUrl, setAvatarUrl] = useState();
+  const { handleSubmit, setValue, watch, register, errors } = useForm({
     mode: "onChange",
   });
 
-  useEffect(( ) => {
+  const onCompleted = (data) => {
+    console.log("AvatarData", data);
+    const {
+      uploadAvatar: { ok, error },
+    } = data;
+
+    refetch();
+  };
+
+  const [uploadAvatar, { loading: uploadAvatarLoading }] = useMutation(
+    UPLOAD_AVATAR_MUTATION,
+    {
+      onCompleted,
+    }
+  );
+
+  useEffect(() => {
     setValue("username", userData?.me?.username);
     setValue("companyName", userData?.me?.companyName);
     setValue("email", userData?.me?.email);
@@ -268,37 +289,37 @@ function MyProfileMainContents() {
     setValue("state", userData?.me?.state);
     setValue("city", userData?.me?.city);
     setValue("Street", userData?.me?.Street);
-  },[userData, setValue]);
+  }, [userData, setValue]);
 
   const handleChange = (e) => {
-    if(e.target.name === "username"){
+    if (e.target.name === "username") {
       setValue("username", e.target.value);
     }
-    if(e.target.name === "companyName"){
+    if (e.target.name === "companyName") {
       setValue("companyName", e.target.value);
     }
-    if(e.target.name === "email"){
+    if (e.target.name === "email") {
       setValue("email", e.target.value);
     }
-    if(e.target.name === "phoneNumber"){
+    if (e.target.name === "phoneNumber") {
       setValue("phoneNumber", e.target.value);
     }
-    if(e.target.name === "password"){
+    if (e.target.name === "password") {
       setValue("password", e.target.value);
     }
-    if(e.target.name === "birth"){
+    if (e.target.name === "birth") {
       setValue("birth", e.target.value);
     }
-    if(e.target.name === "country"){
+    if (e.target.name === "country") {
       setValue("country", e.target.value);
     }
-    if(e.target.name === "state"){
+    if (e.target.name === "state") {
       setValue("state", e.target.value);
     }
-    if(e.target.name === "city"){
+    if (e.target.name === "city") {
       setValue("city", e.target.value);
     }
-    if(e.target.name === "Street"){
+    if (e.target.name === "Street") {
       setValue("Street", e.target.value);
     }
   };
@@ -308,11 +329,12 @@ function MyProfileMainContents() {
     setIsModalOpen(true);
   };
 
-  const handleSaveModal = () => {
-    setIsModalOpen(false);
-  };
+  // const handleSaveModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
   const handleCancelModal = () => {
+    setAvatarUrl(userData?.me?.avatar);
     setIsModalOpen(false);
   };
 
@@ -329,17 +351,41 @@ function MyProfileMainContents() {
       setActiveEditBtn("Save");
     }
   };
+  const [editProfile, { loading }] = useMutation(EDIT_PROFILE_MUTATION);
 
-  const [editProfile,{loading}] = useMutation(EDIT_PROFILE_MUTATION); 
+  const onSubmitAvatarValidTest = (data) => {
+    // console.log("잘오나 아바타?", data);
+    setAvatar(data?.avatar[0]);
+    let reader = new FileReader();
+    reader.readAsDataURL(data?.avatar[0]);
+    reader.onload = () => {
+      setAvatarUrl(reader.result);
+    };
+  };
 
-  const onSaveValid = (data) =>  {
-    handleEditClick();    
+  const onSubmitAvatarValid = (data) => {
+    handleCancelModal();
+    alert("Saved Your Avatar");
+    // console.log("Avatardata", data);
+    // console.log("state/avatar,", avatar);
+    if (uploadAvatarLoading) {
+      return;
+    }
+    uploadAvatar({
+      variables: {
+        file: avatar,
+      },
+    });
+  };
+
+  const onSaveValid = (data) => {
+    handleEditClick();
     console.log("saveData", data);
     if (loading) {
       return;
     }
     editProfile({
-      variables: { 
+      variables: {
         ...data,
       },
     });
@@ -348,16 +394,11 @@ function MyProfileMainContents() {
 
   const onSaveInvalid = (data) => {};
 
-  
   return (
     <Container>
-      <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}> 
-      <MainTitle>
-        MY PROFILE
-      </MainTitle>
-        <EditBtn type="submit">
-          {activeEditBtn}
-        </EditBtn>
+      <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
+        <MainTitle>MY PROFILE</MainTitle>
+        <EditBtn type="submit">{activeEditBtn}</EditBtn>
 
         <InfoSection>
           <InputContainer>
@@ -366,7 +407,7 @@ function MyProfileMainContents() {
               <InfoSubTitle>User Name</InfoSubTitle>
               <>
                 <Input
-                  ref={register({required: "Username is required",})}
+                  ref={register({ required: "Username is required" })}
                   type="text"
                   name="username"
                   value={watch("username")}
@@ -376,11 +417,11 @@ function MyProfileMainContents() {
                   hasError={Boolean(errors?.username?.message)}
                 />
                 <FormError message={errors?.username?.message} />
-              </> 
+              </>
               <InfoSubTitle>Company Name</InfoSubTitle>
               <>
                 <Input
-                  ref={register({required: "Company name is required",})}
+                  ref={register({ required: "Company name is required" })}
                   type="text"
                   name="companyName"
                   value={watch("companyName")}
@@ -394,7 +435,7 @@ function MyProfileMainContents() {
               <InfoSubTitle>Email</InfoSubTitle>
               <>
                 <Input
-                  ref={register({required: "Email is required",})}
+                  ref={register({ required: "Email is required" })}
                   type="email"
                   name="email"
                   value={watch("email")}
@@ -409,7 +450,7 @@ function MyProfileMainContents() {
               <InfoSubTitle>Phone Number</InfoSubTitle>
               <>
                 <Input
-                  ref={register({required: "Phone number is required",})}
+                  ref={register({ required: "Phone number is required" })}
                   type="number"
                   name="phoneNumber"
                   value={watch("phoneNumber")}
@@ -423,6 +464,17 @@ function MyProfileMainContents() {
 
               {activeConfirmPassword && (
                 <>
+                  {/* <InfoSubTitle>Password</InfoSubTitle>
+                  <Input
+                    ref={register}
+                    type="password"
+                    name="password"
+                    value={watch("password")}
+                    placeholder={userData?.me?.password}
+                    disabled={disabled}
+                    onChange={handleChange} 
+                  />*/}
+
                   <InfoSubTitle>Password</InfoSubTitle>
                   <Input
                     ref={register}
@@ -433,26 +485,16 @@ function MyProfileMainContents() {
                     disabled={disabled}
                     onChange={handleChange}
                   />
-                  <InfoSubTitle>Confirm Password</InfoSubTitle>
-                  <Input 
-                    ref={register}
-                    type="password"
-                    name="password"
-                    value={watch("password")}
-                    placeholder={userData?.me?.password}
-                    disabled={disabled}
-                    onChange={handleChange}
-                  />                    
                 </>
               )}
-            </AccountInfo>       
+            </AccountInfo>
 
             <PersonalInfo>
               <InfoTitle>Personal Information</InfoTitle>
               <InfoSubTitle>Date of Birth</InfoSubTitle>
               <Input
                 ref={register}
-                value={watch("birth")}                               
+                value={watch("birth")}
                 type="text"
                 name="birth"
                 placeholder={userData?.me?.birth}
@@ -462,7 +504,7 @@ function MyProfileMainContents() {
               <InfoSubTitle>Country/Region</InfoSubTitle>
               <Input
                 ref={register}
-                value={watch("country")}  
+                value={watch("country")}
                 type="text"
                 name="country"
                 placeholder={userData?.me?.country}
@@ -472,7 +514,7 @@ function MyProfileMainContents() {
               <InfoSubTitle>State</InfoSubTitle>
               <Input
                 ref={register}
-                value={watch("state")} 
+                value={watch("state")}
                 type="text"
                 name="state"
                 placeholder={userData?.me?.state}
@@ -482,7 +524,7 @@ function MyProfileMainContents() {
               <InfoSubTitle>City</InfoSubTitle>
               <Input
                 ref={register}
-                value={watch("city")} 
+                value={watch("city")}
                 type="text"
                 name="city"
                 placeholder={userData?.me?.city}
@@ -502,39 +544,60 @@ function MyProfileMainContents() {
             </PersonalInfo>
           </InputContainer>
 
-          <ProfileImg>           
-            <AvatarImg src={userData?.me?.avatar} /> 
-            {activeConfirmPassword && (           
-            
-            <ProfileImgEdit onClick={handleOpenModal}><EditIcon />  </ProfileImgEdit>
+          <ProfileImg>
+            <AvatarImg src={userData?.me?.avatar} />
+            {activeConfirmPassword && (
+              <ProfileImgEdit onClick={handleOpenModal}>
+                <EditIcon />{" "}
+              </ProfileImgEdit>
             )}
-            
-            <Modal isOpen={isModalOpen} style={customStyles}>            
+
+            <Modal isOpen={isModalOpen} style={customStyles}>
               <PhotoInfo>
-              <UploadSection>
-                <ImgTitle>Change your profile picture</ImgTitle>
+                <UploadSection>
+                  <ImgTitle>Change your profile picture</ImgTitle>
                   {/* 사진 업로드 */}
                   <UploadInput>
                     <UploadLabel>
-                      <ImgInput type="file" /> 
-                        <UpImg><FontAwesomeIcon className="uploadIcon" icon={faUpload} size="2x" /></UpImg>
-                      Upload Picture</UploadLabel>
+                      <ImgInput
+                        type="file"
+                        name="avatar"
+                        accept="image/*"
+                        ref={register({ required: false })}
+                        onChange={handleSubmit(onSubmitAvatarValidTest)}
+                      />
+                      <UpImg>
+                        <FontAwesomeIcon
+                          className="uploadIcon"
+                          icon={faUpload}
+                          size="2x"
+                        />
+                      </UpImg>
+                      Upload Picture
+                    </UploadLabel>
                   </UploadInput>
                 </UploadSection>
-                  <ShowImg>
-                    <AvatarImg src={userData?.me?.avatar} /> 
-                  </ShowImg>                 
+                <ShowImg>
+                  {avatar === undefined ? (
+                    <AvatarImg src={userData?.me?.avatar} />
+                  ) : (
+                    <AvatarImg src={avatarUrl} />
+                  )}
+                </ShowImg>
               </PhotoInfo>
 
-              <PhotoBtn>                      
-                <SaveEditImg onClick={handleSaveModal}>Save</SaveEditImg>
-                <CancelEditImg onClick={handleCancelModal}>Cancel</CancelEditImg>
-              </PhotoBtn>               
+              <PhotoBtn>
+                <SaveEditImg onClick={handleSubmit(onSubmitAvatarValid)}>
+                  Save
+                </SaveEditImg>
+                <CancelEditImg onClick={handleCancelModal}>
+                  Cancel
+                </CancelEditImg>
+              </PhotoBtn>
             </Modal>
-
           </ProfileImg>
         </InfoSection>
-        </form>
+      </form>
     </Container>
   );
 }

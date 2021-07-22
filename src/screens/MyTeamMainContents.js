@@ -5,11 +5,9 @@ import { useState, useEffect } from "react";
 import Input from "../components/auth/Input";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import SettingsIcon from '@material-ui/icons/Settings';
+import SettingsIcon from "@material-ui/icons/Settings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import FormError from "../components/auth/FormError";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
@@ -34,15 +32,18 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
   }
 `;
 
+const DELETE_TEAM = gql`
+  mutation deleteTeam($teamId: Int!) {
+    deleteTeam(teamId: $teamId) {
+      ok
+      error
+    }
+  }
+`;
+
 const CREATE_TEAM_MUTATION = gql`
-  mutation createTeam(
-    $teamName: String!
-    $description: String
-  ) {
-    createTeam(
-      teamName: $teamName
-      description: $description
-    ) {
+  mutation createTeam($teamName: String!, $description: String) {
+    createTeam(teamName: $teamName, description: $description) {
       ok
       error
       id
@@ -60,7 +61,7 @@ const SEE_TEAM_QUERY = gql`
         username
         email
         avatar
-  		}
+      }
     }
   }
 `;
@@ -94,7 +95,6 @@ const CreateBtn = styled.button`
   box-shadow: 0px 2px 4px gray;
   cursor: pointer;
 `;
-
 
 const ModalHeader = styled.h4`
   margin: 0;
@@ -215,7 +215,7 @@ const SearchTeam = styled.div`
 
 const TeamBody = styled.div`
   display: grid;
-  grid-template-columns: repeat(4,1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 50px;
   justify-items: stretch;
   margin-top: 30px;
@@ -223,7 +223,7 @@ const TeamBody = styled.div`
 
 const TeamList = styled.div`
   height: 100%;
-  width:100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,7 +232,7 @@ const TeamList = styled.div`
 `;
 
 const ListEachTeam = styled.li`
-  font-family: Impact 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Impact "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 15px;
   font-weight: 600;
   border: 1px solid lightgray;
@@ -243,7 +243,7 @@ const ListEachTeam = styled.li`
   cursor: pointer;
   background-color: white;
   width: 100%;
-  height: 100%; 
+  height: 100%;
   list-style: none;
   height: 150px;
 `;
@@ -255,7 +255,9 @@ const SettingBtn = styled.button`
   background-color: white;
   margin-bottom: -30px;
   color: lightgray;
-  &:hover { color: gray; }
+  &:hover {
+    color: gray;
+  }
 `;
 
 const SetModalHeader = styled.div`
@@ -273,7 +275,7 @@ const CancelBtn2 = styled.button`
   padding: 0 auto;
   font-size: 10px;
   cursor: pointer;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
   float: left;
   display: flex;
@@ -296,19 +298,25 @@ const NavTitle = styled.h4`
   cursor: pointer;
   border: 1px solid lightgray;
   margin-top: 50px;
-  &:hover { background-color: lightgray; padding: 10px; }
-  &.aboutTeam { }
-  &.delete { margin-top: 40px; }
+  &:hover {
+    background-color: lightgray;
+    padding: 10px;
+  }
+  &.aboutTeam {
+  }
+  &.delete {
+    margin-top: 40px;
+  }
 `;
 
 const ModalBtn2 = styled.div`
-  margin: 40px auto; 
+  margin: 40px auto;
   /* justify-content: space-between; */
 `;
 
 const ModalBody2 = styled.div`
   margin: 25px 30px;
-`; 
+`;
 
 const ModalSet = styled.div`
   /* margin-top: 30px; */
@@ -332,7 +340,7 @@ const MemberL = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 20px; 
+  margin-top: 20px;
   font-size: 12px;
 `;
 
@@ -345,21 +353,19 @@ const TableDiv = styled.div`
 `;
 
 const ListTableContainer = styled.table`
-  border: 1px solid white;    
+  border: 1px solid white;
   height: 100%;
   width: 100%;
-  padding:0;
+  padding: 0;
   border-collapse: collapse;
   background-color: white;
 `;
 
 const ListThead = styled.thead`
-  background-color: #F8F8F8;
+  background-color: #f8f8f8;
 `;
 
-const ListTbody = styled.thead`
-
-`;
+const ListTbody = styled.thead``;
 const ListTr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
@@ -374,9 +380,15 @@ const ListTh = styled.th`
   text-align: left;
   font-size: 11px;
   /* font-weight: 600; */
-  &.lAvatar { width: 7%; }
-  &.lName { width: 48%; }
-  &.lRole { width: 45%; }
+  &.lAvatar {
+    width: 7%;
+  }
+  &.lName {
+    width: 48%;
+  }
+  &.lRole {
+    width: 45%;
+  }
 `;
 
 const ListTd = styled.td`
@@ -385,9 +397,15 @@ const ListTd = styled.td`
   margin: 0 10px;
   width: 100%;
   text-align: left;
-  &.lAvatar { width: 5%; }
-  &.lName { width: 48%; }
-  &.lRole { width: 45%; }
+  &.lAvatar {
+    width: 5%;
+  }
+  &.lName {
+    width: 48%;
+  }
+  &.lRole {
+    width: 45%;
+  }
 `;
 
 const DeleteSetSub = styled.p`
@@ -401,9 +419,9 @@ const DeleteBtn = styled.button`
   width: 80%;
   border: none;
   height: 40px;
-  &:hover { 
-    background-color: red; 
-    color: white; 
+  &:hover {
+    background-color: red;
+    color: white;
     font-weight: 600;
   }
 `;
@@ -412,9 +430,7 @@ const B = styled.b`
   font-weight: 600;
 `;
 
-
 function MyTeamMainContents() {
-  
   const [teamName, setTeamName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [teamId, setTeamId] = useState();
@@ -438,13 +454,25 @@ function MyTeamMainContents() {
   const handleCreateTeam = () => {
     handleOpenModal();
   };
+  const { data: allTeamData, refetch } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
-  const { data: teamData, refetch} = useQuery(SEE_TEAM_QUERY, {
+  const { data: teamData } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
-    }); 
-  console.log("teamData!!!!",teamData);
+  });
+  console.log("teamData!!!!", teamData);
 
-  const { data: allTeamData } = useQuery(SEE_ALL_MY_TEAM_QUERY);
+  const onCompletedDelete = () => {
+    console.log("여기오나?");
+    alert("Your Project has been deleted.");
+    refetch();
+  };
+
+  const [deleteTeam, { loading: deleteTeamLoading }] = useMutation(
+    DELETE_TEAM,
+    {
+      onCompleted: onCompletedDelete,
+    }
+  );
 
   console.log("전체팀보자", allTeamData);
 
@@ -459,10 +487,16 @@ function MyTeamMainContents() {
   const handleChange = (e) => {
     if (e.target.name === "teamName") {
       setValue("teamName", e.target.value);
-    };
+    }
   };
 
-  const [createTeam, { loading }] = useMutation(CREATE_TEAM_MUTATION);
+  const onCompleted = (data) => {
+    refetch();
+  };
+
+  const [createTeam, { loading }] = useMutation(CREATE_TEAM_MUTATION, {
+    onCompleted,
+  });
 
   const onSaveValid = (data) => {
     handleCreateBtnModal();
@@ -475,20 +509,18 @@ function MyTeamMainContents() {
         ...data,
       },
     });
-    refetch();
   };
 
   const onSaveInvalid = (data) => {};
   // console.log("팀네임", data?.seeAllMyTeam?.teamName);
- 
-  
+
   const handleSettingModal = (teamName) => {
     console.log("teamName", teamName);
     setIsDModalOpen(true);
     setTeamName(teamName);
     setIsAbout({ bgColor: "lightgray" });
-   };
-   
+  };
+
   const handleXBtnModal = () => {
     setIsDModalOpen(false);
     setIsAbout(true);
@@ -507,11 +539,17 @@ function MyTeamMainContents() {
     setIsDelete({ bgColor: "lightgray" });
   };
 
-  const handleDeleteBtnModal = () => {
+  const handleDeleteBtnModal = (teamId) => {
     alert("Your team has been deleted.");
     setIsDModalOpen(false);
     setIsAbout(true);
     setIsDelete(false);
+    console.log("teamId", typeof teamId);
+    deleteTeam({
+      variables: {
+        teamId,
+      },
+    });
   };
 
   return (
@@ -520,7 +558,10 @@ function MyTeamMainContents() {
       <TeamHeader>
         <CreateBtn onClick={handleCreateTeam}>+ Create Team</CreateBtn>
         <SearchTeam>
-        <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
+          <InputSearch
+            type="text"
+            placeholder="Search Project..."
+          ></InputSearch>
         </SearchTeam>
       </TeamHeader>
 
@@ -529,30 +570,32 @@ function MyTeamMainContents() {
         <ModalBody>
           <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
             <ModalInfo>
-              <TeamLabel>Team name
-              <Input
-                ref={register({required: "Team name is required",})}
-                type="text"
-                name="teamName"
-                value={watch("teamName")}
-                placeholder="Enter the team name..."
-                onChange={handleChange}
-                hasError={Boolean(errors?.teamName?.message)}
-              />
-              <FormError message={errors?.teamName?.message} />
+              <TeamLabel>
+                Team name
+                <Input
+                  ref={register({ required: "Team name is required" })}
+                  type="text"
+                  name="teamName"
+                  value={watch("teamName")}
+                  placeholder="Enter the team name..."
+                  onChange={handleChange}
+                  hasError={Boolean(errors?.teamName?.message)}
+                />
+                <FormError message={errors?.teamName?.message} />
               </TeamLabel>
 
-              <DesLabel>Description
-              <Description
-                ref={register({required: "Team description is required",})}
-                type="text"
-                name="description"
-                value={watch("description")}
-                placeholder="Let people know what this team is all about..."
-                onChange={handleChange}
-                hasError={Boolean(errors?.description?.message)}
-              />
-              <FormError message={errors?.description?.message} />
+              <DesLabel>
+                Description
+                <Description
+                  ref={register({ required: "Team description is required" })}
+                  type="text"
+                  name="description"
+                  value={watch("description")}
+                  placeholder="Let people know what this team is all about..."
+                  onChange={handleChange}
+                  hasError={Boolean(errors?.description?.message)}
+                />
+                <FormError message={errors?.description?.message} />
               </DesLabel>
             </ModalInfo>
 
@@ -568,88 +611,111 @@ function MyTeamMainContents() {
       <TeamBody>
         {allTeamData?.seeAllMyTeam?.map((team) => (
           <ListEachTeam key={team.id}>
-            <SettingBtn onClick={()=>handleSettingModal(team.teamName)}><SettingsIcon/></SettingBtn>
-              <Link to={`/myProject/${team.teamName}`}>
-                <TeamList>
-                  {team.teamName}
-                </TeamList> 
-              </Link>
-                
-                <Modal isOpen={isDModalOpen} style={settingCustomStyles}>
-                  <SetModalHeader>MANAGE TEAM
-                      <CancelBtn2 onClick={handleXBtnModal}>X</CancelBtn2>
-                  </SetModalHeader>
+            <SettingBtn onClick={() => handleSettingModal(team.teamName)}>
+              <SettingsIcon />
+            </SettingBtn>
+            <Link to={`/myProject/${team.teamName}`}>
+              <TeamList>{team.teamName}</TeamList>
+            </Link>
 
-                  {/* 팀 멤버 리스트 / 팀 삭제 */}
-                    <ModalBody2>
-                      <ModalMain>
-                        <ModalNav>
-                          <NavTitle 
-                            onClick={settingAboutClick} 
-                            style={{backgroundColor: isAbout.bgColor}}
-                            className="aboutTeam">
-                            ABOUT TEAM
-                          </NavTitle>
-                          <NavTitle 
-                            onClick={settingDeleteClick} 
-                            className="delete"
-                            style={{backgroundColor: isDelete.bgColor}}>
-                            DELETE TEAM
-                          </NavTitle>
-                        </ModalNav>
+            <Modal isOpen={isDModalOpen} style={settingCustomStyles}>
+              <SetModalHeader>
+                MANAGE TEAM
+                <CancelBtn2 onClick={handleXBtnModal}>X</CancelBtn2>
+              </SetModalHeader>
 
-                        {isAbout &&
-                          <ModalSet>
-                            <SetTitle>ABOUT TEAM INFORMATION</SetTitle>
-                            <MemberSetSub>Team Name: <B>{teamData?.seeTeam?.teamName}</B> </MemberSetSub>
-                            <MemberL>
-                              <MemberSetSub>Member list:</MemberSetSub>
-                              <MemberSetSub>Total of members ({(teamData?.seeTeam?.teamMember)?.length})</MemberSetSub>
-                            </MemberL>
-                            <TableDiv>
-                              <ListTableContainer className="sortable">
-                                <ListThead>
-                                  <ListTr>
-                                    <ListTh className="lAvatar"></ListTh>
-                                    <ListTh className="lName">Name</ListTh>
-                                    <ListTh className="lRole">Role</ListTh>
-                                  </ListTr>
-                                </ListThead>
-                                <ListTbody>
-                                  {teamData?.seeTeam?.teamMember?.map((member) => (
-                                    <ListTr key={member.id}>
-                                      <ListTd className="lAvatar">
-                                        <FontAwesomeIcon icon={faUserCircle} size="2x" />
-                                      </ListTd>
-                                      <ListTd className="lName">{member.username}</ListTd>
-                                      <ListTd className="lRole">Project Manager</ListTd>                     
-                                    </ListTr>
-                                  ))}
-                                </ListTbody>
-                              </ListTableContainer>
-                            </TableDiv>
-                          </ModalSet>
+              {/* 팀 멤버 리스트 / 팀 삭제 */}
+              <ModalBody2>
+                <ModalMain>
+                  <ModalNav>
+                    <NavTitle
+                      onClick={settingAboutClick}
+                      style={{ backgroundColor: isAbout.bgColor }}
+                      className="aboutTeam"
+                    >
+                      ABOUT TEAM
+                    </NavTitle>
+                    <NavTitle
+                      onClick={settingDeleteClick}
+                      className="delete"
+                      style={{ backgroundColor: isDelete.bgColor }}
+                    >
+                      DELETE TEAM
+                    </NavTitle>
+                  </ModalNav>
+
+                  {isAbout && (
+                    <ModalSet>
+                      <SetTitle>ABOUT TEAM INFORMATION</SetTitle>
+                      <MemberSetSub>
+                        Team Name: <B>{teamData?.seeTeam?.teamName}</B>{" "}
+                      </MemberSetSub>
+                      <MemberL>
+                        <MemberSetSub>Member list:</MemberSetSub>
+                        <MemberSetSub>
+                          Total of members (
+                          {teamData?.seeTeam?.teamMember?.length})
+                        </MemberSetSub>
+                      </MemberL>
+                      <TableDiv>
+                        <ListTableContainer className="sortable">
+                          <ListThead>
+                            <ListTr>
+                              <ListTh className="lAvatar"></ListTh>
+                              <ListTh className="lName">Name</ListTh>
+                              <ListTh className="lRole">Role</ListTh>
+                            </ListTr>
+                          </ListThead>
+                          <ListTbody>
+                            {teamData?.seeTeam?.teamMember?.map((member) => (
+                              <ListTr key={member.id}>
+                                <ListTd className="lAvatar">
+                                  <FontAwesomeIcon
+                                    icon={faUserCircle}
+                                    size="2x"
+                                  />
+                                </ListTd>
+                                <ListTd className="lName">
+                                  {member.username}
+                                </ListTd>
+                                <ListTd className="lRole">
+                                  Project Manager
+                                </ListTd>
+                              </ListTr>
+                            ))}
+                          </ListTbody>
+                        </ListTableContainer>
+                      </TableDiv>
+                    </ModalSet>
+                  )}
+
+                  {isDelete && (
+                    <ModalSet>
+                      <SetTitle>DELETE TEAM</SetTitle>
+                      <DeleteSetSub>
+                        Are you sure you want to delete the team{" "}
+                        <B>{teamData?.seeTeam?.teamName}</B>
+                        <br />
+                        If you click <B>"Delete Team"</B> button, your all
+                        projects <br />
+                        and files for this team will be delete.
+                      </DeleteSetSub>
+
+                      <DeleteBtn
+                        onClick={() =>
+                          handleDeleteBtnModal(teamData?.seeTeam?.id)
                         }
-
-                        {isDelete &&
-                          <ModalSet>
-                            <SetTitle>DELETE TEAM</SetTitle>
-                            <DeleteSetSub>Are you sure you want to delete the team <B>{teamData?.seeTeam?.teamName}</B><br/>
-                              If you click <B>"Delete Team"</B> button, your all projects <br/>
-                              and files for this team will be delete.</DeleteSetSub>
-
-                            <DeleteBtn onClick={handleDeleteBtnModal}>Delete Team</DeleteBtn>
-                          </ModalSet>
-                        } 
-
-                      </ModalMain>
-                    </ModalBody2>
-                </Modal> 
+                      >
+                        Delete Team
+                      </DeleteBtn>
+                    </ModalSet>
+                  )}
+                </ModalMain>
+              </ModalBody2>
+            </Modal>
           </ListEachTeam>
         ))}
       </TeamBody>
-
-
     </Container>
   );
 }
