@@ -23,6 +23,29 @@ const DELETE_PROJECT = gql`
   }
 `;
 
+const EDIT_PROJECT = gql`
+  mutation editProject(
+    $id: Int!
+    $projectName: String
+    $projectStatus: String
+    $projectType: String
+    $description: String
+    $securityLevel: String
+  ) {
+    editProject(
+      id: $id
+      projectName: $projectName
+      projectStatus: $projectStatus
+      projectType: $projectType
+      description: $description
+      securityLevel: $securityLevel
+    ) {
+      ok
+      error
+    }
+  }
+`;
+
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
     seeTeam(teamName: $teamName) {
@@ -62,40 +85,6 @@ const CREATE_PROJECT_MUTATION = gql`
       startDate: $startDate
       endDate: $endDate
     ) {
-      ok
-      error
-      id
-    }
-  }
-`;
-
-const EDIT_PROJECT_MUTATION = gql`
-  mutation editProject(
-    $id: Int!
-    $projectName: String
-    $projectStatus: String
-    $projectType: String
-    $description: String
-    $securityLevel: String
-  ) {
-    editProject(
-      idd: $id
-      projectName: $projectName
-      projectStatus: $projectStatus
-      projectType: $projectType
-      description: $description
-      securityLevel: $securityLevel
-    ) {
-      ok
-      error
-      id
-    }
-  }
-`;
-
-const DELETE_PROJECT_MUTATION = gql`
-  mutation deleteProject($projectId: Int!) {
-    deleteProject(projectId: $projectId) {
       ok
       error
       id
@@ -208,6 +197,20 @@ const summaryCustomStyles = {
     transform: "translate(-50%, -50%)",
     width: "600px",
     height: "440px",
+  },
+};
+
+const editCustomStyles = {
+  content: {
+    padding: "0",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "600px",
+    height: "520px",
   },
 };
 
@@ -388,9 +391,11 @@ const Th = styled.th`
   text-align: left;
   &.num {
     width: 5%;
+    cursor: pointer;
   }
   &.pName {
     width: 25%;
+    cursor: pointer;
   }
   &.pDesc {
     width: 25%;
@@ -451,6 +456,15 @@ const DeletePBtn = styled.button`
   cursor: pointer;
 `;
 
+const Input = styled.input`
+  width: 250px;
+  height: 25px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: white;
+`;
+
 // const EditpName = styled.input`
 //   border: 1px solid gray;
 //   width: 100%;
@@ -472,24 +486,41 @@ function MyProjectMainContents() {
   const [submitData, setSubmitData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
   const [status, setStatus] = useState(null);
   const [security, setSecurity] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
-  const [isEditMode, setIsEditMode] = useState(false);
-
+  // const [searchWord, setSearchWord] = useState("");
+  const [isEditMode, setIsEditMode] = useState();
+  const [projectList, setProjectList] = useState([]);
+  const [reverseName, setReverseName] = useState(false);
+  const [reverseNumber, setReverseNumber] = useState(false);
   const { teamName } = useParams();
-  console.log("projects");
-  console.log("submitData", submitData);
+  const [editState, setEditState] = useState(false);
+  const [pName, setPname] = useState();
+  const [pStatus, setPstatus] = useState();
+  const [pType, setPtype] = useState();
+  const [pLevel, setPlevel] = useState();
+  const [pDescription, setPdescription] = useState();
+  // console.log("projects");
+  // console.log("submitData", submitData);
 
   const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
   });
-  console.log("teamData", teamData?.seeTeam?.project);
+  // console.log("teamData", teamData?.seeTeam?.project);
 
   const onCompletedDelete = (data) => {
     alert("Your Project has been deleted.");
+    refetch();
+  };
+
+  const onCompletedEdit = (data) => {
+    console.log("editData", data);
+    closeEditModal();
+    alert("Your Project has been edited.");
     refetch();
   };
 
@@ -500,9 +531,23 @@ function MyProjectMainContents() {
     }
   );
 
+  const [editProject, { loading: editProjectLoading }] = useMutation(
+    EDIT_PROJECT,
+    {
+      onCompleted: onCompletedEdit,
+    }
+  );
+
   const { handleSubmit, setValue, watch, register, errors } = useForm({
     mode: "onChange",
   });
+
+  useEffect(() => {
+    if (teamData !== undefined) {
+      setProjectList(teamData?.seeTeam?.project);
+    }
+  }, [teamData]);
+  console.log("projectList", projectList);
 
   const handleChange = (e) => {
     if (e.target.name === "projectName") {
@@ -511,7 +556,16 @@ function MyProjectMainContents() {
   };
 
   const onCompleted = (data) => {
-    refetch();
+    console.log("data", data);
+    if (data?.createProject?.ok === false) {
+      alert(
+        "The project name is already exist. Please Use Other Project Name!!"
+      );
+    } else {
+      refetch();
+      setSubmitData(null);
+      handleCreateBtnModal();
+    }
   };
 
   const [createProject, { loading }] = useMutation(CREATE_PROJECT_MUTATION, {
@@ -538,13 +592,28 @@ function MyProjectMainContents() {
     setIsSummaryOpen(true);
   };
 
+  const handleEditModal = () => {
+    setIsEditOpen(true);
+    setEditState(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditOpen(false);
+    setEditState(false);
+    console.log(pName);
+    console.log(pStatus);
+    console.log(pType);
+    console.log(pLevel);
+    console.log(pDescription);
+  };
+
   const handleCancelBtnModal = () => {
     setIsModalOpen(false);
   };
 
   const onSaveValid = (data) => {
     handleNextBtnModal();
-
+    console.log("지금의", editState);
     console.log("saveProject", data);
     console.log("status", status);
     console.log("security", security);
@@ -570,9 +639,6 @@ function MyProjectMainContents() {
         teamId: teamData.seeTeam.id,
       },
     });
-    refetch();
-    handleCreateBtnModal();
-    setSubmitData(null);
   };
 
   const onSaveInvalid = (data) => {};
@@ -599,12 +665,17 @@ function MyProjectMainContents() {
 
   // const [editProject] = useMutation(EDIT_PROJECT_MUTATION);
 
-  const handleEditList = (e) => {
-    setIsEditMode(true);
-    if (isEditMode) {
-      setIsEditMode(false);
-    }
+  const handleEditList = (event, project) => {
+    event.preventDefault();
+    console.log("editproject", project);
+    setIsEditMode(project);
+    console.log("isEditMode", isEditMode);
+    handleEditModal();
+    // if (isEditMode) {
+    //   setIsEditMode(false);
+    // }
   };
+  // console.log("editid", isEditMode === null ? false : true);
 
   const handleDeleteProject = (event, projectId) => {
     event.preventDefault();
@@ -614,6 +685,51 @@ function MyProjectMainContents() {
         projectId,
       },
     });
+  };
+  const handleEdit = (e) => {
+    console.log(e.target.name);
+    if (e.target.name === "projectName") {
+      setPname(e.target.value);
+    } else if (e.target.name === "projectType") {
+      setPtype(e.target.value);
+    } else if (e.target.name === "description") {
+      setPdescription(e.target.value);
+    }
+  };
+
+  const handleEditLevel = (e) => {
+    console.log(e.value);
+    setPlevel(e.value);
+  };
+  const handleEditStatus = (e) => {
+    console.log(e.value);
+    setPstatus(e.value);
+  };
+  console.log("isEditMode", isEditMode);
+  const editSubmit = () => {
+    console.log(pName, pStatus, pType, pLevel, pDescription);
+    editProject({
+      variables: {
+        id: +isEditMode.id,
+        projectName: pName,
+        projectStatus: pStatus,
+        projectType: pType,
+        description: pDescription,
+        securityLevel: pLevel,
+      },
+    });
+  };
+
+  const searchingFunction = (e) => {
+    // console.log(e.target.value);
+    // setProjectList(teamData?.seeTeam?.project);
+    // console.log("projectList", projectList);
+    // setSearchWord(e.target.value);
+    const filterProject = teamData?.seeTeam?.project.filter((project) =>
+      project.projectName.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    // console.log("filterProject", filterProject);
+    setProjectList(filterProject);
   };
 
   // const { handleEditSubmit } = useForm({
@@ -669,9 +785,39 @@ function MyProjectMainContents() {
   const sDate = new Date(startDate);
   const eDate = new Date(endDate);
   // console.log(`${format(date, 'dd.MM.yyyy')}`);
-  console.log(`${format(sDate, "yyyy-MM-dd")?.toString()}`);
-  console.log(`${format(eDate, "yyyy-MM-dd")?.toString()}`);
+  // console.log(`${format(sDate, "yyyy-MM-dd")?.toString()}`);
+  // console.log(`${format(eDate, "yyyy-MM-dd")?.toString()}`);
 
+  const nameSorting = () => {
+    const sortingList = [...projectList];
+    if (reverseName === false) {
+      sortingList.sort((a, b) => a.projectName.localeCompare(b.projectName));
+      setReverseName(true);
+    } else {
+      sortingList
+        .sort((a, b) => a.projectName.localeCompare(b.projectName))
+        .reverse();
+      setReverseName(false);
+    }
+    console.log("솔팅결과", sortingList);
+    setProjectList(sortingList);
+    // users.sort((a, b) => a.firstname.localeCompare(b.firstname))
+  };
+
+  const numberSorting = () => {
+    const sortingList = [...projectList];
+    if (reverseNumber === false) {
+      sortingList.sort((a, b) => a.id - b.id);
+      setReverseNumber(true);
+    } else {
+      sortingList.sort((a, b) => a.id - b.id).reverse();
+      setReverseNumber(false);
+    }
+
+    console.log("솔팅결과", sortingList);
+    setProjectList(sortingList);
+    // users.sort((a, b) => a.idex.localeCompare(b.firstname))
+  };
   return (
     <Container>
       <TeamName>
@@ -690,7 +836,8 @@ function MyProjectMainContents() {
           </NavBar>
           <InputSearch
             type="text"
-            placeholder="Search Project..."
+            onChange={searchingFunction}
+            placeholder="Search Project By Name..."
           ></InputSearch>
         </RightSection>
       </MainHeader>
@@ -868,12 +1015,103 @@ function MyProjectMainContents() {
             </Modal>
           </LeftBtn>
         </AllBtn>
+        <Modal isOpen={isEditOpen} style={editCustomStyles}>
+          <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
+            <ModalHeader>Edit PROJECT</ModalHeader>
+            <ModalBody>
+              <ModalInfo>
+                <SummaryLabel>
+                  Project name:
+                  <InputResult>
+                    <Input
+                      ref={register({ required: "Project Name is required" })}
+                      type="text"
+                      name="projectName"
+                      value={watch("projectName")}
+                      placeholder={isEditMode?.projectName}
+                      onChange={handleEdit}
+                      hasError={Boolean(errors?.projectName?.message)}
+                    ></Input>
+                  </InputResult>
+                </SummaryLabel>
+
+                <SummaryLabel>
+                  Project Status:
+                  <InputResult>
+                    <SelectStatus
+                      options={optionStatus}
+                      name="projectStatus"
+                      ref={register}
+                      value={watch("projectStatus")}
+                      onChange={handleEditStatus}
+                      placeholder={isEditMode?.projectStatus}
+                    />
+                  </InputResult>
+                </SummaryLabel>
+
+                <SummaryLabel>
+                  Project Type:
+                  <InputResult>
+                    <Input
+                      ref={register({ required: "Project Type is required" })}
+                      type="text"
+                      name="projectType"
+                      value={watch("projectType")}
+                      placeholder={isEditMode?.projectType}
+                      onChange={handleEdit}
+                      hasError={Boolean(errors?.projectType?.message)}
+                    ></Input>
+                  </InputResult>
+                </SummaryLabel>
+
+                <SummaryLabel>
+                  Security Level:
+                  <InputResult>
+                    <SelectStatus
+                      options={optionSecurity}
+                      name="securityLevel"
+                      ref={register}
+                      value={watch("securityLevel")}
+                      onChange={handleEditLevel}
+                      placeholder={isEditMode?.securityLevel}
+                    />
+                  </InputResult>
+                </SummaryLabel>
+
+                <DesLabel>Description: </DesLabel>
+                {/* <InputResult className="desResult"> */}
+                <Description
+                  type="text"
+                  ref={register({
+                    required: "Project description is required",
+                  })}
+                  value={watch("description")}
+                  name="description"
+                  onChange={handleEdit}
+                  placeholder={isEditMode?.description}
+                  hasError={Boolean(errors?.description?.message)}
+                />
+                {/* </InputResult> */}
+              </ModalInfo>
+              <ModalBtn>
+                <NextBtn type="button" onClick={editSubmit}>
+                  Save
+                </NextBtn>
+                <CancelBtn onClick={closeEditModal}>Cancel</CancelBtn>
+              </ModalBtn>
+            </ModalBody>
+          </form>
+        </Modal>
         <TableDiv>
           <TableContainer className="sortable">
             <Thead>
               <Tr>
-                <Th className="num">No.</Th>
-                <Th className="pName">Name</Th>
+                <Th className="num" onClick={numberSorting}>
+                  No. &darr;
+                </Th>
+                <Th className="pName" onClick={nameSorting}>
+                  Name &darr;
+                </Th>
                 <Th className="pDesc">Description</Th>
                 <Th className="pStatus">Status</Th>
                 <Th className="pSecurity">Security</Th>
@@ -882,41 +1120,69 @@ function MyProjectMainContents() {
               </Tr>
             </Thead>
 
-            {isEditMode ? (
-              <EditProjects />
-            ) : (
-              <Tbody>
-                {teamData?.seeTeam?.project?.map((projects, index) => (
-                  <Link to={`/myProject/${teamName}/${projects?.id}`}>
-                    <Tr key={projects.id}>
-                      <Td className="num">{index + 1}</Td>
-                      <Td className="pName">{projects.projectName}</Td>
-                      <Td className="pDesc">{projects.description}</Td>
-                      <Td className="pStatus">{projects.projectStatus}</Td>
-                      <Td className="pSecurity">{projects.securityLevel}</Td>
-                      <Td
-                        className="pEdit"
-                        onClick={(event) => event.preventDefault()}
-                      >
-                        <EditPBtn onClick={handleEditList}>
-                          <EditIcon />
-                        </EditPBtn>
-                      </Td>
-                      <Td
-                        className="pDelete"
-                        onClick={(event) =>
-                          handleDeleteProject(event, projects.id)
-                        }
-                      >
-                        <DeletePBtn onRemove={onRemove}>
-                          <DeleteIcon />
-                        </DeletePBtn>
-                      </Td>
-                    </Tr>
-                  </Link>
-                ))}
-              </Tbody>
-            )}
+            <Tbody>
+              {projectList?.map((projects, index) => (
+                <>
+                  {isEditMode === projects.id ? (
+                    <Link to={`/myProject/${teamName}/${projects?.id}`}>
+                      <Tr key={projects.id}>
+                        <Td className="num">{projects.id}</Td>
+                        <Td className="pName">{projects.projectName}aa</Td>
+                        <Td className="pDesc">{projects.description}</Td>
+                        <Td className="pStatus">{projects.projectStatus}</Td>
+                        <Td className="pSecurity">{projects.securityLevel}</Td>
+                        <Td
+                          className="pEdit"
+                          onClick={(event) => handleEditList(event, projects)}
+                        >
+                          <EditPBtn>
+                            <EditIcon />
+                          </EditPBtn>
+                        </Td>
+                        <Td
+                          className="pDelete"
+                          onClick={(event) =>
+                            handleDeleteProject(event, projects.id)
+                          }
+                        >
+                          <DeletePBtn onRemove={onRemove}>
+                            <DeleteIcon />
+                          </DeletePBtn>
+                        </Td>
+                      </Tr>
+                    </Link>
+                  ) : (
+                    <Link to={`/myProject/${teamName}/${projects?.id}`}>
+                      <Tr key={projects.id}>
+                        <Td className="num">{projects.id}</Td>
+                        <Td className="pName">{projects.projectName}</Td>
+                        <Td className="pDesc">{projects.description}</Td>
+                        <Td className="pStatus">{projects.projectStatus}</Td>
+                        <Td className="pSecurity">{projects.securityLevel}</Td>
+                        <Td
+                          className="pEdit"
+                          onClick={(event) => handleEditList(event, projects)}
+                        >
+                          <EditPBtn>
+                            <EditIcon />
+                          </EditPBtn>
+                        </Td>
+                        <Td
+                          className="pDelete"
+                          onClick={(event) =>
+                            handleDeleteProject(event, projects.id)
+                          }
+                        >
+                          <DeletePBtn onRemove={onRemove}>
+                            <DeleteIcon />
+                          </DeletePBtn>
+                        </Td>
+                      </Tr>
+                    </Link>
+                  )}
+                </>
+              ))}
+            </Tbody>
           </TableContainer>
         </TableDiv>
       </MainContents>

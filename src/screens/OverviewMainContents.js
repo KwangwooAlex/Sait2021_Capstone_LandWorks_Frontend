@@ -462,7 +462,7 @@ function OverviewMainContents() {
                   {teamData?.seeTeam?.teamMember?.map((member) => (
                     <ListTr key={member.id}>
                       <ListTd className="lAvatar">
-                        <Avatar src={userData?.me?.avatar} />
+                        <Avatar src={member.avatar} />
                       </ListTd>
                       <ListTd className="lName">{member.username}</ListTd>
                       <ListTd className="lRole">Project Manager</ListTd>

@@ -356,6 +356,7 @@ function MyProfileMainContents() {
   const onSubmitAvatarValidTest = (data) => {
     // console.log("잘오나 아바타?", data);
     setAvatar(data?.avatar[0]);
+
     let reader = new FileReader();
     reader.readAsDataURL(data?.avatar[0]);
     reader.onload = () => {
@@ -376,6 +377,7 @@ function MyProfileMainContents() {
         file: avatar,
       },
     });
+    setAvatar(undefined);
   };
 
   const onSaveValid = (data) => {
@@ -393,7 +395,8 @@ function MyProfileMainContents() {
   };
 
   const onSaveInvalid = (data) => {};
-
+  console.log("avataravataravatar", avatar);
+  console.log("userData?.me?.avatar", userData?.me?.avatar);
   return (
     <Container>
       <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>

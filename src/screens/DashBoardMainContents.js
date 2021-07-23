@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { gql, useQuery } from "@apollo/client";
-import 'react-calendar/dist/Calendar.css';
-import Calendar from 'react-calendar';
-
+import "react-calendar/dist/Calendar.css";
+import Calendar from "react-calendar";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -54,32 +53,32 @@ const LineContainer = styled.div`
   display: flex;
   flex-direction: row;
   height: 83%;
-  `;
+`;
 
 const FirstLine = styled.div`
   width: 30%;
   height: 100%;
-  `;
+`;
 
 const SecondLine = styled.div`
   margin-top: 40px;
   width: 40%;
   height: 100%;
   display: flex;
-  `;
+`;
 
 const ThirdLine = styled.div`
   margin-top: 40px;
   width: 40%;
   height: 100%;
   display: flex;
-  `;
+`;
 
 const SmallBox = styled.div`
   margin-top: 40px;
   width: 100%;
   height: 40%;
-  `;
+`;
 
 const FirstBox20 = styled.div`
   width: 90%;
@@ -93,7 +92,7 @@ const FirstBox20 = styled.div`
   justify-content: space-between;
   padding: 0 30px;
   font-weight: 600;
-  `;
+`;
 
 const TotalNum = styled.div`
   font-size: 15px;
@@ -104,9 +103,18 @@ const TotalNum = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  &.onActive { background-color: #12B700; color: white; }
-  &.totalTeam { background-color: #FF50B9; color: white; }
-  &.totalProject { background-color: #00B0FF; color: white; }
+  &.onActive {
+    background-color: #12b700;
+    color: white;
+  }
+  &.totalTeam {
+    background-color: #ff50b9;
+    color: white;
+  }
+  &.totalProject {
+    background-color: #00b0ff;
+    color: white;
+  }
 `;
 
 const CalDiv = styled.div`
@@ -167,7 +175,7 @@ const TeamBody = styled.div`
 `;
 
 const TeamTable = styled.table`
-  border: 1px solid white;    
+  border: 1px solid white;
   height: 100%;
   width: 100%;
   padding: 0;
@@ -175,9 +183,8 @@ const TeamTable = styled.table`
   border-collapse: collapse;
 `;
 
-
 const TableContainer = styled.table`
-  border: 1px solid white;    
+  border: 1px solid white;
   height: 100%;
   width: 100%;
   padding: 0;
@@ -185,11 +192,10 @@ const TableContainer = styled.table`
 `;
 
 const Thead = styled.thead`
-  background-color: #D5EEFF;
+  background-color: #d5eeff;
 `;
 
-const Tbody = styled.thead`
-`;
+const Tbody = styled.thead``;
 
 const Tr = styled.tr`
   display: flex;
@@ -203,10 +209,18 @@ const Th = styled.th`
   margin: 0 10px;
   width: 100%;
   text-align: left;
-  &.num { width: 5%; }
-  &.pName { width: 40%; }
-  &.pTeam { width: 25%; }
-  &.pStatus { width: 30%; }
+  &.num {
+    width: 5%;
+  }
+  &.pName {
+    width: 40%;
+  }
+  &.pTeam {
+    width: 25%;
+  }
+  &.pStatus {
+    width: 30%;
+  }
 `;
 const Td = styled.td`
   cursor: pointer;
@@ -214,10 +228,19 @@ const Td = styled.td`
   margin: 5px 10px;
   width: 100%;
   text-align: left;
-  &.num { width: 5%; }
-  &.pName { width: 40%; overflow: hidden;}
-  &.pTeam { width: 25%; }
-  &.pStatus { width: 30%; }
+  &.num {
+    width: 5%;
+  }
+  &.pName {
+    width: 40%;
+    overflow: hidden;
+  }
+  &.pTeam {
+    width: 25%;
+  }
+  &.pStatus {
+    width: 30%;
+  }
 `;
 
 const LETTER = styled.h3`
@@ -228,11 +251,10 @@ const LETTER = styled.h3`
 `;
 
 const TeamThead = styled.thead`
-  background-color: #FFEFCE;
+  background-color: #ffefce;
 `;
 
-const TeamTbody = styled.thead`
-`;
+const TeamTbody = styled.thead``;
 
 const TeamTr = styled.tr`
   display: flex;
@@ -248,10 +270,16 @@ const TeamTh = styled.th`
   margin: 0 10px;
   width: 100%;
   text-align: left;
-  &.tAvatar { width: 10%; }
-  &.tName { width: 40%; }
-  &.tDesc { width: 50%; }
-`; 
+  &.tAvatar {
+    width: 10%;
+  }
+  &.tName {
+    width: 40%;
+  }
+  &.tDesc {
+    width: 50%;
+  }
+`;
 
 const TeamTd = styled.td`
   cursor: pointer;
@@ -259,10 +287,16 @@ const TeamTd = styled.td`
   margin: 3px 10px;
   width: 100%;
   text-align: left;
-  &.tAvatar { width: 10%; }
-  &.tName { width: 40%; }
-  &.tDesc { width: 50%; }
-`; 
+  &.tAvatar {
+    width: 10%;
+  }
+  &.tName {
+    width: 40%;
+  }
+  &.tDesc {
+    width: 50%;
+  }
+`;
 
 function DashBoardMainContents() {
   const [value, onChange] = useState(new Date());
@@ -270,84 +304,104 @@ function DashBoardMainContents() {
   // const {teamName, projectId} = useParams();
 
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
-
+  const [totalProjectState, setTotalProjectState] = useState();
+  const [totalActiveProjectState, setTotalActiveProjectState] = useState();
   // AllMyProject 필요함 (전체 리스트를 보고 총 프로젝트 수를 알 수 있다)
   // seeProject는 프로젝트 하나만 볼 수 있는거기 때문에 X
   // const { data: list } = useQuery(SEE_PROJECT_QUERY);
 
   console.log("전체 팀", data?.seeAllMyTeam);
 
+  useEffect(() => {
+    if (data !== undefined) {
+      activeProjectFunction();
+    }
+  }, [data]);
 
   let totalTeam = data?.seeAllMyTeam?.length;
 
+  let activeProject = 0;
+  let totalProject = 0;
 
-  
+  const activeProjectFunction = () => {
+    const allTeam = data?.seeAllMyTeam;
+    for (let eachTeam of allTeam) {
+      totalProject += eachTeam.project.length;
+      for (let eachProject of eachTeam.project) {
+        if (eachProject.projectStatus === "Active") {
+          activeProject += 1;
+        }
+      }
+    }
+
+    setTotalProjectState(totalProject);
+    setTotalActiveProjectState(activeProject);
+  };
+
   return (
     <Container>
       <MainTitle>DASHBOARD</MainTitle>
       <LineContainer>
-
         <FirstLine>
           <SmallBox>
             {/* 하드코딩 부분 수정해야함 - Total On Active project 숫자 */}
-            <FirstBox20>On Active Project <TotalNum className="onActive">11</TotalNum></FirstBox20>
             <FirstBox20>
-              Total Team 
-                <TotalNum className="totalTeam">
-                  <Link to={`/myTeam`}>
-                    {totalTeam}
-                  </Link>
-                </TotalNum>
+              On Active Project{" "}
+              <TotalNum className="onActive">
+                {totalActiveProjectState}
+              </TotalNum>
+            </FirstBox20>
+            <FirstBox20>
+              Total Team
+              <TotalNum className="totalTeam">
+                <Link to={`/myTeam`}>{totalTeam}</Link>
+              </TotalNum>
             </FirstBox20>
             {/* 하드코딩 부분 수정해야함 - TotalProject 숫자 */}
             <FirstBox20>
-              Total Project 
+              Total Project
               <TotalNum className="totalProject">
-                <Link to={`/allProject`}>
-                    12
-                </Link>
+                <Link to={`/allProject`}>{totalProjectState}</Link>
               </TotalNum>
             </FirstBox20>
           </SmallBox>
           <CalDiv>
             <CalBox20>
-              <TeamCalender 
-                onChange={onChange}
-                value={value} />
+              <TeamCalender onChange={onChange} value={value} />
             </CalBox20>
-          </CalDiv>          
+          </CalDiv>
         </FirstLine>
 
         <SecondLine>
           <SecondBox30>
-          <LETTER> TEAM LIST </LETTER>
-          <TeamBody>
-            <TeamTable>
-              <TeamThead>
-                <TeamTr>
-                  <TeamTh className="tName">Name</TeamTh>
-                  <TeamTh className="tDesc">Description</TeamTh>
-                </TeamTr>
-              </TeamThead>
-              <TeamTbody>
-                {data?.seeAllMyTeam?.map((team) => (
-                <Link to={`/myProject/${team.teamName}`}>
-                  <TeamTr key={team.id}>
-                    <TeamTd className="tName">{team.teamName}</TeamTd>
-                    <TeamTd className="tDesc">{team.description}</TeamTd>
+            <LETTER> TEAM LIST </LETTER>
+            <TeamBody>
+              <TeamTable>
+                <TeamThead>
+                  <TeamTr>
+                    <TeamTh className="tName">Name</TeamTh>
+                    <TeamTh className="tDesc">Description</TeamTh>
                   </TeamTr>
-                </Link>
-                ))}
-              </TeamTbody>
-            </TeamTable>
-          </TeamBody>
+                </TeamThead>
+                <TeamTbody>
+                  {data?.seeAllMyTeam?.map((team) => (
+                    <Link to={`/myProject/${team.teamName}`}>
+                      <TeamTr key={team.id}>
+                        <TeamTd className="tName">{team.teamName}</TeamTd>
+                        <TeamTd className="tDesc">{team.description}</TeamTd>
+                      </TeamTr>
+                    </Link>
+                  ))}
+                </TeamTbody>
+              </TeamTable>
+            </TeamBody>
           </SecondBox30>
         </SecondLine>
 
         <ThirdLine>
-        <ThirdBox60>
-          <LETTER> PROJECT LIST </LETTER>
-            <TableDiv>                    
+          <ThirdBox60>
+            <LETTER> PROJECT LIST </LETTER>
+            <TableDiv>
               <TableContainer className="sortable">
                 <Thead>
                   <Tr>
@@ -359,25 +413,26 @@ function DashBoardMainContents() {
                 </Thead>
                 <Tbody>
                   {data?.seeAllMyTeam?.map((projects) => (
-                  <>
-                    {projects.project.map((allProject, index) => (
-                    <Link to={`/myProject/${projects?.teamName}/${allProject?.id}`}>
-                    <Tr key={projects.project.id}>
-                      <Td className="num">{index+1}</Td>
-                      <Td className="pName">{allProject.projectName}</Td>
-                      <Td className="pTeam">{projects.teamName}</Td>
-                      <Td className="pStatus">{allProject.projectStatus}</Td>
-                    </Tr>
-                    </Link>
-                    ))}
-                  </>
+                    <>
+                      {projects.project.map((project, index) => (
+                        <Link
+                          to={`/myProject/${projects?.teamName}/${project?.id}`}
+                        >
+                          <Tr key={projects.project.id}>
+                            <Td className="num">{project.id}</Td>
+                            <Td className="pName">{project.projectName}</Td>
+                            <Td className="pTeam">{projects.teamName}</Td>
+                            <Td className="pStatus">{project.projectStatus}</Td>
+                          </Tr>
+                        </Link>
+                      ))}
+                    </>
                   ))}
                 </Tbody>
               </TableContainer>
-            </TableDiv> 
+            </TableDiv>
           </ThirdBox60>
         </ThirdLine>
-
       </LineContainer>
     </Container>
   );

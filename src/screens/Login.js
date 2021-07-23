@@ -69,7 +69,6 @@ const ForgetPassWord = styled.div`
 `;
 
 const SignUp = styled.div`
- 
   width: 100px;
   height: 35px;
   background-color: white;

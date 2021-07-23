@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
-import Select from 'react-select';
+import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { gql, useQuery } from "@apollo/client";
-
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -73,7 +72,6 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
 //   }
 // `;
 
-
 const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
@@ -99,13 +97,11 @@ const SearchProject = styled.div`
   padding: 0px;
 `;
 
-
 const RightSection = styled.div`
   display: flex;
 `;
 
-const MainContents = styled.div`
-`;
+const MainContents = styled.div``;
 
 const InputSearch = styled.input`
   margin-top: 25px;
@@ -122,24 +118,22 @@ const TableDiv = styled.div`
   overflow: auto;
   height: 480px;
   width: 100%;
-  border: 1px solid lightgray; 
+  border: 1px solid lightgray;
   margin-top: 30px;
 `;
 
 const TableContainer = styled.table`
-  border: 1px solid white;    
+  border: 1px solid white;
   box-shadow: 0px 3px 6px gray;
   height: 600px;
   width: 100%;
-  padding:0;
+  padding: 0;
   border-collapse: collapse;
 `;
 const Thead = styled.thead`
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
 `;
-const Tbody = styled.thead`
-  
-`;
+const Tbody = styled.thead``;
 const Tr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
@@ -150,12 +144,24 @@ const Th = styled.th`
   margin: 0 10px;
   width: 100%;
   text-align: left;
-  &.num { width: 3%; }
-  &.pName { width: 25%; }
-  &.pDesc { width: 30%; }
-  &.pTeam { width: 17%; }
-  &.pStatus { width: 13%; }
-  &.pSecurity { width: 12%; }
+  &.num {
+    width: 5%;
+  }
+  &.pName {
+    width: 25%;
+  }
+  &.pDesc {
+    width: 28%;
+  }
+  &.pTeam {
+    width: 17%;
+  }
+  &.pStatus {
+    width: 13%;
+  }
+  &.pSecurity {
+    width: 12%;
+  }
 `;
 const Td = styled.td`
   cursor: pointer;
@@ -163,76 +169,151 @@ const Td = styled.td`
   margin: 10px;
   width: 100%;
   text-align: left;
-  &.num { width: 3%; }
-  &.pName { width: 25%; }
-  &.pDesc { width: 30%; }
-  &.pTeam { width: 17%; }
-  &.pStatus { width: 13%; }
-  &.pSecurity { width: 12%; }
+  &.num {
+    width: 3%;
+  }
+  &.pName {
+    width: 25%;
+  }
+  &.pDesc {
+    width: 30%;
+  }
+  &.pTeam {
+    width: 17%;
+  }
+  &.pStatus {
+    width: 13%;
+  }
+  &.pSecurity {
+    width: 12%;
+  }
 `;
 
 const CheckInput = styled.input``;
 
-
-
 function AllProjectMainContents() {
-
-  const {teamName} = useParams();
-
+  const { teamName } = useParams();
 
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
-  console.log("팀네임", data?.seeAllMyTeam);
-    
- 
+  const [projectList, setProjectList] = useState([]);
+  const [cloneProjectList, setCloneProjectList] = useState([]);
+  const [reverseName, setReverseName] = useState(false);
+  const [reverseNumber, setReverseNumber] = useState(false);
+  // console.log("팀네임", data?.seeAllMyTeam);
+
+  useEffect(() => {
+    if (data !== undefined) {
+      allProjectCheckFunction();
+    }
+  }, [data]);
+
+  const allProjectCheckFunction = () => {
+    let newList = [];
+    let eachProjectWithTeamName;
+    data?.seeAllMyTeam?.forEach((eachTeam) => {
+      // console.log("팀이름검사", eachTeam);
+      eachTeam?.project?.forEach((eachProject, index) => {
+        eachProjectWithTeamName = { ...eachProject };
+        // eachProjectWithTeamName.push = eachTeam.teamName;
+        // console.log("eachProjectWithTeamName", eachProjectWithTeamName);
+        eachProjectWithTeamName.teamName = eachTeam.teamName;
+        newList.push(eachProjectWithTeamName);
+      });
+    });
+    console.log("newList", newList);
+    setProjectList(newList);
+    setCloneProjectList(newList);
+  };
+  console.log("projectList", projectList);
+
+  const nameSorting = () => {
+    const sortingList = [...projectList];
+    if (reverseName === false) {
+      sortingList.sort((a, b) => a.projectName.localeCompare(b.projectName));
+      setReverseName(true);
+    } else {
+      sortingList
+        .sort((a, b) => a.projectName.localeCompare(b.projectName))
+        .reverse();
+      setReverseName(false);
+    }
+    console.log("솔팅결과", sortingList);
+    setProjectList(sortingList);
+    // users.sort((a, b) => a.firstname.localeCompare(b.firstname))
+  };
+
+  const numberSorting = () => {
+    const sortingList = [...projectList];
+    if (reverseNumber === false) {
+      sortingList.sort((a, b) => a.id - b.id);
+      setReverseNumber(true);
+    } else {
+      sortingList.sort((a, b) => a.id - b.id).reverse();
+      setReverseNumber(false);
+    }
+
+    console.log("솔팅결과", sortingList);
+    setProjectList(sortingList);
+    // users.sort((a, b) => a.idex.localeCompare(b.firstname))
+  };
+
+  const searchingFunction = (e) => {
+    // let searchingList = [...projectList];
+    const filterProject = cloneProjectList.filter((project) =>
+      project.projectName.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setProjectList(filterProject);
+  };
 
   return (
-  <Container>
-      <MainTitle>
-        ALL MY PROJECT LIST
-      </MainTitle> 
+    <Container>
+      <MainTitle>ALL MY PROJECT LIST</MainTitle>
       <TeamHeader>
         <SearchProject>
-          <InputSearch type="text" placeholder="Search Project..." ></InputSearch>
+          <InputSearch
+            type="text"
+            placeholder="Search Project By Name..."
+            onChange={searchingFunction}
+          ></InputSearch>
         </SearchProject>
       </TeamHeader>
 
-
-    <MainContents>
-      <TableDiv>
-      <TableContainer className="sortable">
-        <Thead>
-            <Tr>
-              <Th className="num">No.</Th>
-              <Th className="pName">Name</Th>
-              <Th className="pDesc">Description</Th>
-              <Th className="pTeam">Team</Th>
-              <Th className="pStatus">Status</Th>
-              <Th className="pSecurity">Security</Th>
-            </Tr>
-        </Thead>
-        <Tbody>
-            {data?.seeAllMyTeam?.map((projects) => (
-                <>
-                {projects.project.map((allProject, index) => (
-              <Link to={`/myProject/${projects?.teamName}/${allProject?.id}`}>
-              <Tr key={projects.project.id}>
-                <Td className="num">{index+1}</Td>
-                <Td className="pName">{allProject.projectName}</Td>
-                <Td className="pDesc">{allProject.description}</Td>
-                <Td className="pTeam">{projects.teamName}</Td>
-                <Td className="pStatus">{allProject.projectStatus}</Td>
-                <Td className="pSecurity">{allProject.securityLevel}</Td>
+      <MainContents>
+        <TableDiv>
+          <TableContainer className="sortable">
+            <Thead>
+              <Tr>
+                <Th className="num" onClick={numberSorting}>
+                  No. &darr;
+                </Th>
+                <Th className="pName" onClick={nameSorting}>
+                  Name &darr;
+                </Th>
+                <Th className="pDesc">Description</Th>
+                <Th className="pTeam">Team</Th>
+                <Th className="pStatus">Status</Th>
+                <Th className="pSecurity">Security</Th>
               </Tr>
-              </Link>
-            ))}
-            </>
-            ))}
-        </Tbody>
-      </TableContainer>
-      </TableDiv>
-    </MainContents> 
-  </Container>
-  )
+            </Thead>
+            <Tbody>
+              {projectList?.map((project) => (
+                <Link to={`/myProject/${project?.teamName}/${project?.id}`}>
+                  <Tr key={project.id}>
+                    <Td className="num">{project.id}</Td>
+                    <Td className="pName">{project.projectName}</Td>
+                    <Td className="pDesc">{project.description}</Td>
+                    <Td className="pTeam">{project.teamName}</Td>
+                    <Td className="pStatus">{project.projectStatus}</Td>
+                    <Td className="pSecurity">{project.securityLevel}</Td>
+                  </Tr>
+                </Link>
+              ))}
+            </Tbody>
+          </TableContainer>
+        </TableDiv>
+      </MainContents>
+    </Container>
+  );
 }
 
 export default AllProjectMainContents;

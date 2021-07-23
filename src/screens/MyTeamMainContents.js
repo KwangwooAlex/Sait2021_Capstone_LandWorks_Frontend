@@ -222,13 +222,26 @@ const TeamBody = styled.div`
 `;
 
 const TeamList = styled.div`
-  height: 100%;
+  height: 30px;
+  margin-top: 10px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
   font-weight: 600px;
+`;
+
+const ImageBox = styled.div`
+  width: 100px;
+  height: 80px;
+  background-color: red;
+  margin: auto;
+  margin-top: 5px;
+  background-color: white;
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+  background-position: center;
 `;
 
 const ListEachTeam = styled.li`
@@ -491,7 +504,13 @@ function MyTeamMainContents() {
   };
 
   const onCompleted = (data) => {
-    refetch();
+    console.log("data", data);
+    if (data?.createTeam?.ok === false) {
+      alert("The team name is already exist. Please Use Other Name!!");
+    } else {
+      handleCreateBtnModal();
+      refetch();
+    }
   };
 
   const [createTeam, { loading }] = useMutation(CREATE_TEAM_MUTATION, {
@@ -499,7 +518,6 @@ function MyTeamMainContents() {
   });
 
   const onSaveValid = (data) => {
-    handleCreateBtnModal();
     console.log("saveTeam", data);
     if (loading) {
       return;
@@ -557,12 +575,12 @@ function MyTeamMainContents() {
       <MainTitle>MY TEAM</MainTitle>
       <TeamHeader>
         <CreateBtn onClick={handleCreateTeam}>+ Create Team</CreateBtn>
-        <SearchTeam>
+        {/* <SearchTeam>
           <InputSearch
             type="text"
             placeholder="Search Project..."
           ></InputSearch>
-        </SearchTeam>
+        </SearchTeam> */}
       </TeamHeader>
 
       <Modal isOpen={isModalOpen} style={customStyles}>
@@ -615,6 +633,11 @@ function MyTeamMainContents() {
               <SettingsIcon />
             </SettingBtn>
             <Link to={`/myProject/${team.teamName}`}>
+              <ImageBox
+                src={`https://picsum.photos/${
+                  Math.floor(Math.random() * 11) + 190
+                }/${Math.floor(Math.random() * 11) + 190}`}
+              />
               <TeamList>{team.teamName}</TeamList>
             </Link>
 

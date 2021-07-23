@@ -455,6 +455,7 @@ const ListTh = styled.th`
   }
   &.lName {
     width: 30%;
+    cursor: pointer;
   }
   &.lRole {
     width: 25%;
@@ -593,13 +594,14 @@ const UserBoxes = styled.div`
 
 function MembersMainContents() {
   // const [memberRole, setMemberRole] = useState("");
-
+  const [reverseName, setReverseName] = useState(false);
   const { teamName, projectId } = useParams();
   const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
   });
   const [keyword, setKeyword] = useState("");
   const [selectedMember, setSelectedMember] = useState([]);
+  const [teamMemberList, setTeamMemberList] = useState([]);
   // const { data: searchData } = useQuery(SEARCH_USERS, {
   //   variables: {
   //     keyword,
@@ -622,7 +624,7 @@ function MembersMainContents() {
 
   const { data: userData } = useQuery(ME_QUERY);
   console.log("MEMBER", teamData?.seeTeam?.teamMember);
-  console.log("searchData", searchData);
+  // console.log("searchData", searchData);
   // const [username, setUsername] = useState('');
   // const { data: searchData } = useQuery(SEARCH_USER_QUERY);
 
@@ -638,8 +640,26 @@ function MembersMainContents() {
     }
   };
 
+  useEffect(() => {
+    if (teamData !== undefined) {
+      setTeamMemberList(teamData?.seeTeam?.teamMember);
+    }
+  }, [teamData]);
+  // console.log("teamMemberList", teamMemberList);
   const handleOpenModal = () => {
     setIsModalOpen(true);
+  };
+
+  const searchingFunction = (e) => {
+    // console.log(e.target.value);
+    // setProjectList(teamData?.seeTeam?.project);
+    // console.log("projectList", projectList);
+    // setSearchWord(e.target.value);
+    const filterMember = teamData?.seeTeam?.teamMember.filter((teamMember) =>
+      teamMember.username.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    // console.log("filterProject", filterProject);
+    setTeamMemberList(filterMember);
   };
 
   const handleAddBtnModal = () => {
@@ -712,10 +732,10 @@ function MembersMainContents() {
     mode: "onChange",
   });
 
-  console.log("searchWordBeforeSubmit", searchWordBeforeSubmit);
+  // console.log("searchWordBeforeSubmit", searchWordBeforeSubmit);
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("서치누른다");
+    // console.log("서치누른다");
     searchUsersQuery({
       variables: {
         keyword: searchWordBeforeSubmit,
@@ -723,7 +743,7 @@ function MembersMainContents() {
     });
   };
   const onCompleted = () => {
-    console.log("리패치오나?");
+    // console.log("리패치오나?");
     refetch();
   };
 
@@ -735,18 +755,18 @@ function MembersMainContents() {
   const [addRole] = useMutation(ADD_ROLE_MUTATION);
 
   const onSaveValid = (data) => {
-    console.log("submiting.............................");
+    // console.log("submiting.............................");
     // handleAddBtnModal();
-    console.log("selectedMember", selectedMember);
+    // console.log("selectedMember", selectedMember);
     // if (data.keyword !== "") {
     //   setKeyword(searchWordBeforeSubmit);
     // }
     if (selectedMember.length > 0 && selectedMember !== undefined) {
-      console.log("추가");
+      // console.log("추가");
       selectedMember.forEach((user) => {
         const userId = user.id;
-        console.log("teamData?.seeTeam?.id,", teamData?.seeTeam?.id);
-        console.log("userID", userId);
+        // console.log("teamData?.seeTeam?.id,", teamData?.seeTeam?.id);
+        // console.log("userID", userId);
         addTeamMember({
           variables: {
             teamId: teamData?.seeTeam?.id,
@@ -764,6 +784,22 @@ function MembersMainContents() {
   };
 
   const onSaveInvalid = (data) => {};
+
+  const nameSorting = () => {
+    const sortingList = [...teamMemberList];
+    if (reverseName === false) {
+      sortingList.sort((a, b) => a.username.localeCompare(b.username));
+      setReverseName(true);
+    } else {
+      sortingList
+        .sort((a, b) => a.username.localeCompare(b.username))
+        .reverse();
+      setReverseName(false);
+    }
+    console.log("솔팅결과", sortingList);
+    setTeamMemberList(sortingList);
+    // users.sort((a, b) => a.firstname.localeCompare(b.firstname))
+  };
 
   return (
     <Container>
@@ -783,7 +819,8 @@ function MembersMainContents() {
           </NavBar>
           <InputSearch
             type="text"
-            placeholder="Search Project..."
+            placeholder="Search Member By Name..."
+            onChange={searchingFunction}
           ></InputSearch>
         </RightSection>
       </MainHeader>
@@ -969,7 +1006,9 @@ function MembersMainContents() {
           <ListThead>
             <ListTr>
               <ListTh className="lAvatar"></ListTh>
-              <ListTh className="lName">Name</ListTh>
+              <ListTh className="lName" onClick={nameSorting}>
+                Name &darr;
+              </ListTh>
               <ListTh className="lRole">Role</ListTh>
               <ListTh className="lMail">e-mail</ListTh>
               <ListTh className="lEdit">Edit</ListTh>
@@ -977,7 +1016,7 @@ function MembersMainContents() {
             </ListTr>
           </ListThead>
           <ListTbody>
-            {teamData?.seeTeam?.teamMember?.map((member) => (
+            {teamMemberList?.map((member) => (
               <ListTr key={member.id}>
                 <ListTd className="lAvatar">
                   <Avatar src={member.avatar} />

@@ -11,7 +11,6 @@ import LogOutHeader from "../components/LogOutHeader";
 import FormSignUpBox from "../components/auth/FormSignUpBox";
 import SignUpButton from "../components/auth/SignUpButton";
 
-
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccount(
     $username: String!
@@ -88,6 +87,17 @@ const UnderHeader = styled.div`
 
 function SignUp() {
   const history = useHistory();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    formState,
+    getValues,
+    setError,
+    clearErrors,
+  } = useForm({
+    mode: "onChange",
+  });
 
   const onCompleted = (data) => {
     const { email, password } = getValues();
@@ -95,7 +105,10 @@ function SignUp() {
       createAccount: { ok, error },
     } = data;
     if (!ok) {
-      return;
+      alert("Your email or username is already exist!!!");
+      return setError("result", {
+        message: error,
+      });
     }
     //error is needed
     history.push(routes.home, {
@@ -109,17 +122,6 @@ function SignUp() {
     onCompleted,
   });
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    formState,
-    getValues,
-    setError,
-    clearErrors,
-  } = useForm({
-    mode: "onChange",
-  });
   const onSubmitValid = (data) => {
     if (loading) {
       return;
@@ -137,7 +139,6 @@ function SignUp() {
   };
 
   const onSubmitInvalid = (data) => {};
-  
 
   return (
     <AuthLayout>
