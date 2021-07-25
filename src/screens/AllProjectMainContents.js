@@ -254,7 +254,7 @@ function AllProjectMainContents() {
 
     console.log("솔팅결과", sortingList);
     setProjectList(sortingList);
-    // users.sort((a, b) => a.idex.localeCompare(b.firstname))
+    // users.sort((a, b) =>    a.idex.localeCompare(b.firstname))
   };
 
   const searchingFunction = (e) => {
