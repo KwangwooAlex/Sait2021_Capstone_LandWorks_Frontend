@@ -24,7 +24,12 @@ export const logUserOut = () => {
 };
 
 const uploadHttpLink = createUploadLink({
-  uri: "http://localhost:4001/graphql",
+  uri:
+    process.env.NODE_ENV === "production"
+      ? "https://capstone-sait-kwangwoo.herokuapp.com/graphql"
+      : "http://localhost:4001/graphql",
+
+  // uri: "http://localhost:4001/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
