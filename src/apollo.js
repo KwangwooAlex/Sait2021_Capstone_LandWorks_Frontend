@@ -29,7 +29,7 @@ const uploadHttpLink = createUploadLink({
       ? "https://capstone-sait-kwangwoo.herokuapp.com/graphql"
       : "http://localhost:4001/graphql",
 
-  // uri: "http://localhost:4001/graphql",
+  // uri:   "http://localhost:4001/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
