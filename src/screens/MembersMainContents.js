@@ -726,7 +726,7 @@ function MembersMainContents() {
   // };
   const editRoleCompleted = (data) => {
     console.log("에딧데이터", data);
-
+    alert("Edited Successfully!!");
     refetch();
     setIsEditMode(false);
   };
