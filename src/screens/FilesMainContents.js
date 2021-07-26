@@ -27,6 +27,15 @@ const SEE_TEAM_QUERY = gql`
   }
 `;
 
+const DELETE_FILE = gql`
+  mutation deleteFile($fileId: Int!) {
+    deleteFile(fileId: $fileId) {
+      ok
+      error
+    }
+  }
+`;
+
 const SEE_FILES = gql`
   query seeFiles($projectId: Int!) {
     seeFiles(projectId: $projectId) {
@@ -425,6 +434,9 @@ function FilesMainContents() {
   const { handleSubmit, setValue, watch, register, errors } = useForm({
     mode: "onChange",
   });
+  const { data: seeFilesData, refetch } = useQuery(SEE_FILES, {
+    variables: { projectId: +projectId },
+  });
 
   const { data: projectData } = useQuery(SEE_PROJECT_QUERY, {
     variables: { projectId: +projectId },
@@ -437,13 +449,28 @@ function FilesMainContents() {
     } = data;
     alert("File is uploaded!!");
     handleCancelBtnModal();
-    // refetch();
+    refetch();
+  };
+
+  const deleteFileCompleted = (data) => {
+    console.log("fileData 지운후", data);
+
+    alert("File is deleted!!");
+    // handleCancelBtnModal();
+    refetch();
   };
 
   const [uploadFile, { loading: uploadFileLoading }] = useMutation(
     UPLOAD_FILE,
     {
       onCompleted,
+    }
+  );
+
+  const [deleteFile, { loading: deleteFileLoading }] = useMutation(
+    DELETE_FILE,
+    {
+      onCompleted: deleteFileCompleted,
     }
   );
 
@@ -457,10 +484,6 @@ function FilesMainContents() {
 
   const { data: teamData } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName },
-  });
-
-  const { data: seeFilesData } = useQuery(SEE_FILES, {
-    variables: { projectId: +projectId },
   });
 
   console.log("seeFilesData", seeFilesData);
@@ -509,7 +532,14 @@ function FilesMainContents() {
     });
   };
 
-  const downloadFile = () => {};
+  const deleteFileFunction = (fileId) => {
+    console.log("fileId", fileId);
+    deleteFile({
+      variables: {
+        fileId,
+      },
+    });
+  };
 
   return (
     <Container>
@@ -657,7 +687,7 @@ function FilesMainContents() {
                 </Td> */}
                 <Td
                   className="fDelete"
-                  onClick={(event) => event.preventDefault()}
+                  onClick={() => deleteFileFunction(file.id)}
                 >
                   <DeleteMBtn>
                     <DeleteIcon />
