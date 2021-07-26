@@ -11,6 +11,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
+import Select from "react-select";
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -22,6 +23,11 @@ const SEE_TEAM_QUERY = gql`
         username
         email
         avatar
+      }
+      role {
+        roleName
+        userId
+        teamId
       }
     }
   }
@@ -48,6 +54,15 @@ const SEARCH_USERS = gql`
   }
 `;
 
+const EDIT_ROLE = gql`
+  mutation editRole($roleName: String!, $teamId: Int!, $userId: Int!) {
+    editRole(roleName: $roleName, teamId: $teamId, userId: $userId) {
+      ok
+      error
+    }
+  }
+`;
+
 const SEARCH_USER_QUERY = gql`
   query searchUsers($keyword: String!) {
     searchUsers(keyword: $keyword) {
@@ -70,6 +85,15 @@ const ADD_MEMBER_MUTATION = gql`
   }
 `;
 
+const ADD_ROLE = gql`
+  mutation addRole($roleName: String!, $teamId: Int!, $userId: Int!) {
+    addRole(roleName: $roleName, teamId: $teamId, userId: $userId) {
+      ok
+      error
+    }
+  }
+`;
+
 const DELETE_MEMBER_MUTATION = gql`
   mutation deleteTeamMember($teamId: Int!, $teamMemberId: Int!) {
     deleteTeamMember(teamId: $teamId, teamMemberId: $teamMemberId) {
@@ -80,19 +104,20 @@ const DELETE_MEMBER_MUTATION = gql`
   }
 `;
 
-const ADD_ROLE_MUTATION = gql`
-  mutation addRole($roleName: String!, $teamId: Int!, $userId: Int!) {
-    addRole(roleName: $roleName, teamId: $teamId, userId: $userId) {
-      ok
-      error
-      id
-    }
-  }
-`;
+// const ADD_ROLE_MUTATION = gql`
+//   mutation addRole($roleName: String!, $teamId: Int!, $userId: Int!) {
+//     addRole(roleName: $roleName, teamId: $teamId, userId: $userId) {
+//       ok
+//       error
+//       id
+//     }
+//   }
+// `;
 
 const ME_QUERY = gql`
   query me {
     me {
+      id
       username
       email
       companyName
@@ -202,6 +227,21 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     width: "700px",
     height: "720px",
+  },
+};
+
+const editCustomStyles = {
+  content: {
+    padding: "0",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "400px",
+    height: "200px",
+    // backgroundColor: "red",
   },
 };
 
@@ -348,6 +388,38 @@ const Td = styled.td`
     width: 10%;
     cursor: pointer;
   }
+`;
+
+const SummaryLabel = styled.label`
+  display: flex;
+  margin-bottom: 20px;
+  width: 100%;
+  &.dateLabel {
+    width: 200px;
+  }
+`;
+
+const InputResult = styled.div`
+  margin-left: 10px;
+  font-weight: 600;
+  width: 20%;
+  &.desResult {
+    margin-left: 0px;
+    overflow: auto;
+    height: 100px;
+    border: 1px dashed;
+    width: 100%;
+    padding: 5px;
+    margin-top: -10px;
+  }
+  &.dateResult {
+    width: 50%;
+  }
+`;
+
+const SelectStatus = styled(Select)`
+  width: 200px;
+  margin-left: 15px;
 `;
 
 const PlusBtn = styled.span`
@@ -599,6 +671,7 @@ function MembersMainContents() {
   const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
   });
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [selectedMember, setSelectedMember] = useState([]);
   const [teamMemberList, setTeamMemberList] = useState([]);
@@ -622,8 +695,18 @@ function MembersMainContents() {
     }
   );
 
+  const optionStatus = [
+    { value: "Project Manager", label: "Project Manager" },
+    { value: "Project Supervisor", label: "Project Supervisor" },
+    { value: "Member", label: "Member" },
+  ];
+
   const { data: userData } = useQuery(ME_QUERY);
-  console.log("MEMBER", teamData?.seeTeam?.teamMember);
+  console.log("MEMBER", teamData?.seeTeam);
+  console.log(
+    "MEMBER role",
+    teamData?.seeTeam?.role?.filter((role) => role.userId === 2)
+  );
   // console.log("searchData", searchData);
   // const [username, setUsername] = useState('');
   // const { data: searchData } = useQuery(SEARCH_USER_QUERY);
@@ -632,13 +715,25 @@ function MembersMainContents() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDModalOpen, setIsDModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [position, setPosition] = useState();
+  const [addRole, { loading: addRoleLoading }] = useMutation(ADD_ROLE);
+  const [editPerson, setEditPerson] = useState();
+  // const handleEditRole = () => {
+  //   setIsEditMode(true);
+  //   if (isEditMode) {
+  //     setIsEditMode(false);
+  //   }
+  // };
+  const editRoleCompleted = (data) => {
+    console.log("에딧데이터", data);
 
-  const handleEditRole = () => {
-    setIsEditMode(true);
-    if (isEditMode) {
-      setIsEditMode(false);
-    }
+    refetch();
+    setIsEditMode(false);
   };
+
+  const [editRole, { loading: editRoleLoading }] = useMutation(EDIT_ROLE, {
+    onCompleted: editRoleCompleted,
+  });
 
   useEffect(() => {
     if (teamData !== undefined) {
@@ -711,12 +806,21 @@ function MembersMainContents() {
   // console.log("selectedMember", selectedMember);
 
   const deleteTeamMemberFunction = (teamMemberId) => {
-    deleteTeamMember({
-      variables: {
-        teamId: teamData.seeTeam.id,
-        teamMemberId,
-      },
-    });
+    const roleName = teamData?.seeTeam?.role?.filter(
+      (role) => role.userId === userData.me.id
+    );
+    // console.log("roleName", roleName);
+    if (roleName.length > 0 && roleName[0].roleName === "Project Manager") {
+      deleteTeamMember({
+        variables: {
+          teamId: teamData.seeTeam.id,
+          teamMemberId,
+        },
+      });
+    } else {
+      alert("You do not have a permission to do it");
+      return null;
+    }
   };
   const handleSearchWord = (data) => {
     // console.log("입력", data.target.value);
@@ -744,6 +848,7 @@ function MembersMainContents() {
   };
   const onCompleted = () => {
     // console.log("리패치오나?");
+
     refetch();
   };
 
@@ -752,7 +857,7 @@ function MembersMainContents() {
   });
 
   // const [deleteTeamMember] = useMutation(DELETE_MEMBER_MUTATION);
-  const [addRole] = useMutation(ADD_ROLE_MUTATION);
+  // const [addRole] = useMutation(ADD_ROLE_MUTATION);
 
   const onSaveValid = (data) => {
     // console.log("submiting.............................");
@@ -773,6 +878,13 @@ function MembersMainContents() {
             userId,
           },
         });
+        // addRole({
+        //   variables: {
+        //     roleName: "Member",
+        //     teamId: teamData.seeTeam.id,
+        //     userId: userId,
+        //   },
+        // });
       });
       setSelectedMember([]);
       handleCancelBtnModal();
@@ -784,6 +896,11 @@ function MembersMainContents() {
   };
 
   const onSaveInvalid = (data) => {};
+
+  const handleEditPosition = (e) => {
+    console.log(e.value);
+    setPosition(e.value);
+  };
 
   const nameSorting = () => {
     const sortingList = [...teamMemberList];
@@ -801,6 +918,39 @@ function MembersMainContents() {
     // users.sort((a, b) => a.firstname.localeCompare(b.firstname))
   };
 
+  const handleEditModal = () => {
+    setIsEditMode(true);
+  };
+  const handleCancelEditBtnModal = () => {
+    setIsEditMode(false);
+  };
+
+  const handleEditList = (event, member, role) => {
+    event.preventDefault();
+    // console.log("editmember", member, role);
+    // console.log("userData", userData);
+    const roleName = teamData?.seeTeam?.role?.filter(
+      (role) => role.userId === userData.me.id
+    );
+    // console.log("roleName", roleName);
+    if (roleName.length > 0 && roleName[0].roleName === "Project Manager") {
+      setEditPerson(member);
+      handleEditModal();
+    } else {
+      alert("You do not have a permission to do it");
+      return null;
+    }
+  };
+
+  const handleEditSubmit = () => {
+    editRole({
+      variables: {
+        roleName: position,
+        teamId: teamData.seeTeam.id,
+        userId: editPerson.id,
+      },
+    });
+  };
   return (
     <Container>
       <TeamName>
@@ -983,6 +1133,38 @@ function MembersMainContents() {
           </ModalBody>
         </Modal>
 
+        {/* Role Edit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
+        <Modal isOpen={isEditMode} style={editCustomStyles}>
+          <ModalHeader>ADD TEAM MEMBERS</ModalHeader>
+          <ModalBody>
+            <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
+              <ModalInfo>
+                <SummaryLabel>
+                  Project Status:
+                  <InputResult>
+                    <SelectStatus
+                      options={optionStatus}
+                      name="projectStatus"
+                      ref={register}
+                      value={watch("projectStatus")}
+                      onChange={handleEditPosition}
+                      placeholder="Select"
+                    />
+                  </InputResult>
+                </SummaryLabel>
+              </ModalInfo>
+
+              <ModalBtn>
+                <AddModalBtn type="submit" onClick={handleEditSubmit}>
+                  Save
+                </AddModalBtn>
+                <CancelModalBtn onClick={handleCancelEditBtnModal}>
+                  Cancel
+                </CancelModalBtn>
+              </ModalBtn>
+            </form>
+          </ModalBody>
+        </Modal>
         <RightBtn>
           <Modal isOpen={isDModalOpen} style={customStyle}>
             <ModalHeader>DELETE PROJECT</ModalHeader>
@@ -1023,7 +1205,20 @@ function MembersMainContents() {
                 </ListTd>
                 <ListTd className="lName">{member.username}</ListTd>
                 <ListTd className="lRole">
-                  {isEditMode ? (
+                  {teamData?.seeTeam?.role?.filter(
+                    (role) => role.userId === member.id
+                  ).length > 0 ? (
+                    <>
+                      {
+                        teamData.seeTeam.role.filter(
+                          (role) => role.userId === member.id
+                        )[0].roleName
+                      }
+                    </>
+                  ) : (
+                    "Guest"
+                  )}
+                  {/* {isEditMode ? (
                     <EditRole
                       ref={register}
                       type="text"
@@ -1035,10 +1230,70 @@ function MembersMainContents() {
                     />
                   ) : (
                     <> Project Manager </>
-                  )}
+                  )} */}
                 </ListTd>
                 <ListTd className="lMail">{member.email}</ListTd>
-                <ListTd className="lEdit" onClick={handleEditRole}>
+                {/* {teamData?.seeTeam?.role?.filter(
+                  (role) => role.userId === member.id
+                ).length > 0 ? (
+                  teamData.seeTeam.role.filter(
+                    (role) => role.userId === userData?.id
+                  )[0].roleName === "Project Manager" ? (
+                    <>
+                      <ListTd
+                        className="lEdit"
+                        onClick={(event) => handleEditList(event, member)}
+                      >
+                        <MeditBtn>
+                          <EditIcon />
+                        </MeditBtn>
+                      </ListTd>
+                      <ListTd className="lDelete">
+                        <DeleteMBtn
+                          onClick={() => deleteTeamMemberFunction(member.id)}
+                        >
+                          <DeleteIcon />
+                        </DeleteMBtn>
+                      </ListTd>
+                    </>
+                  ) : (
+                    <>
+                      <ListTd
+                        className="lEdit"
+                        onClick={(event) => handleEditListError(event)}
+                      >
+                        <MeditBtn>
+                          <EditIcon />
+                        </MeditBtn>
+                      </ListTd>
+                      <ListTd className="lDelete">
+                        <DeleteMBtn>
+                          <DeleteIcon />
+                        </DeleteMBtn>
+                      </ListTd>
+                    </>
+                  )
+                ) : (
+                  <>
+                    <ListTd
+                      className="lEdit"
+                      onClick={(event) => handleEditListError(event)}
+                    >
+                      <MeditBtn>
+                        <EditIcon />
+                      </MeditBtn>
+                    </ListTd>
+                    <ListTd className="lDelete">
+                      <DeleteMBtn>
+                        <DeleteIcon />
+                      </DeleteMBtn>
+                    </ListTd>
+                  </>
+                )} */}
+                <ListTd
+                  className="lEdit"
+                  onClick={(event) => handleEditList(event, member)}
+                >
                   <MeditBtn>
                     <EditIcon />
                   </MeditBtn>

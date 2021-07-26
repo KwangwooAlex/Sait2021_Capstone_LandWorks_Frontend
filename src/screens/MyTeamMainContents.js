@@ -32,6 +32,15 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
   }
 `;
 
+const ADD_ROLE = gql`
+  mutation addRole($roleName: String!, $teamId: Int!, $userId: Int!) {
+    addRole(roleName: $roleName, teamId: $teamId, userId: $userId) {
+      ok
+      error
+    }
+  }
+`;
+
 const DELETE_TEAM = gql`
   mutation deleteTeam($teamId: Int!) {
     deleteTeam(teamId: $teamId) {
@@ -47,6 +56,10 @@ const CREATE_TEAM_MUTATION = gql`
       ok
       error
       id
+      user {
+        id
+        username
+      }
     }
   }
 `;
@@ -480,6 +493,8 @@ function MyTeamMainContents() {
     refetch();
   };
 
+  const [addRole, { loading: addRoleLoading }] = useMutation(ADD_ROLE);
+
   const [deleteTeam, { loading: deleteTeamLoading }] = useMutation(
     DELETE_TEAM,
     {
@@ -508,6 +523,13 @@ function MyTeamMainContents() {
     if (data?.createTeam?.ok === false) {
       alert("The team name is already exist. Please Use Other Name!!");
     } else {
+      addRole({
+        variables: {
+          roleName: "Project Manager",
+          teamId: data.createTeam.id,
+          userId: data?.createTeam?.user?.id,
+        },
+      });
       handleCreateBtnModal();
       refetch();
     }
