@@ -432,6 +432,10 @@ function FilesMainContents() {
   const [submitTitle, setSubmitTitle] = useState();
   const [fileName, setFileName] = useState("");
   const [fileInfo, setFileInfo] = useState();
+  const [uploadingTime, setUploadingTime] = useState(true);
+  const [fileList, setFileList] = useState([]);
+  const [reverseName, setReverseName] = useState(false);
+  const [reverseNumber, setReverseNumber] = useState(false);
   const { handleSubmit, setValue, watch, register, errors } = useForm({
     mode: "onChange",
   });
@@ -450,6 +454,7 @@ function FilesMainContents() {
     } = data;
     alert("File is uploaded!!");
     handleCancelBtnModal();
+    setUploadingTime(true);
     refetch();
   };
 
@@ -460,6 +465,12 @@ function FilesMainContents() {
     // handleCancelBtnModal();
     refetch();
   };
+
+  useEffect(() => {
+    if (seeFilesData !== undefined) {
+      setFileList(seeFilesData?.seeFiles);
+    }
+  }, [seeFilesData]);
 
   const [uploadFile, { loading: uploadFileLoading }] = useMutation(
     UPLOAD_FILE,
@@ -524,13 +535,27 @@ function FilesMainContents() {
 
   const onSaveValid = (data) => {
     console.log("서브밋데타", data);
-    uploadFile({
-      variables: {
-        file: data?.uploadFile[0],
-        fileName: data.fileName,
-        projectId: +projectId,
-      },
-    });
+    console.log("data?.uploadFile[0].size", data?.uploadFile[0].size);
+    console.log("type", typeof data?.uploadFile[0].size);
+    if (data?.uploadFile[0].size > 1030142) {
+      console.log("here");
+      alert("File Size is too big!!!");
+      return;
+    }
+    if (uploadFileLoading) {
+      return;
+    }
+    if (data?.uploadFile[0].size < 1030142 && uploadingTime === true) {
+      // console.log("오나오나");
+      uploadFile({
+        variables: {
+          file: data?.uploadFile[0],
+          fileName: data.fileName,
+          projectId: +projectId,
+        },
+      });
+      setUploadingTime(false);
+    }
   };
 
   const deleteFileFunction = (fileId) => {
@@ -542,13 +567,56 @@ function FilesMainContents() {
     });
   };
 
+  const searchingFunction = (e) => {
+    // console.log(e.target.value);
+    // setProjectList(teamData?.seeTeam?.project);
+    // console.log("projectList", projectList);
+    // setSearchWord(e.target.value);
+    const filterFiles = seeFilesData?.seeFiles?.filter((file) =>
+      file.fileName.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    // console.log("filterProject", filterProject);
+    setFileList(filterFiles);
+  };
+
+  const nameSorting = () => {
+    const sortingList = [...fileList];
+    if (reverseName === false) {
+      sortingList.sort((a, b) => a.fileName.localeCompare(b.fileName));
+      setReverseName(true);
+    } else {
+      sortingList
+        .sort((a, b) => a.fileName.localeCompare(b.fileName))
+        .reverse();
+      setReverseName(false);
+    }
+    console.log("솔팅결과", sortingList);
+    setFileList(sortingList);
+    // users.sort((a, b) => a.firstname.localeCompare(b.firstname))
+  };
+
+  const numberSorting = () => {
+    const sortingList = [...fileList];
+    if (reverseNumber === false) {
+      sortingList.sort((a, b) => a.id - b.id);
+      setReverseNumber(true);
+    } else {
+      sortingList.sort((a, b) => a.id - b.id).reverse();
+      setReverseNumber(false);
+    }
+
+    console.log("솔팅결과", sortingList);
+    setFileList(sortingList);
+    // users.sort((a, b) => a.idex.localeCompare(b.firstname))
+  };
+
   return (
     <Container>
       <TeamPath>
         <TeamName>
           <Link to={`/myProject/${teamName}`}>{teamName}</Link>
         </TeamName>
-        <LETTERS>></LETTERS>
+        <LETTERS>&#10154;</LETTERS>
         <ProjectPath>
           <Link to={`/myProject/${teamName}/${projectId}`}>
             {projectData?.seeProject?.projectName}
@@ -568,7 +636,8 @@ function FilesMainContents() {
           </NavBar>
           <InputSearch
             type="text"
-            placeholder="Search Project..."
+            placeholder="Search File..."
+            onChange={searchingFunction}
           ></InputSearch>
         </RightSection>
       </MainHeader>
@@ -622,17 +691,21 @@ function FilesMainContents() {
             </form>
           </Modal>
 
-          <DownloadBtn>Download</DownloadBtn>
-          <CopyBtn>Copy</CopyBtn>
+          {/* <DownloadBtn>Download</DownloadBtn> */}
+          {/* <CopyBtn>Copy</CopyBtn> */}
         </FourBtn>
       </SixBtn>
       <TableDiv>
         <TableContainer className="sortable">
           <Thead>
             <Tr>
-              <Th className="num">No.</Th>
+              <Th className="num" onClick={numberSorting}>
+                No. &darr;
+              </Th>
               <Th className="num">Type</Th>
-              <Th className="fName">Name</Th>
+              <Th className="fName" onClick={nameSorting}>
+                Name &darr;
+              </Th>
               <Th className="fUpdateBy">Update by</Th>
               <Th className="fLast">Last Update</Th>
               <Th className="fEdit">DownLoad</Th>
@@ -642,7 +715,7 @@ function FilesMainContents() {
           </Thead>
           <Tbody>
             {/* 파일업로드 파트 전체 수정해야함. 지금이건 프로젝트 리스트로 대신 하드코딩 해둔거임 */}
-            {seeFilesData?.seeFiles?.map((file, index) => (
+            {fileList?.map((file, index) => (
               // <Link to={`/myProject/${teamName}/${files?.id}`}>
               <Tr key={(file.id, index)}>
                 <Td className="num">{file.id}</Td>

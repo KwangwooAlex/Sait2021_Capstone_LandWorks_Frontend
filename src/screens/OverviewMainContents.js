@@ -411,7 +411,7 @@ function OverviewMainContents() {
         <TeamName>
           <Link to={`/myProject/${teamName}`}>{teamName}</Link>
         </TeamName>
-        <LETTERS>></LETTERS>
+        <LETTERS>&#10154;</LETTERS>
         {/* 수정해야함 */}
         <ProjectPath>
           <Link to={`/myProject/${teamName}/${projectId}`}>
@@ -430,10 +430,10 @@ function OverviewMainContents() {
               <Letter>Files</Letter>
             </Link>
           </NavBar>
-          <InputSearch
+          {/* <InputSearch
             type="text"
             placeholder="Search Project..."
-          ></InputSearch>
+          ></InputSearch> */}
         </RightSection>
       </MainHeader>
 
