@@ -209,7 +209,7 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "500px",
-    height: "420px",
+    height: "320px",
   },
 };
 
@@ -389,6 +389,7 @@ const EditFileName = styled.input`
 `;
 
 const SummaryLabel = styled.label`
+  margin-top: 20px;
   display: flex;
   margin-bottom: 20px;
   width: 100%;
@@ -582,16 +583,6 @@ function FilesMainContents() {
                 <ModalBody>
                   <ModalInfo>
                     <UploadHeader>Upload files</UploadHeader>
-                    <UploadDes>
-                      You can upload files up to a maximum of 100 MB.
-                    </UploadDes>
-                    <UploadInput
-                      ref={register}
-                      type="file"
-                      name="uploadFile"
-                      onChange={handleFileUpload}
-                    ></UploadInput>
-                    {/* <UploadBox>File 1</UploadBox> */}
 
                     <SummaryLabel>
                       File name:
@@ -609,6 +600,16 @@ function FilesMainContents() {
                         ></InputTitle>
                       </InputResult>
                     </SummaryLabel>
+                    <UploadDes>
+                      You can upload files up to a maximum of 100 MB.
+                    </UploadDes>
+                    <UploadInput
+                      ref={register}
+                      type="file"
+                      name="uploadFile"
+                      onChange={handleFileUpload}
+                    ></UploadInput>
+                    {/* <UploadBox>File 1</UploadBox> */}
                   </ModalInfo>
                   <ModalBtn>
                     <ModalUploadBtn type="submit">Upload</ModalUploadBtn>

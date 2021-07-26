@@ -32,6 +32,18 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
   }
 `;
 
+const SEE_FILES = gql`
+  query seeFiles($projectId: Int!) {
+    seeFiles(projectId: $projectId) {
+      id
+      fileName
+      fileUrl
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
     seeTeam(teamName: $teamName) {
@@ -355,8 +367,13 @@ const DateBox = styled.div`
 
 function OverviewMainContents() {
   const [value, onChange] = useState(new Date());
-
   const { teamName, projectId } = useParams();
+
+  const { data: seeFilesData, refetch } = useQuery(SEE_FILES, {
+    variables: { projectId: +projectId },
+  });
+
+  console.log("seeFilesData", seeFilesData);
 
   const { data: userData } = useQuery(ME_QUERY);
 
@@ -477,6 +494,32 @@ function OverviewMainContents() {
         <ThirdLine>
           <ThirdBox60>
             <LETTER> FILE LIST </LETTER>
+            <TableDiv>
+              <ListTableContainer className="sortable">
+                <ListThead>
+                  <ListTr>
+                    <ListTh className="lAvatar">Type</ListTh>
+                    <ListTh className="lName">File Name</ListTh>
+                    <ListTh className="lRole">Uploaded Date</ListTh>
+                  </ListTr>
+                </ListThead>
+                <ListTbody>
+                  {seeFilesData?.seeFiles?.map((file) => (
+                    <ListTr key={file.id}>
+                      <ListTd className="lAvatar">
+                        {
+                          file.fileUrl.split(".")[
+                            file.fileUrl.split(".").length - 1
+                          ]
+                        }
+                      </ListTd>
+                      <ListTd className="lName">{file.fileName}</ListTd>
+                      <ListTd className="lRole">{file.createdAt}</ListTd>
+                    </ListTr>
+                  ))}
+                </ListTbody>
+              </ListTableContainer>
+            </TableDiv>
           </ThirdBox60>
         </ThirdLine>
       </LineContainer>
