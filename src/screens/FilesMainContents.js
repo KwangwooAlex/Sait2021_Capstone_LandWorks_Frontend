@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import Input from "../components/auth/Input";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -22,6 +23,27 @@ const SEE_TEAM_QUERY = gql`
         description
         securityLevel
       }
+    }
+  }
+`;
+
+const SEE_FILES = gql`
+  query seeFiles($projectId: Int!) {
+    seeFiles(projectId: $projectId) {
+      id
+      fileName
+      fileUrl
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+const UPLOAD_FILE = gql`
+  mutation uploadFile($file: Upload!, $fileName: String!, $projectId: Int!) {
+    uploadFile(file: $file, fileName: $fileName, projectId: $projectId) {
+      error
+      ok
     }
   }
 `;
@@ -312,7 +334,7 @@ const Th = styled.th`
   }
 `;
 const Td = styled.td`
-  cursor: pointer;
+  /* cursor: pointer; */
   padding: 10px;
   margin: 10px;
   width: 100%;
@@ -357,11 +379,73 @@ const EditFileName = styled.input`
   width: 80%;
 `;
 
+const SummaryLabel = styled.label`
+  display: flex;
+  margin-bottom: 20px;
+  width: 100%;
+  &.dateLabel {
+    width: 200px;
+  }
+`;
+
+const InputResult = styled.div`
+  margin-left: 10px;
+  font-weight: 600;
+  width: 20%;
+  &.desResult {
+    margin-left: 0px;
+    overflow: auto;
+    height: 100px;
+    border: 1px dashed;
+    width: 100%;
+    padding: 5px;
+    margin-top: -10px;
+  }
+  &.dateResult {
+    width: 50%;
+  }
+`;
+
+const InputTitle = styled.input`
+  width: 250px;
+  height: 25px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: white;
+`;
+
 function FilesMainContents() {
+  const { teamName, projectId } = useParams();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-
+  const [submitTitle, setSubmitTitle] = useState();
   const [fileName, setFileName] = useState("");
+  const [fileInfo, setFileInfo] = useState();
+  const { handleSubmit, setValue, watch, register, errors } = useForm({
+    mode: "onChange",
+  });
+
+  const { data: projectData } = useQuery(SEE_PROJECT_QUERY, {
+    variables: { projectId: +projectId },
+  });
+
+  const onCompleted = (data) => {
+    console.log("fileData 업로드후", data);
+    const {
+      uploadFile: { ok, error },
+    } = data;
+    alert("File is uploaded!!");
+    handleCancelBtnModal();
+    // refetch();
+  };
+
+  const [uploadFile, { loading: uploadFileLoading }] = useMutation(
+    UPLOAD_FILE,
+    {
+      onCompleted,
+    }
+  );
 
   const handleEditFile = (fileName) => {
     setIsEditMode(true);
@@ -371,14 +455,15 @@ function FilesMainContents() {
     }
   };
 
-  const { teamName, projectId } = useParams();
   const { data: teamData } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName },
   });
 
-  const { data: projectData } = useQuery(SEE_PROJECT_QUERY, {
+  const { data: seeFilesData } = useQuery(SEE_FILES, {
     variables: { projectId: +projectId },
   });
+
+  console.log("seeFilesData", seeFilesData);
 
   console.log("projectId", typeof projectId);
   console.log("teamData", teamData?.seeTeam?.project);
@@ -391,6 +476,40 @@ function FilesMainContents() {
   const handleCancelBtnModal = () => {
     setIsUploadOpen(false);
   };
+
+  const handleFileTitle = (event) => {
+    event.preventDefault();
+    // console.log("targetValue", event.target.value);
+    setFileName(event.target.value);
+  };
+
+  const handleFileUpload = (data) => {
+    // console.log("uploadfileCheck", data.target.value);
+    // setFileInfo(event.target.value);
+  };
+
+  // const submitFile = () => {
+  //   uploadFile({
+  //     variables: {
+  //       file: fileInfo,
+  //       fileName: fileName,
+  //       projectId: projectId,
+  //     },
+  //   });
+  // };
+
+  const onSaveValid = (data) => {
+    console.log("서브밋데타", data);
+    uploadFile({
+      variables: {
+        file: data?.uploadFile[0],
+        fileName: data.fileName,
+        projectId: +projectId,
+      },
+    });
+  };
+
+  const downloadFile = () => {};
 
   return (
     <Container>
@@ -427,25 +546,49 @@ function FilesMainContents() {
         <FourBtn>
           <UploadBtn onClick={handleUploadOpen}>Upload</UploadBtn>
           <Modal isOpen={isUploadOpen} style={customStyles}>
-            <UploadModalContainer>
-              <ModalHeader>Upload Files</ModalHeader>
-              <ModalBody>
-                <ModalInfo>
-                  <UploadHeader>Upload files</UploadHeader>
-                  <UploadDes>
-                    You can upload files up to a maximum of 2 GB.
-                  </UploadDes>
-                  <UploadInput type="file" name="uploadFile"></UploadInput>
-                  <UploadBox>File 1</UploadBox>
-                </ModalInfo>
-                <ModalBtn>
-                  <ModalUploadBtn type="submit">Upload</ModalUploadBtn>
-                  <ModalCancelBtn onClick={handleCancelBtnModal}>
-                    Cancel
-                  </ModalCancelBtn>
-                </ModalBtn>
-              </ModalBody>
-            </UploadModalContainer>
+            <form onSubmit={handleSubmit(onSaveValid)}>
+              <UploadModalContainer>
+                <ModalHeader>Upload Files</ModalHeader>
+                <ModalBody>
+                  <ModalInfo>
+                    <UploadHeader>Upload files</UploadHeader>
+                    <UploadDes>
+                      You can upload files up to a maximum of 100 MB.
+                    </UploadDes>
+                    <UploadInput
+                      ref={register}
+                      type="file"
+                      name="uploadFile"
+                      onChange={handleFileUpload}
+                    ></UploadInput>
+                    {/* <UploadBox>File 1</UploadBox> */}
+
+                    <SummaryLabel>
+                      File name:
+                      <InputResult>
+                        <InputTitle
+                          ref={register({
+                            required: "Project Name is required",
+                          })}
+                          type="text"
+                          name="fileName"
+                          value={watch("fileName")}
+                          // placeholder={isEditMode?.projectName}
+                          onChange={handleFileTitle}
+                          hasError={Boolean(errors?.projectName?.message)}
+                        ></InputTitle>
+                      </InputResult>
+                    </SummaryLabel>
+                  </ModalInfo>
+                  <ModalBtn>
+                    <ModalUploadBtn type="submit">Upload</ModalUploadBtn>
+                    <ModalCancelBtn onClick={handleCancelBtnModal}>
+                      Cancel
+                    </ModalCancelBtn>
+                  </ModalBtn>
+                </ModalBody>
+              </UploadModalContainer>
+            </form>
           </Modal>
 
           <DownloadBtn>Download</DownloadBtn>
@@ -457,21 +600,28 @@ function FilesMainContents() {
           <Thead>
             <Tr>
               <Th className="num">No.</Th>
+              <Th className="num">Type</Th>
               <Th className="fName">Name</Th>
               <Th className="fUpdateBy">Update by</Th>
               <Th className="fLast">Last Update</Th>
-              <Th className="fEdit">Edit</Th>
+              <Th className="fEdit">DownLoad</Th>
+              {/* <Th className="fEdit">Edit</Th> */}
               <Th className="fDelete">Delete</Th>
             </Tr>
           </Thead>
           <Tbody>
             {/* 파일업로드 파트 전체 수정해야함. 지금이건 프로젝트 리스트로 대신 하드코딩 해둔거임 */}
-            {teamData?.seeTeam?.project?.map((files, index) => (
-              <Link to={`/myProject/${teamName}/${files?.id}`}>
-                <Tr key={(files.id, index)}>
-                  <Td className="num">{index + 1}</Td>
-                  <Td className="fName">
-                    {isEditMode ? (
+            {seeFilesData?.seeFiles?.map((file, index) => (
+              // <Link to={`/myProject/${teamName}/${files?.id}`}>
+              <Tr key={(file.id, index)}>
+                <Td className="num">{file.id}</Td>
+                <Td className="num">
+                  {/* {file.fileUrl.slice(file.fileUrl.length - 3)} */}
+                  {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1]}
+                </Td>
+                <Td className="fName">
+                  {file.fileName}
+                  {/* {isEditMode ? (
                       <EditFileName
                         // ref={register}
                         type="text"
@@ -483,28 +633,38 @@ function FilesMainContents() {
                       />
                     ) : (
                       <>{files.projectName}</>
-                    )}
-                  </Td>
-                  <Td className="fUpdateBy">Update by</Td>
-                  <Td className="fLast">Last Update</Td>
-                  <Td
-                    className="fEdit"
-                    onClick={(event) => event.preventDefault()}
-                  >
-                    <MeditBtn onClick={handleEditFile}>
-                      <EditIcon />
+                    )} */}
+                </Td>
+                <Td className="fUpdateBy">{file.createdAt}</Td>
+                <Td className="fLast">{file.updatedAt}</Td>
+                <Td
+                  className="fEdit"
+                  // onClick={(event) => event.preventDefault()}
+                >
+                  <Link to={{ pathname: file.fileUrl }} target="_blank">
+                    <MeditBtn>
+                      <GetAppIcon />
                     </MeditBtn>
-                  </Td>
-                  <Td
-                    className="fDelete"
-                    onClick={(event) => event.preventDefault()}
-                  >
-                    <DeleteMBtn>
-                      <DeleteIcon />
-                    </DeleteMBtn>
-                  </Td>
-                </Tr>
-              </Link>
+                  </Link>
+                </Td>
+                {/* <Td
+                  className="fEdit"
+                  onClick={(event) => event.preventDefault()}
+                >
+                  <MeditBtn onClick={handleEditFile}>
+                    <EditIcon />
+                  </MeditBtn>
+                </Td> */}
+                <Td
+                  className="fDelete"
+                  onClick={(event) => event.preventDefault()}
+                >
+                  <DeleteMBtn>
+                    <DeleteIcon />
+                  </DeleteMBtn>
+                </Td>
+              </Tr>
+              // </Link>
             ))}
           </Tbody>
         </TableContainer>
