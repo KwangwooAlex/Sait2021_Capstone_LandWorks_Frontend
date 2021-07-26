@@ -1205,7 +1205,8 @@ function MembersMainContents() {
                 </ListTd>
                 <ListTd className="lName">{member.username}</ListTd>
                 <ListTd className="lRole">
-                  {teamData?.seeTeam?.role?.filter(
+                  {teamData !== undefined &&
+                  teamData?.seeTeam?.role?.filter(
                     (role) => role.userId === member.id
                   ).length > 0 ? (
                     <>
