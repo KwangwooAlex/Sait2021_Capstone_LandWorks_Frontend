@@ -4,6 +4,8 @@ import avatar from "../asset/avatarTT.PNG";
 import questionMark from "../asset/questionMark.PNG";
 import logout from "../asset/logout.PNG";
 import { gql, useQuery } from "@apollo/client";
+import Modal from "react-modal";
+import { useState } from "react";
 
 const ME_QUERY = gql`
   query me {
@@ -83,9 +85,56 @@ const LogoutFn = () => {
   window.location.assign("/");
 };
 
+const contatCustomStyles = {
+  content: {
+    padding: "0",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "600px",
+    height: "470px",
+  },
+};
+
+const ModalHeader = styled.div`
+  margin: 0;
+  padding: 10px;
+  background: #004070;
+  color: white;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+`;
+const CloseBtn = styled.button`
+  background: white;
+  padding: 0 auto;
+  font-size: 10px;
+  cursor: pointer;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const ModalBody = styled.div``;
+const ModalInfo = styled.div``;
+
 function DashBoardHeader() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: userData } = useQuery(ME_QUERY);
+
+  const handleQuestionModal = () => {
+    setIsModalOpen(true);
+  }
+
+  const handleXBtnModal = () => {
+    setIsModalOpen(false);
+  };
 
 
   return (
@@ -100,7 +149,24 @@ function DashBoardHeader() {
         <Link to="/myProfile">
           <Avatar src={userData?.me?.avatar} />
         </Link>
-        <QuestionMark src={questionMark} />
+        <QuestionMark onClick={handleQuestionModal} src={questionMark} />
+        <Modal isOpen={isModalOpen} style={contatCustomStyles}>
+          <ModalHeader>
+            CONTACT WITH
+            <CloseBtn onClick={handleXBtnModal}>X</CloseBtn>
+          </ModalHeader>
+          <ModalBody>
+              <ModalInfo>
+                Landwork Reasource Management Inc.
+                Company Photo
+                Company Email
+                Comapny number
+                Business Hours
+                Location
+              </ModalInfo>
+          </ModalBody>
+        </Modal>
+
         <Logout src={logout} onClick={LogoutFn} />
       </RightMenu>
     </Container>

@@ -358,24 +358,40 @@ const InputResult = styled.div`
   }
 `;
 
-const TableDiv = styled.div`
-  overflow: auto;
-  height: 430px;
-  width: 100%;
-  border: 1px solid lightgray;
-`;
-
-const TableContainer = styled.table`
-  border: 1px solid white;
-  height: 100%;
+const TableContainerTop = styled.table`
+  margin-top: 10px;
+  border: 1px solid lightgray;  
+  border-bottom: none;
+  height: 20px;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-`;
+  font-size: 13px;
+  `;
+
 const Thead = styled.thead`
-  background-color: #f3f3f3;
+background-color: #f3f3f3;
 `;
-const Tbody = styled.thead``;
+
+const TableDiv = styled.div`
+  overflow-y: overlay;
+  height: 50vh;
+  width: 100%;
+  border: 1px solid lightgray;
+  border-top: none;
+`;
+
+const TableContainer = styled.table`
+  height: 100%;
+  overflow-y: auto;
+  width: 100%;
+  padding: 0;
+  border-collapse: collapse;
+  font-size: 13px;  
+`;
+
+const Tbody = styled.thead`
+`;
 const Tr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
@@ -390,7 +406,7 @@ const Th = styled.th`
   width: 100%;
   text-align: left;
   &.num {
-    width: 5%;
+    width: 6%;
     cursor: pointer;
   }
   &.pName {
@@ -404,10 +420,13 @@ const Th = styled.th`
     width: 12%;
   }
   &.pSecurity {
-    width: 16%;
+    width: 15%;
   }
   &.pEdit {
     width: 7%;
+    :hover {
+      color: blue;
+    }
   }
   &.pDelete {
     width: 10%;
@@ -421,10 +440,12 @@ const Td = styled.td`
   width: 100%;
   text-align: left;
   &.num {
-    width: 5%;
+    width: 6%;
+    cursor: pointer;
   }
   &.pName {
     width: 25%;
+    cursor: pointer;
   }
   &.pDesc {
     width: 25%;
@@ -433,7 +454,7 @@ const Td = styled.td`
     width: 12%;
   }
   &.pSecurity {
-    width: 16%;
+    width: 15%;
   }
   &.pEdit {
     width: 7%;
@@ -1102,8 +1123,7 @@ function MyProjectMainContents() {
             </ModalBody>
           </form>
         </Modal>
-        <TableDiv>
-          <TableContainer className="sortable">
+          <TableContainerTop className="sortable">
             <Thead>
               <Tr>
                 <Th className="num" onClick={numberSorting}>
@@ -1119,7 +1139,10 @@ function MyProjectMainContents() {
                 <Th className="pDelete">Delete</Th>
               </Tr>
             </Thead>
+            </TableContainerTop>
 
+        <TableDiv>
+            <TableContainer>
             <Tbody>
               {projectList?.map((projects, index) => (
                 <>

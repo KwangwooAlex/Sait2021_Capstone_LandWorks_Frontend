@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { gql, useQuery } from "@apollo/client";
 import "react-calendar/dist/Calendar.css";
 import Calendar from "react-calendar";
+import { trimText } from '../components/Utils';
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -158,34 +159,28 @@ const ThirdBox60 = styled.div`
   margin-right: 25px;
 `;
 
-const TableDiv = styled.div`
-  margin: 20px auto;
-  padding: 0px;
-  overflow: auto;
-  height: 80%;
-  width: 99%;
-`;
-
-const TeamBody = styled.div`
-  margin: 20px auto;
-  padding: 0px;
-  overflow: auto;
-  height: 80%;
-  width: 99%;
-`;
-
-const TeamTable = styled.table`
+const TableContainerTop = styled.table`
   border: 1px solid white;
-  height: 100%;
-  width: 100%;
+  height: 15px;
+  width: 99%;
   padding: 0;
-  position: relative;
   border-collapse: collapse;
+  border: 1px solid lightgray; 
+  border-bottom: none;
+  margin: 20px auto 0 auto;
+`;
+
+const TableDiv = styled.div`
+  padding: 0px;
+  overflow: overlay;
+  height: 75%;
+  width: 99%;
+  margin: 0 auto;
 `;
 
 const TableContainer = styled.table`
   border: 1px solid white;
-  height: 100%;
+  height: 10%;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
@@ -198,8 +193,8 @@ const Thead = styled.thead`
 const Tbody = styled.thead``;
 
 const Tr = styled.tr`
-  display: flex;
   border-bottom: 1px solid gray;
+  display: flex;
   justify-content: center;
   align-items: center;
 `;
@@ -248,6 +243,33 @@ const LETTER = styled.h3`
   margin-left: 25px;
   font-weight: bolder;
   font-size: large;
+`;
+
+const TeamTableTop = styled.table`
+  border: 1px solid white;
+  height: 15px;
+  width: 99%;
+  padding: 0;
+  border-collapse: collapse;
+  border: 1px solid lightgray; 
+  border-bottom: none;
+  margin: 20px auto 0 auto;
+`;
+
+const TeamBody = styled.div`
+  padding: 0px;
+  overflow: overlay;
+  height: 75%;
+  width: 99%;
+  margin: 0 auto;
+`;
+
+const TeamTable = styled.table`
+  border: 1px solid white;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border-collapse: collapse;
 `;
 
 const TeamThead = styled.thead`
@@ -375,20 +397,23 @@ function DashBoardMainContents() {
         <SecondLine>
           <SecondBox30>
             <LETTER> TEAM LIST </LETTER>
-            <TeamBody>
-              <TeamTable>
+              <TeamTableTop>
                 <TeamThead>
                   <TeamTr>
                     <TeamTh className="tName">Name</TeamTh>
                     <TeamTh className="tDesc">Description</TeamTh>
                   </TeamTr>
                 </TeamThead>
+                </TeamTableTop>
+
+            <TeamBody>
+                <TeamTable>
                 <TeamTbody>
                   {data?.seeAllMyTeam?.map((team) => (
                     <Link to={`/myProject/${team.teamName}`}>
                       <TeamTr key={team.id}>
-                        <TeamTd className="tName">{team.teamName}</TeamTd>
-                        <TeamTd className="tDesc">{team.description}</TeamTd>
+                        <TeamTd className="tName">{trimText(team.teamName, 15)}</TeamTd>
+                        <TeamTd className="tDesc">{trimText(team.description, 15)}</TeamTd>
                       </TeamTr>
                     </Link>
                   ))}
@@ -401,8 +426,7 @@ function DashBoardMainContents() {
         <ThirdLine>
           <ThirdBox60>
             <LETTER> PROJECT LIST </LETTER>
-            <TableDiv>
-              <TableContainer className="sortable">
+              <TableContainerTop className="sortable">
                 <Thead>
                   <Tr>
                     <Th className="num">No.</Th>
@@ -411,6 +435,10 @@ function DashBoardMainContents() {
                     <Th className="pStatus">Status</Th>
                   </Tr>
                 </Thead>
+                </TableContainerTop>
+
+            <TableDiv>
+                <TableContainer>
                 <Tbody>
                   {data?.seeAllMyTeam?.map((projects) => (
                     <>
@@ -420,8 +448,8 @@ function DashBoardMainContents() {
                         >
                           <Tr key={projects.project.id}>
                             <Td className="num">{project.id}</Td>
-                            <Td className="pName">{project.projectName}</Td>
-                            <Td className="pTeam">{projects.teamName}</Td>
+                            <Td className="pName">{trimText(project.projectName, 15)}</Td>
+                            <Td className="pTeam">{trimText(projects.teamName, 8)}</Td>
                             <Td className="pStatus">{project.projectStatus}</Td>
                           </Tr>
                         </Link>

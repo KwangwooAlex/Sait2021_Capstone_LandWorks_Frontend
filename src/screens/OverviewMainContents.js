@@ -6,7 +6,7 @@ import Chart from "../asset/chart.PNG";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-export const SEE_ALL_MY_TEAM_QUERY = gql`
+const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
     seeAllMyTeam {
       teamName
@@ -62,6 +62,11 @@ const SEE_TEAM_QUERY = gql`
         projectType
         description
         securityLevel
+      }
+      role {
+        roleName
+        userId
+        teamId
       }
     }
   }
@@ -160,7 +165,7 @@ const LineContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  height: 500px;
+  height: 65vh;
   /* justify-content: center; */
   /* align-items: baseline; */
 `;
@@ -209,7 +214,7 @@ const FirstBox20 = styled.div`
 
 const CalDiv = styled.div`
   width: 100%;
-  height: 60%;
+  height: 63%;
   margin-top: 10%;
   /* margin-top: 25px; */
 `;
@@ -236,7 +241,7 @@ const SecondBox20 = styled.div`
 
 const SecondBox30 = styled.div`
   width: 100%;
-  height: 90%;
+  height: 100%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
@@ -244,30 +249,39 @@ const SecondBox30 = styled.div`
 
 const ThirdBox60 = styled.div`
   width: 100%;
-  height: 90%;
+  height: 100%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
   margin-left: 10px;
 `;
 
+const ListTableContainerTop = styled.table`
+  border: 1px solid white;
+  height: 15px;
+  width: 99%;
+  padding: 0;
+  border-collapse: collapse;
+  border: 1px solid lightgray; 
+  border-bottom: none;
+  margin: 20px auto 0 auto;
+`;
+
 const TableDiv = styled.div`
-  overflow: auto;
+  overflow: overlay;
   height: 90%;
-  width: 90%;
-  /* border: 1px solid lightgray;  */
-  margin: 15px auto;
+  width: 99%;
+  padding:0;
+  margin: 0 auto;
+  /* margin: auto; */
 `;
 
 const ListTableContainer = styled.table`
-  /* margin-top: 40px; */
   border: 1px solid white;
-  box-shadow: 0px 3px 6px gray;
   height: 100%;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  /* overflow-y: scroll;  */
 `;
 
 const ListThead = styled.thead`
@@ -290,10 +304,10 @@ const ListTh = styled.th`
   text-align: left;
   font-weight: 600;
   &.lAvatar {
-    width: 7%;
+    width: 5%;
   }
   &.lName {
-    width: 48%;
+    width: 50%;
   }
   &.lRole {
     width: 45%;
@@ -303,19 +317,20 @@ const ListTh = styled.th`
 const ListTd = styled.td`
   cursor: pointer;
   padding: 10px;
-  margin: 5px 10px;
+  margin: 0px 10px;
   width: 100%;
   text-align: left;
   &.lAvatar {
     width: 5%;
   }
   &.lName {
-    width: 48%;
+    width: 50%;
   }
   &.lRole {
     width: 45%;
   }
 `;
+
 const LETTER = styled.h3`
   margin-top: 25px;
   margin-left: 25px;
@@ -373,7 +388,7 @@ function OverviewMainContents() {
     variables: { projectId: +projectId },
   });
 
-  console.log("seeFilesData", seeFilesData);
+  // console.log("seeFilesData", seeFilesData);
 
   const { data: userData } = useQuery(ME_QUERY);
 
@@ -386,9 +401,9 @@ function OverviewMainContents() {
 
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
-  // console.log("teamData", teamData);
-  console.log("projectData", projectData?.seeProject);
-  console.log("projectId", typeof projectId);
+  console.log("teamData", teamData);
+  // console.log("projectData", projectData?.seeProject);
+  // console.log("projectId", typeof projectId);
   // {`/myProject/${teamName}/${projects?.id}`}
 
   // const [isProject, setIsProject] = useState();
@@ -466,8 +481,7 @@ function OverviewMainContents() {
             <Link to={`/members/${teamName}`}>
               <LETTER> MEMBER LIST </LETTER>
             </Link>
-            <TableDiv>
-              <ListTableContainer className="sortable">
+              <ListTableContainerTop className="sortable">
                 <ListThead>
                   <ListTr>
                     <ListTh className="lAvatar"></ListTh>
@@ -475,6 +489,10 @@ function OverviewMainContents() {
                     <ListTh className="lRole">Role</ListTh>
                   </ListTr>
                 </ListThead>
+                </ListTableContainerTop>
+
+            <TableDiv>
+                <ListTableContainer>
                 <ListTbody>
                   {teamData?.seeTeam?.teamMember?.map((member) => (
                     <ListTr key={member.id}>
@@ -482,7 +500,22 @@ function OverviewMainContents() {
                         <Avatar src={member.avatar} />
                       </ListTd>
                       <ListTd className="lName">{member.username}</ListTd>
-                      <ListTd className="lRole">Project Manager</ListTd>
+                      <ListTd className="lRole">
+                      {teamData !== undefined &&
+                        teamData?.seeTeam?.role?.filter(
+                          (role) => role.userId === member.id
+                        ).length > 0 ? (
+                          <>
+                            {
+                              teamData.seeTeam.role.filter(
+                                (role) => role.userId === member.id
+                              )[0].roleName
+                            }
+                          </>
+                        ) : (
+                          "Guest"
+                      )}                      
+                      </ListTd>
                     </ListTr>
                   ))}
                 </ListTbody>
@@ -494,8 +527,7 @@ function OverviewMainContents() {
         <ThirdLine>
           <ThirdBox60>
             <LETTER> FILE LIST </LETTER>
-            <TableDiv>
-              <ListTableContainer className="sortable">
+              <ListTableContainerTop className="sortable">
                 <ListThead>
                   <ListTr>
                     <ListTh className="lAvatar">Type</ListTh>
@@ -503,6 +535,10 @@ function OverviewMainContents() {
                     <ListTh className="lRole">Uploaded Date</ListTh>
                   </ListTr>
                 </ListThead>
+                </ListTableContainerTop>
+
+            <TableDiv>
+                <ListTableContainer>
                 <ListTbody>
                   {seeFilesData?.seeFiles?.map((file) => (
                     <ListTr key={file.id}>

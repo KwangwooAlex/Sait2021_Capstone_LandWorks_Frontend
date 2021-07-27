@@ -31,47 +31,6 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
   }
 `;
 
-// const SEE_TEAM_QUERY = gql`
-//   query seeTeam($teamName: String!) {
-//     seeTeam(teamName: $teamName) {
-//       id
-//       teamName
-//       project {
-//         id
-//         projectName
-//         projectStatus
-//         projectType
-//         description
-//         securityLevel
-//   		}
-//     }
-//   }
-// `;
-
-// const CREATE_PROJECT_MUTATION = gql`
-//   mutation createProject(
-//     $teamId: Int!
-//     $projectName: String!
-//     $projectStatus: String!
-//     $projectType: String!
-//     $description: String!
-//     $securityLevel: String!
-//   ) {
-//     createProject(
-//       teamId: $teamId
-//       projectName: $projectName
-//       projectStatus: $projectStatus
-//       projectType: $projectType
-//       description: $description
-//       securityLevel: $securityLevel
-//     ) {
-//       ok
-//       error
-//       id
-//     }
-//   }
-// `;
-
 const Container = styled.main`
   padding: 40px 40px 0 40px;
   height: 100%;
@@ -113,30 +72,42 @@ const InputSearch = styled.input`
   width: 200px;
 `;
 
-/* const = styled.div``; */
-const TableDiv = styled.div`
-  overflow: auto;
-  height: 480px;
-  width: 100%;
-  border: 1px solid lightgray;
-  margin-top: 30px;
-`;
-
-const TableContainer = styled.table`
-  border: 1px solid white;
-  box-shadow: 0px 3px 6px gray;
-  height: 600px;
+const TableContainerTop = styled.table`
+  margin-top: 10px;
+  border: 1px solid lightgray;  
+  border-bottom: none;
+  height: 20px;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
+  font-size: 13px;
+`;
+/* const = styled.div``; */
+const TableDiv = styled.div`
+  overflow-y: overlay;
+  height: 55vh;
+  width: 100%;
+  border: 1px solid lightgray;
+  border-top: none;
+`;
+
+const TableContainer = styled.table`
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border-collapse: collapse;
+  font-size: 13px;  
 `;
 const Thead = styled.thead`
   background-color: #f3f3f3;
 `;
 const Tbody = styled.thead``;
+
 const Tr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
+  justify-content: center;
+  align-items: center;
 `;
 const Th = styled.th`
   font-weight: 600;
@@ -170,13 +141,13 @@ const Td = styled.td`
   width: 100%;
   text-align: left;
   &.num {
-    width: 3%;
+    width: 5%;
   }
   &.pName {
     width: 25%;
   }
   &.pDesc {
-    width: 30%;
+    width: 28%;
   }
   &.pTeam {
     width: 17%;
@@ -279,8 +250,7 @@ function AllProjectMainContents() {
       </TeamHeader>
 
       <MainContents>
-        <TableDiv>
-          <TableContainer className="sortable">
+          <TableContainerTop className="sortable">
             <Thead>
               <Tr>
                 <Th className="num" onClick={numberSorting}>
@@ -295,6 +265,10 @@ function AllProjectMainContents() {
                 <Th className="pSecurity">Security</Th>
               </Tr>
             </Thead>
+            </TableContainerTop>
+
+        <TableDiv>
+            <TableContainer>
             <Tbody>
               {projectList?.map((project) => (
                 <Link to={`/myProject/${project?.teamName}/${project?.id}`}>

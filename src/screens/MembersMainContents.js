@@ -12,6 +12,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import Select from "react-select";
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -301,7 +303,7 @@ const TableBox = styled.div`
   /* margin-top: 10px; */
   height: 200px;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: overlay;
   /* background-color: red; */
   padding-top: -10px;
 `;
@@ -309,26 +311,21 @@ const TableBox = styled.div`
 const TableContainerTop = styled.table`
   margin-top: 10px;
   border: 1px solid white;
-
   height: 20px;
-  /* overflow-y: auto; */
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   font-size: 13px;
 `;
 
 const TableContainer = styled.table`
-  /* margin-top: 10px; */
   border: 1px solid white;
-  box-shadow: 0px 3px 6px gray;
   height: 200px;
-  /* overflow-y: auto; */
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   font-size: 13px;
 `;
 
@@ -339,6 +336,8 @@ const Tbody = styled.thead``;
 const Tr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
+  justify-content: center;
+  align-items: center;
 `;
 const Th = styled.th`
   /* background-color: lightblue; */
@@ -366,23 +365,20 @@ const Th = styled.th`
 const Td = styled.td`
   /* cursor: pointer; */
   padding: 5px;
-  margin: 10px;
+  margin: 5px 10px;
   width: 100%;
-
+  text-align: left;
   &.mAvatar {
     width: 10%;
   }
   &.mName {
     width: 30%;
-    margin-top: 18px;
   }
   &.mTeam {
     width: 30%;
-    margin-top: 18px;
   }
   &.mMail {
     width: 20%;
-    margin-top: 18px;
   }
   &.mBtn {
     width: 10%;
@@ -451,6 +447,15 @@ const MinusBtn = styled.span`
   }
 `;
 
+const NothingList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+  color: gray;
+`;
+
 const ModalBtn = styled.div`
   padding-top: 20px;
   padding-bottom: 25px;
@@ -483,22 +488,35 @@ const AddModalBtn = styled.button`
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
 `;
-const TableDiv = styled.div`
-  overflow: auto;
-  height: 420px;
-  width: 100%;
-  border: 1px solid lightgray;
-`;
 
-const ListTableContainer = styled.table`
-  /* margin-top: 40px; */
-  border: 1px solid white;
-  box-shadow: 0px 3px 6px gray;
-  height: 600px;
+const ListTableContainerTop = styled.table`
+  margin-top: 10px;
+  border: 1px solid lightgray;  
+  border-bottom: none;
+  height: 20px;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  /* overflow-y: scroll;  */
+  font-size: 13px;
+`;
+
+const TableDiv = styled.div`
+  overflow-y: overlay;
+  height: 50vh;
+  width: 100%;
+  border: 1px solid lightgray;
+  border-top: none;
+`;
+
+const ListTableContainer = styled.table`
+  margin-top: 10px;
+  border: 1px solid lightgray;  
+  border-bottom: none;
+  height: 20px;
+  width: 100%;
+  padding: 0;
+  border-collapse: collapse;
+  font-size: 13px;
 `;
 
 const ListThead = styled.thead`
@@ -519,21 +537,18 @@ const ListTh = styled.th`
   width: 100%;
   text-align: left;
   font-weight: 600;
-  &.check {
-    width: 3%;
-  }
   &.lAvatar {
     width: 5%;
   }
   &.lName {
-    width: 30%;
+    width: 25%;
     cursor: pointer;
   }
   &.lRole {
     width: 25%;
   }
   &.lMail {
-    width: 20%;
+    width: 28%;
   }
   &.lEdit {
     width: 7%;
@@ -549,24 +564,25 @@ const ListTd = styled.td`
   margin: 10px;
   width: 100%;
   text-align: left;
-  &.check {
-    width: 3%;
-  }
   &.lAvatar {
     width: 5%;
   }
   &.lName {
-    width: 30%;
+    width: 25%;
+    cursor: pointer;
   }
   &.lRole {
     width: 25%;
   }
   &.lMail {
-    width: 20%;
+    width: 28%;
   }
   &.lEdit {
     width: 7%;
     cursor: pointer;
+    :hover {
+      color: blue;
+    }
   }
   &.lDelete {
     width: 10%;
@@ -1055,7 +1071,12 @@ function MembersMainContents() {
                       ) : (
                         <Tbody>
                           <Tr>
-                            <Td className="mAvatar">nothing </Td>
+                            <Td>
+                              <NothingList>
+                                <HourglassEmptyIcon /> 
+                                Please search your member...
+                              </NothingList>                           
+                            </Td>
                           </Tr>
                         </Tbody>
                       )}
@@ -1114,7 +1135,12 @@ function MembersMainContents() {
                       ) : (
                         <Tbody>
                           <Tr>
-                            <Td className="mAvatar">nothing </Td>
+                            <Td>
+                              <NothingList>
+                                <PersonAddIcon />
+                                Please select your member...
+                              </NothingList>
+                            </Td>
                           </Tr>
                         </Tbody>
                       )}
@@ -1183,8 +1209,8 @@ function MembersMainContents() {
         </RightBtn>
       </TopBtn>
 
-      <TableDiv>
-        <ListTableContainer className="sortable">
+      
+        <ListTableContainerTop className="sortable">
           <ListThead>
             <ListTr>
               <ListTh className="lAvatar"></ListTh>
@@ -1197,6 +1223,10 @@ function MembersMainContents() {
               <ListTh className="lDelete">Delete</ListTh>
             </ListTr>
           </ListThead>
+          </ListTableContainerTop>
+
+        <TableDiv>
+          <ListTableContainer> 
           <ListTbody>
             {teamMemberList?.map((member) => (
               <ListTr key={member.id}>

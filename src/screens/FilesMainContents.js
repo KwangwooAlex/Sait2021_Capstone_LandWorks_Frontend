@@ -286,21 +286,32 @@ const ModalCancelBtn = styled.button`
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
 `;
-const TableDiv = styled.div`
-  overflow: auto;
-  height: 425px;
-  width: 100%;
-  border: 1px solid lightgray;
-`;
 
-const TableContainer = styled.table`
-  border: 1px solid white;
-  box-shadow: 0px 3px 6px gray;
-  height: 600px;
+const TableContainerTop = styled.table`
+  margin-top: 10px;
+  border: 1px solid lightgray;  
+  border-bottom: none;
+  height: 20px;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  /* overflow-y: scroll;  */
+  font-size: 13px;
+`;
+
+const TableDiv = styled.div`
+  overflow-y: overlay;
+  height: 50vh;
+  width: 100%;
+  border: 1px solid lightgray;
+  border-top: none;
+`;
+
+const TableContainer = styled.table`
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border-collapse: collapse;
+  font-size: 13px;  
 `;
 
 const Thead = styled.thead`
@@ -365,6 +376,9 @@ const Td = styled.td`
   }
   &.fEdit {
     width: 7%;
+    :hover {
+      color: green;
+    }
   }
   &.fDelete {
     width: 10%;
