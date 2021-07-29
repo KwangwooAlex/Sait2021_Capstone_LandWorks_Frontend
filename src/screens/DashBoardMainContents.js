@@ -52,46 +52,58 @@ const MainTitle = styled.div`
 const LineContainer = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
-  height: 83%;
+  flex-direction: column;
+  height: 80vh;
 `;
 
 const FirstLine = styled.div`
-  width: 30%;
+  width: 100%;
+  height: 40%;
+  display: flex;
+  margin-top: 40px;
+`;
+
+const ListContainer = styled.div`
+  width: 100%;
   height: 100%;
+  display: flex;
+  margin-top: 40px;
 `;
 
 const SecondLine = styled.div`
-  margin-top: 40px;
-  width: 40%;
-  height: 100%;
+  margin-top: -10px;
+  width: 50%;
+  height: 38vh;
   display: flex;
 `;
 
 const ThirdLine = styled.div`
-  margin-top: 40px;
-  width: 40%;
-  height: 100%;
+  margin-top: -15px;
+  width: 50%;
+  height: 38vh;
   display: flex;
 `;
 
 const SmallBox = styled.div`
-  margin-top: 40px;
+  /* margin-top: 40px; */
   width: 100%;
-  height: 40%;
+  height: 100%;
+  display: flex;
+  margin-right: 25px;
 `;
 
 const FirstBox20 = styled.div`
-  width: 90%;
-  height: 25%;
-  border-radius: 40px;
-  box-shadow: 0px 3px 8px gray;
-  margin-right: 25px;
-  margin-bottom: 15px;
+  width: 20%;
+  height: 100%;
+  border-radius: 20px;
+  box-shadow: 0px 3px 6px gray;
+  margin-right: 15px;
+  /* margin-bottom: 15px; */
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 30px;
+  justify-content: center;
+  padding: 20px;
   font-weight: 600;
 `;
 
@@ -120,27 +132,47 @@ const TotalNum = styled.div`
 
 const CalDiv = styled.div`
   width: 100%;
-  height: 60%;
+  height: 100%;
 `;
 
 const CalBox20 = styled.div`
-  width: 90%;
+  width: 100%;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0px 3px 8px gray;
+  box-shadow: 0px 3px 6px gray;
   margin-right: 25px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  padding: 15px;
 `;
 
 const TeamCalender = styled(Calendar)`
-  margin: auto;
+  margin: 0 auto;
   width: 100%;
   height: 100%;
   border: none;
   border-radius: 40px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* justify-content: center; */
+`;
+
+const ChartDiv = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+const ChartBox20 = styled.div`
+  width: 90%;
+  height: 100%;
+  border-radius: 40px;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 25px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  padding: 10px;
 `;
 
 const SecondBox30 = styled.div`
@@ -167,13 +199,13 @@ const TableContainerTop = styled.table`
   border-collapse: collapse;
   border: 1px solid lightgray; 
   border-bottom: none;
-  margin: 20px auto 0 auto;
+  margin: 10px auto 0 auto;
 `;
 
 const TableDiv = styled.div`
   padding: 0px;
   overflow: overlay;
-  height: 75%;
+  height: 58%;
   width: 99%;
   margin: 0 auto;
 `;
@@ -220,7 +252,7 @@ const Th = styled.th`
 const Td = styled.td`
   cursor: pointer;
   padding: 10px;
-  margin: 5px 10px;
+  margin: 0px 10px;
   width: 100%;
   text-align: left;
   &.num {
@@ -253,13 +285,13 @@ const TeamTableTop = styled.table`
   border-collapse: collapse;
   border: 1px solid lightgray; 
   border-bottom: none;
-  margin: 20px auto 0 auto;
+  margin: 10px auto 0 auto;
 `;
 
 const TeamBody = styled.div`
   padding: 0px;
   overflow: overlay;
-  height: 75%;
+  height: 58%;
   width: 99%;
   margin: 0 auto;
 `;
@@ -306,7 +338,7 @@ const TeamTh = styled.th`
 const TeamTd = styled.td`
   cursor: pointer;
   padding: 10px;
-  margin: 3px 10px;
+  margin: 0px 10px;
   width: 100%;
   text-align: left;
   &.tAvatar {
@@ -366,7 +398,6 @@ function DashBoardMainContents() {
       <LineContainer>
         <FirstLine>
           <SmallBox>
-            {/* 하드코딩 부분 수정해야함 - Total On Active project 숫자 */}
             <FirstBox20>
               On Active Project{" "}
               <TotalNum className="onActive">
@@ -379,88 +410,97 @@ function DashBoardMainContents() {
                 <Link to={`/myTeam`}>{totalTeam}</Link>
               </TotalNum>
             </FirstBox20>
-            {/* 하드코딩 부분 수정해야함 - TotalProject 숫자 */}
             <FirstBox20>
               Total Project
               <TotalNum className="totalProject">
                 <Link to={`/allProject`}>{totalProjectState}</Link>
               </TotalNum>
             </FirstBox20>
-          </SmallBox>
+
           <CalDiv>
             <CalBox20>
               <TeamCalender onChange={onChange} value={value} />
             </CalBox20>
           </CalDiv>
+
+          </SmallBox>
+
+          <ChartDiv>
+            <ChartBox20>
+              This for chart              
+            </ChartBox20>
+          </ChartDiv>
         </FirstLine>
 
-        <SecondLine>
-          <SecondBox30>
-            <LETTER> TEAM LIST </LETTER>
-              <TeamTableTop>
-                <TeamThead>
-                  <TeamTr>
-                    <TeamTh className="tName">Name</TeamTh>
-                    <TeamTh className="tDesc">Description</TeamTh>
-                  </TeamTr>
-                </TeamThead>
-                </TeamTableTop>
+        <ListContainer>
+          <SecondLine>
+            <SecondBox30>
+              <LETTER> TEAM LIST </LETTER>
+                <TeamTableTop>
+                  <TeamThead>
+                    <TeamTr>
+                      <TeamTh className="tName">Name</TeamTh>
+                      <TeamTh className="tDesc">Description</TeamTh>
+                    </TeamTr>
+                  </TeamThead>
+                  </TeamTableTop>
 
-            <TeamBody>
-                <TeamTable>
-                <TeamTbody>
-                  {data?.seeAllMyTeam?.map((team) => (
-                    <Link to={`/myProject/${team.teamName}`}>
-                      <TeamTr key={team.id}>
-                        <TeamTd className="tName">{trimText(team.teamName, 15)}</TeamTd>
-                        <TeamTd className="tDesc">{trimText(team.description, 15)}</TeamTd>
-                      </TeamTr>
-                    </Link>
-                  ))}
-                </TeamTbody>
-              </TeamTable>
-            </TeamBody>
-          </SecondBox30>
-        </SecondLine>
+              <TeamBody>
+                  <TeamTable>
+                  <TeamTbody>
+                    {data?.seeAllMyTeam?.map((team) => (
+                      <Link to={`/myProject/${team.teamName}`}>
+                        <TeamTr key={team.id}>
+                          <TeamTd className="tName">{trimText(team.teamName, 15)}</TeamTd>
+                          <TeamTd className="tDesc">{trimText(team.description, 15)}</TeamTd>
+                        </TeamTr>
+                      </Link>
+                    ))}
+                  </TeamTbody>
+                </TeamTable>
+              </TeamBody>
+            </SecondBox30>
+          </SecondLine>
 
-        <ThirdLine>
-          <ThirdBox60>
-            <LETTER> PROJECT LIST </LETTER>
-              <TableContainerTop className="sortable">
-                <Thead>
-                  <Tr>
-                    <Th className="num">No.</Th>
-                    <Th className="pName">Name</Th>
-                    <Th className="pTeam">Team</Th>
-                    <Th className="pStatus">Status</Th>
-                  </Tr>
-                </Thead>
-                </TableContainerTop>
+          <ThirdLine>
+            <ThirdBox60>
+              <LETTER> PROJECT LIST </LETTER>
+                <TableContainerTop className="sortable">
+                  <Thead>
+                    <Tr>
+                      <Th className="num">No.</Th>
+                      <Th className="pName">Name</Th>
+                      <Th className="pTeam">Team</Th>
+                      <Th className="pStatus">Status</Th>
+                    </Tr>
+                  </Thead>
+                  </TableContainerTop>
 
-            <TableDiv>
-                <TableContainer>
-                <Tbody>
-                  {data?.seeAllMyTeam?.map((projects) => (
-                    <>
-                      {projects.project.map((project, index) => (
-                        <Link
-                          to={`/myProject/${projects?.teamName}/${project?.id}`}
-                        >
-                          <Tr key={projects.project.id}>
-                            <Td className="num">{project.id}</Td>
-                            <Td className="pName">{trimText(project.projectName, 15)}</Td>
-                            <Td className="pTeam">{trimText(projects.teamName, 8)}</Td>
-                            <Td className="pStatus">{project.projectStatus}</Td>
-                          </Tr>
-                        </Link>
-                      ))}
-                    </>
-                  ))}
-                </Tbody>
-              </TableContainer>
-            </TableDiv>
-          </ThirdBox60>
-        </ThirdLine>
+              <TableDiv>
+                  <TableContainer>
+                  <Tbody>
+                    {data?.seeAllMyTeam?.map((projects) => (
+                      <>
+                        {projects.project.map((project, index) => (
+                          <Link
+                            to={`/myProject/${projects?.teamName}/${project?.id}`}
+                          >
+                            <Tr key={projects.project.id}>
+                              <Td className="num">{project.id}</Td>
+                              <Td className="pName">{trimText(project.projectName, 15)}</Td>
+                              <Td className="pTeam">{trimText(projects.teamName, 8)}</Td>
+                              <Td className="pStatus">{project.projectStatus}</Td>
+                            </Tr>
+                          </Link>
+                        ))}
+                      </>
+                    ))}
+                  </Tbody>
+                </TableContainer>
+              </TableDiv>
+            </ThirdBox60>
+          </ThirdLine>
+        </ListContainer>
       </LineContainer>
     </Container>
   );
