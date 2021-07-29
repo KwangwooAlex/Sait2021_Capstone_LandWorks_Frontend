@@ -5,7 +5,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import { gql, useQuery } from "@apollo/client";
 import "react-calendar/dist/Calendar.css";
 import Calendar from "react-calendar";
-import { trimText } from '../components/Utils';
+import { trimText } from "../components/Utils";
+import {
+  VictoryPie,
+  VictoryLabel,
+  VictoryChart,
+  VictoryGroup,
+  VictoryBar,
+  VictoryTheme,
+  VictoryTooltip,
+  VictoryAxis,
+} from "victory";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -28,6 +38,9 @@ export const SEE_ALL_MY_TEAM_QUERY = gql`
         projectType
         description
         securityLevel
+        files {
+          fileName
+        }
       }
     }
   }
@@ -159,7 +172,12 @@ const TeamCalender = styled(Calendar)`
 `;
 
 const ChartDiv = styled.div`
-  width: 100%;
+  width: 54%;
+  height: 100%;
+`;
+
+const ChartDivBar = styled.div`
+  width: 64%;
   height: 100%;
 `;
 
@@ -168,11 +186,25 @@ const ChartBox20 = styled.div`
   height: 100%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
-  margin-right: 25px;
+  /* margin-right: 15px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 10px;
+  padding-left: 20px;
+  /* margin-right: -40px; */
+`;
+
+const ChartBox30 = styled.div`
+  width: 90%;
+  height: 100%;
+  border-radius: 40px;
+  box-shadow: 0px 3px 8px gray;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
 `;
 
 const SecondBox30 = styled.div`
@@ -197,7 +229,7 @@ const TableContainerTop = styled.table`
   width: 99%;
   padding: 0;
   border-collapse: collapse;
-  border: 1px solid lightgray; 
+  border: 1px solid lightgray;
   border-bottom: none;
   margin: 10px auto 0 auto;
 `;
@@ -283,7 +315,7 @@ const TeamTableTop = styled.table`
   width: 99%;
   padding: 0;
   border-collapse: collapse;
-  border: 1px solid lightgray; 
+  border: 1px solid lightgray;
   border-bottom: none;
   margin: 10px auto 0 auto;
 `;
@@ -360,22 +392,82 @@ function DashBoardMainContents() {
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
   const [totalProjectState, setTotalProjectState] = useState();
   const [totalActiveProjectState, setTotalActiveProjectState] = useState();
+  const [totalOnHoldProjectState, setTotalOnHoldProjectState] = useState();
+  const [totalCompleteProjectState, setTotalCompleteProjectState] = useState();
   // AllMyProject 필요함 (전체 리스트를 보고 총 프로젝트 수를 알 수 있다)
   // seeProject는 프로젝트 하나만 볼 수 있는거기 때문에 X
   // const { data: list } = useQuery(SEE_PROJECT_QUERY);
-
+  const [topFiveTeam, setTopFiveTeam] = useState();
+  const [firstLine, setFirstLine] = useState();
+  const [secondLine, setSecondLine] = useState();
+  const [thirdLine, setThirdLine] = useState();
   console.log("전체 팀", data?.seeAllMyTeam);
 
   useEffect(() => {
     if (data !== undefined) {
       activeProjectFunction();
+      topFiveTeamFunction();
     }
   }, [data]);
 
   let totalTeam = data?.seeAllMyTeam?.length;
 
   let activeProject = 0;
+  let onHoldProject = 0;
+  let completeProject = 0;
   let totalProject = 0;
+
+  const topFiveTeamFunction = () => {
+    const allTeam = [...data?.seeAllMyTeam];
+    let count = 0;
+    let topTeams = [];
+    allTeam.sort((a, b) => a.teamMember.length - b.teamMember.length).reverse();
+    console.log("솔팅결과", allTeam);
+    for (let eachTeam of allTeam) {
+      count += 1;
+      if (count < 6) {
+        topTeams.push(eachTeam);
+      }
+      // if(eachTeam<5){
+      //   topTeams.push()
+      // }
+    }
+    console.log("topTeams", topTeams);
+    setTopFiveTeam(topTeams);
+    const firstSet = topFiveTeam?.map((eachTeam) => {
+      const name = trimText(eachTeam?.teamName, 6);
+      return {
+        teamName: name,
+        NumberOfTeamMember: eachTeam.teamMember.length,
+        label: "Number Of TeamMember",
+      };
+    });
+
+    const secondSet = topFiveTeam?.map((eachTeam) => {
+      const name = trimText(eachTeam?.teamName, 6);
+      return {
+        teamName: name,
+        NumberOfProject: eachTeam.project.length,
+        label: "Number Of Project",
+      };
+    });
+
+    // const secondSet = topFiveTeam?.map((eachTeam) => {
+    //   teamName: eachTeam.teamName,
+    //   NumberOfProject: eachTeam.project.length,
+    //   label: "Number Of Project",
+    // }));
+
+    // const thirdSet = topFiveTeam?.map((eachTeam) => ({
+    //   x: eachTeam.teamName,
+    //   y: eachTeam.teamMember.length,
+    // }));
+
+    setFirstLine(firstSet);
+    setSecondLine(secondSet);
+    // setThirdLine();
+    console.log("firstSet", firstSet);
+  };
 
   const activeProjectFunction = () => {
     const allTeam = data?.seeAllMyTeam;
@@ -384,12 +476,18 @@ function DashBoardMainContents() {
       for (let eachProject of eachTeam.project) {
         if (eachProject.projectStatus === "Active") {
           activeProject += 1;
+        } else if (eachProject.projectStatus === "On Hold") {
+          onHoldProject += 1;
+        } else if (eachProject.projectStatus === "Complete") {
+          completeProject += 1;
         }
       }
     }
 
     setTotalProjectState(totalProject);
     setTotalActiveProjectState(activeProject);
+    setTotalOnHoldProjectState(onHoldProject);
+    setTotalCompleteProjectState(completeProject);
   };
 
   return (
@@ -417,17 +515,137 @@ function DashBoardMainContents() {
               </TotalNum>
             </FirstBox20>
 
-          <CalDiv>
-            <CalBox20>
-              <TeamCalender onChange={onChange} value={value} />
-            </CalBox20>
-          </CalDiv>
-
+            <CalDiv>
+              <CalBox20>
+                <TeamCalender onChange={onChange} value={value} />
+              </CalBox20>
+            </CalDiv>
           </SmallBox>
 
+          <ChartDivBar>
+            <ChartBox30>
+              <div>
+                <VictoryChart
+                  theme={VictoryTheme.material}
+                  // domain={{ y: [0.5, 10.5] }}
+                  width={400}
+                  height={350}
+                >
+                  {/* <VictoryAxis
+                    orientation="left"
+                    width={50}
+                    padding={{ right: 40 }}
+                  /> */}
+                  <VictoryGroup
+                    horizontal
+                    offset={12}
+                    style={{ data: { width: 5 } }}
+                    colorScale={["navy", "tomato", "gold"]}
+                  >
+                    <VictoryBar
+                      barWidth={4}
+                      // domainPadding={{ x: 4 }}
+                      labelComponent={<VictoryTooltip />}
+                      data={firstLine}
+                      // style={{
+                      //   data: {
+                      //     // fill: "#c43a31",
+                      //     // width: 25,
+                      //     padding: 25,
+                      //   },
+                      // }}
+                      // barRatio={0.2}
+                      x="teamName"
+                      y="NumberOfTeamMember"
+                      // colorScale={["brown", "tomato"]}
+                      // categories={{ x: ["apples", "oranges"] }}
+                      // style={{ labels: { fill: "black" } }}
+                    />
+                    <VictoryBar
+                      labelComponent={<VictoryTooltip />}
+                      barWidth={4}
+                      data={secondLine}
+                      x="teamName"
+                      y="NumberOfProject"
+                    />
+                    {/* <VictoryBar data={thirdLine} /> */}
+                    {/* <VictoryBar
+                      data={[
+                        { x: "a", y: 2 },
+                        { x: "b", y: 3 },
+                        { x: "c", y: 4 },
+                        { x: "d", y: 5 },
+                        { x: "e", y: 5 },
+                      ]}
+                    />
+                    <VictoryBar
+                      data={[
+                        { x: "a", y: 1 },
+                        { x: "b", y: 2 },
+                        { x: "c", y: 3 },
+                        { x: "d", y: 4 },
+                        { x: "e", y: 4 },
+                      ]}
+                    /> */}
+                  </VictoryGroup>
+                </VictoryChart>
+              </div>
+            </ChartBox30>
+          </ChartDivBar>
           <ChartDiv>
             <ChartBox20>
-              This for chart              
+              <svg viewBox="0 0 450 500">
+                <VictoryPie
+                  labelPosition="centroid"
+                  standalone={false}
+                  width={500}
+                  height={500}
+                  // labels={({ datum }) => `y: ${datum.y}`}
+                  colorScale={["tomato", "gold", "navy"]}
+                  // data={[
+                  //   { x: 1, y: 50, label: "Active" },
+                  //   { x: "OnHold", y: 50 },
+                  //   { x: "Complete", y: 50 },
+                  // ]}
+                  data={[
+                    {
+                      x: 1,
+                      y: totalActiveProjectState,
+                      label: `Active: ${totalActiveProjectState}`,
+                    },
+                    {
+                      x: 2,
+                      y: totalOnHoldProjectState,
+                      label: `OnHold: ${totalOnHoldProjectState}`,
+                    },
+                    {
+                      x: 3,
+                      y: totalCompleteProjectState,
+                      label: `Complete: ${totalCompleteProjectState}`,
+                    },
+                  ]}
+                  startAngle={-45}
+                  endAngle={405}
+                  padAngle={({ datum }) => datum.y}
+                  innerRadius={100}
+                  labelRadius={220}
+                  style={{
+                    labels: {
+                      fontSize: 20,
+                      fill: "black",
+                      fontWeight: "400",
+                    },
+                  }}
+                  // categories={{ x: ["dogs", "cats", "mice"] }}
+                />
+                <VictoryLabel
+                  textAnchor="middle"
+                  style={{ fontSize: 20, fontWeight: 600 }}
+                  x={250}
+                  y={250}
+                  text="Projects' Status"
+                />
+              </svg>
             </ChartBox20>
           </ChartDiv>
         </FirstLine>
@@ -436,23 +654,28 @@ function DashBoardMainContents() {
           <SecondLine>
             <SecondBox30>
               <LETTER> TEAM LIST </LETTER>
-                <TeamTableTop>
-                  <TeamThead>
-                    <TeamTr>
-                      <TeamTh className="tName">Name</TeamTh>
-                      <TeamTh className="tDesc">Description</TeamTh>
-                    </TeamTr>
-                  </TeamThead>
-                  </TeamTableTop>
+              <TeamTableTop>
+                <TeamThead>
+                  <TeamTr>
+                    <TeamTh className="tName">Name</TeamTh>
+                    <TeamTh className="tDesc">Description</TeamTh>
+                  </TeamTr>
+                </TeamThead>
+              </TeamTableTop>
 
               <TeamBody>
-                  <TeamTable>
+                <TeamTable>
                   <TeamTbody>
                     {data?.seeAllMyTeam?.map((team) => (
                       <Link to={`/myProject/${team.teamName}`}>
                         <TeamTr key={team.id}>
-                          <TeamTd className="tName">{trimText(team.teamName, 15)}</TeamTd>
-                          <TeamTd className="tDesc">{trimText(team.description, 15)}</TeamTd>
+                          <TeamTd className="tName">
+                            {trimText(team?.teamName, 15)}
+                          </TeamTd>
+                          <TeamTd className="tDesc">
+                            {team?.description !== null &&
+                              trimText(team?.description, 15)}
+                          </TeamTd>
                         </TeamTr>
                       </Link>
                     ))}
@@ -465,19 +688,19 @@ function DashBoardMainContents() {
           <ThirdLine>
             <ThirdBox60>
               <LETTER> PROJECT LIST </LETTER>
-                <TableContainerTop className="sortable">
-                  <Thead>
-                    <Tr>
-                      <Th className="num">No.</Th>
-                      <Th className="pName">Name</Th>
-                      <Th className="pTeam">Team</Th>
-                      <Th className="pStatus">Status</Th>
-                    </Tr>
-                  </Thead>
-                  </TableContainerTop>
+              <TableContainerTop className="sortable">
+                <Thead>
+                  <Tr>
+                    <Th className="num">No.</Th>
+                    <Th className="pName">Name</Th>
+                    <Th className="pTeam">Team</Th>
+                    <Th className="pStatus">Status</Th>
+                  </Tr>
+                </Thead>
+              </TableContainerTop>
 
               <TableDiv>
-                  <TableContainer>
+                <TableContainer>
                   <Tbody>
                     {data?.seeAllMyTeam?.map((projects) => (
                       <>
@@ -487,9 +710,15 @@ function DashBoardMainContents() {
                           >
                             <Tr key={projects.project.id}>
                               <Td className="num">{project.id}</Td>
-                              <Td className="pName">{trimText(project.projectName, 15)}</Td>
-                              <Td className="pTeam">{trimText(projects.teamName, 8)}</Td>
-                              <Td className="pStatus">{project.projectStatus}</Td>
+                              <Td className="pName">
+                                {trimText(project?.projectName, 15)}
+                              </Td>
+                              <Td className="pTeam">
+                                {trimText(projects?.teamName, 8)}
+                              </Td>
+                              <Td className="pStatus">
+                                {project.projectStatus}
+                              </Td>
                             </Tr>
                           </Link>
                         ))}
