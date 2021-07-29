@@ -550,12 +550,12 @@ function DashBoardMainContents() {
                   /> */}
                   <VictoryGroup
                     horizontal
-                    offset={12}
+                    offset={15}
                     style={{ data: { width: 5 } }}
                     colorScale={["navy", "tomato", "gold"]}
                   >
                     <VictoryBar
-                      barWidth={4}
+                      barWidth={8}
                       // domainPadding={{ x: 4 }}
                       labelComponent={<VictoryTooltip />}
                       data={firstLine}
@@ -575,7 +575,7 @@ function DashBoardMainContents() {
                     />
                     <VictoryBar
                       labelComponent={<VictoryTooltip />}
-                      barWidth={4}
+                      barWidth={8}
                       data={secondLine}
                       x="teamName"
                       y="NumberOfProject"
