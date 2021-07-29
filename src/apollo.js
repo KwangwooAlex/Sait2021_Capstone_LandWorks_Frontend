@@ -24,10 +24,10 @@ export const logUserOut = () => {
 };
 
 const uploadHttpLink = createUploadLink({
-  uri:
-    process.env.NODE_ENV === "production"
-      ? "https://capstone-sait-kwangwoo.herokuapp.com/graphql"
-      : "http://localhost:4001/graphql",
+  uri: "https://capstone-sait-kwangwoo.herokuapp.com/graphql"
+    // process.env.NODE_ENV === "production"
+    //   ? "https://capstone-sait-kwangwoo.herokuapp.com/graphql"
+    //   : "http://localhost:4001/graphql",
 
   // process.env.NODE_ENV === "production"
   //   ? "https://capstone-sait-kwangwoo.herokuapp.com/graphql"

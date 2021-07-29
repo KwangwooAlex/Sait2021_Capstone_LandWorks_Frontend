@@ -249,6 +249,21 @@ const AvatarImg = styled.img`
   border: 1px solid lightgray;
 `;
 
+function getCurrentDate() {
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; // January is 0 
+  var yyyy = today.getFullYear();
+  if (dd < 10) {
+        dd = '0' + dd
+    } 
+  if (mm < 10) {
+        mm = '0' + mm
+    } 
+  today = yyyy + '-' + mm + '-' + dd;
+  return today;
+}
+
 function MyProfileMainContents() {
   const { data: userData, refetch } = useQuery(ME_QUERY);
 
@@ -410,7 +425,10 @@ function MyProfileMainContents() {
               <InfoSubTitle>User Name</InfoSubTitle>
               <>
                 <Input
-                  ref={register({ required: "Username is required" })}
+                  ref={register({ required: "Username is required",
+                                  minLength: { value: 4, message: "Username should be atleast 4 characters" },
+                                  maxLength: { value: 30, message: "Username should be less than 30 characters"}
+                                })}
                   type="text"
                   name="username"
                   value={watch("username")}
@@ -424,7 +442,10 @@ function MyProfileMainContents() {
               <InfoSubTitle>Company Name</InfoSubTitle>
               <>
                 <Input
-                  ref={register({ required: "Company name is required" })}
+                  ref={register({ required: "Company name is required",
+                                  minLength: { value: 2, message: "Company name should be atleast 2 characters" },
+                                  maxLength: { value: 50, message: "Company name should be less than 50 characters"}
+                                })}
                   type="text"
                   name="companyName"
                   value={watch("companyName")}
@@ -438,7 +459,9 @@ function MyProfileMainContents() {
               <InfoSubTitle>Email</InfoSubTitle>
               <>
                 <Input
-                  ref={register({ required: "Email is required" })}
+                  ref={register({ required: "Email is required",
+                                  pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid Email" }
+                                })}
                   type="email"
                   name="email"
                   value={watch("email")}
@@ -453,7 +476,9 @@ function MyProfileMainContents() {
               <InfoSubTitle>Phone Number</InfoSubTitle>
               <>
                 <Input
-                  ref={register({ required: "Phone number is required" })}
+                  ref={register({ required: "Phone number is required",
+                                  pattern: { value: /^[0-9]{3}[0-9]{3}[0-9]{4}$/i, message: "Enter a valid Phone Number" }
+                                })}
                   type="number"
                   name="phoneNumber"
                   value={watch("phoneNumber")}
@@ -501,6 +526,7 @@ function MyProfileMainContents() {
                 type="text"
                 name="birth"
                 placeholder={userData?.me?.birth}
+                // max={getCurrentDate()}
                 disabled={disabled}
                 onChange={handleChange}
               />
@@ -536,13 +562,16 @@ function MyProfileMainContents() {
               />
               <InfoSubTitle>Street</InfoSubTitle>
               <Input
-                ref={register}
+                ref={register({ minLength: { value: 6, message: "Street should be atleast 6 characters" },
+                                maxLength: { value: 30, message: "Company name should be less than 30 characters"}
+                              })}
                 value={watch("Street")}
                 type="text"
                 name="Street"
                 placeholder={userData?.me?.Street}
                 disabled={disabled}
                 onChange={handleChange}
+                hasError={Boolean(errors?.Street?.message)}
               />
             </PersonalInfo>
           </InputContainer>
