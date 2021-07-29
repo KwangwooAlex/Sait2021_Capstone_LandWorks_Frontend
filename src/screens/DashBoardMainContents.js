@@ -20,6 +20,7 @@ import {
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
     seeAllMyTeam {
+      id
       teamName
       description
       teamMember {
@@ -410,6 +411,10 @@ function DashBoardMainContents() {
     }
   }, [data]);
 
+  useEffect(() => {
+    setLineFunction();
+  }, [topFiveTeam]);
+
   let totalTeam = data?.seeAllMyTeam?.length;
 
   let activeProject = 0;
@@ -434,34 +439,26 @@ function DashBoardMainContents() {
     }
     console.log("topTeams", topTeams);
     setTopFiveTeam(topTeams);
-    const firstSet = topFiveTeam?.map((eachTeam) => {
-      const name = trimText(eachTeam?.teamName, 6);
+  };
+
+  const setLineFunction = () => {
+    const firstSet = topFiveTeam?.map((eachTeam, index) => {
+      // const name = trimText(eachTeam?.teamName, 4);
       return {
-        teamName: name,
+        teamName: `${String.fromCharCode(65 + index)} team`,
         NumberOfTeamMember: eachTeam.teamMember.length,
-        label: "Number Of TeamMember",
+        label: `${eachTeam?.teamName}'s number Of team member`,
       };
     });
 
-    const secondSet = topFiveTeam?.map((eachTeam) => {
-      const name = trimText(eachTeam?.teamName, 6);
+    const secondSet = topFiveTeam?.map((eachTeam, index) => {
+      // const name = trimText(eachTeam?.teamName, 4);
       return {
-        teamName: name,
+        teamName: `${String.fromCharCode(65 + index)} team`,
         NumberOfProject: eachTeam.project.length,
-        label: "Number Of Project",
+        label: `${eachTeam?.teamName}'s number of project`,
       };
     });
-
-    // const secondSet = topFiveTeam?.map((eachTeam) => {
-    //   teamName: eachTeam.teamName,
-    //   NumberOfProject: eachTeam.project.length,
-    //   label: "Number Of Project",
-    // }));
-
-    // const thirdSet = topFiveTeam?.map((eachTeam) => ({
-    //   x: eachTeam.teamName,
-    //   y: eachTeam.teamMember.length,
-    // }));
 
     setFirstLine(firstSet);
     setSecondLine(secondSet);
@@ -528,13 +525,28 @@ function DashBoardMainContents() {
                 <VictoryChart
                   theme={VictoryTheme.material}
                   // domain={{ y: [0.5, 10.5] }}
-                  width={400}
-                  height={350}
+                  width={420}
+                  height={340}
                 >
+                  <VictoryLabel
+                    text="Each Team Status"
+                    x={205}
+                    y={30}
+                    textAnchor="middle"
+                  />
                   {/* <VictoryAxis
-                    orientation="left"
-                    width={50}
-                    padding={{ right: 40 }}
+                    width={100}
+                    tickFormat={[
+                      `firstlabel`,
+                      `secondlabel`,
+                      `thirdlabel`,
+                      `forthlabel`,
+                      `fifthlabel`,
+                    ]}
+                  />
+                  <VictoryAxis
+                    dependentAxis
+                    tickFormat={[1, 2, 3, 4, 5, 6, 7, 8]}
                   /> */}
                   <VictoryGroup
                     horizontal
