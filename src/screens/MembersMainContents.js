@@ -347,16 +347,16 @@ const Th = styled.th`
   text-align: left;
   font-weight: 600;
   &.mAvatar {
-    width: 10%;
+    width: 7%;
   }
   &.mName {
     width: 30%;
   }
   &.mTeam {
-    width: 30%;
+    width: 22%;
   }
   &.mMail {
-    width: 20%;
+    width: 30%;
   }
   &.mBtn {
     width: 10%;
@@ -369,16 +369,16 @@ const Td = styled.td`
   width: 100%;
   text-align: left;
   &.mAvatar {
-    width: 10%;
+    width: 7%;
   }
   &.mName {
     width: 30%;
   }
   &.mTeam {
-    width: 30%;
+    width: 22%;
   }
   &.mMail {
-    width: 20%;
+    width: 30%;
   }
   &.mBtn {
     width: 10%;
@@ -509,14 +509,12 @@ const TableDiv = styled.div`
 `;
 
 const ListTableContainer = styled.table`
-  margin-top: 10px;
-  border: 1px solid lightgray;  
-  border-bottom: none;
-  height: 20px;
+  height: 100%;
+  overflow-y: auto;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 13px;  
 `;
 
 const ListThead = styled.thead`

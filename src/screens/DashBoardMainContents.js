@@ -82,34 +82,43 @@ const ListContainer = styled.div`
   height: 100%;
   display: flex;
   margin-top: 40px;
+  /* margin-right: 25px; */
 `;
 
 const SecondLine = styled.div`
   margin-top: -10px;
-  width: 50%;
+  width: 45%;
   height: 38vh;
   display: flex;
 `;
 
 const ThirdLine = styled.div`
   margin-top: -15px;
-  width: 50%;
+  width: 55%;
   height: 38vh;
   display: flex;
 `;
 
 const SmallBox = styled.div`
   /* margin-top: 40px; */
-  width: 100%;
+  width: 45%;
   height: 100%;
   display: flex;
-  margin-right: 25px;
+  margin-right: 20px;
+`;
+
+const CountBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 40%;
+  margin-right: 20px;
 `;
 
 const FirstBox20 = styled.div`
-  width: 20%;
+  width: 100%;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 30px;
   box-shadow: 0px 3px 6px gray;
   margin-right: 15px;
   /* margin-bottom: 15px; */
@@ -119,10 +128,22 @@ const FirstBox20 = styled.div`
   justify-content: center;
   padding: 20px;
   font-weight: 600;
+  font-size: 15px;
+  &.totalTeamBox {
+    margin-bottom: 25px;
+    background-color: #2784C7;
+    color: white;
+    /* opacity: 90%; */
+  }
+  &.totalProjectBox {
+    background-color: #11569A;
+    color: white;
+    /* opacity: 90%; */
+  }
 `;
 
 const TotalNum = styled.div`
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 600;
   border-radius: 50%;
   width: 40px;
@@ -130,23 +151,25 @@ const TotalNum = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  &.onActive {
+  margin-top: 15px;
+  /* &.onActive {
     background-color: #12b700;
     color: white;
-  }
+  } */
   &.totalTeam {
-    background-color: #ff50b9;
-    color: white;
+    background-color: white;
+    color: black;
   }
   &.totalProject {
-    background-color: #00b0ff;
-    color: white;
+    background-color: white;
+    color: black;
   }
 `;
 
 const CalDiv = styled.div`
   width: 100%;
   height: 100%;
+  /* margin-right: 10px; */
 `;
 
 const CalBox20 = styled.div`
@@ -169,21 +192,27 @@ const TeamCalender = styled(Calendar)`
   border-radius: 40px;
   display: flex;
   flex-direction: column;
+  overflow: overlay;
   /* justify-content: center; */
+`;
+const ChartContainer = styled.div`
+  display: flex;
+  width: 55%;
 `;
 
 const ChartDiv = styled.div`
-  width: 54%;
+  width: 50%;
   height: 100%;
 `;
 
 const ChartDivBar = styled.div`
-  width: 64%;
+  width: 50%;
   height: 100%;
+  margin-right: 20px;
 `;
 
 const ChartBox20 = styled.div`
-  width: 90%;
+  width: 100%;
   height: 100%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
@@ -191,21 +220,23 @@ const ChartBox20 = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* align-items: center; */
   padding: 10px;
   padding-left: 20px;
   /* margin-right: -40px; */
 `;
 
 const ChartBox30 = styled.div`
-  width: 90%;
+  width: 100%;
   height: 100%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
-  margin-right: 10px;
+  /* margin-right: 10px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px;
+  /* align-items: center; */
+  padding: 15px;
 `;
 
 const SecondBox30 = styled.div`
@@ -213,7 +244,7 @@ const SecondBox30 = styled.div`
   height: 100%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
-  margin-right: 25px;
+  margin-right: 10px;
 `;
 
 const ThirdBox60 = styled.div`
@@ -221,25 +252,25 @@ const ThirdBox60 = styled.div`
   height: 100%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
-  margin-right: 25px;
+  margin-left: 10px;
 `;
 
 const TableContainerTop = styled.table`
   border: 1px solid white;
   height: 15px;
-  width: 99%;
+  width: 95%;
   padding: 0;
   border-collapse: collapse;
-  border: 1px solid lightgray;
+  /* border: 1px solid lightgray; */
   border-bottom: none;
-  margin: 10px auto 0 auto;
+  margin: 15px auto 0 auto;
 `;
 
 const TableDiv = styled.div`
   padding: 0px;
   overflow: overlay;
   height: 58%;
-  width: 99%;
+  width: 95%;
   margin: 0 auto;
 `;
 
@@ -252,7 +283,8 @@ const TableContainer = styled.table`
 `;
 
 const Thead = styled.thead`
-  background-color: #d5eeff;
+  background-color: #004070;
+  color: white;
 `;
 
 const Tbody = styled.thead``;
@@ -265,7 +297,7 @@ const Tr = styled.tr`
 `;
 const Th = styled.th`
   font-weight: 600;
-  padding: 10px;
+  padding: 5px;
   margin: 0 10px;
   width: 100%;
   text-align: left;
@@ -313,19 +345,19 @@ const LETTER = styled.h3`
 const TeamTableTop = styled.table`
   border: 1px solid white;
   height: 15px;
-  width: 99%;
+  width: 95%;
   padding: 0;
   border-collapse: collapse;
-  border: 1px solid lightgray;
+  /* border: 1px solid lightgray; */
   border-bottom: none;
-  margin: 10px auto 0 auto;
+  margin: 15px auto 0 auto;
 `;
 
 const TeamBody = styled.div`
   padding: 0px;
   overflow: overlay;
   height: 58%;
-  width: 99%;
+  width: 95%;
   margin: 0 auto;
 `;
 
@@ -338,7 +370,8 @@ const TeamTable = styled.table`
 `;
 
 const TeamThead = styled.thead`
-  background-color: #ffefce;
+  background-color: #004070;
+  color: white;
 `;
 
 const TeamTbody = styled.thead``;
@@ -353,7 +386,7 @@ const TeamTr = styled.tr`
 
 const TeamTh = styled.th`
   font-weight: 600;
-  padding: 10px;
+  padding: 5px;
   margin: 0 10px;
   width: 100%;
   text-align: left;
@@ -493,24 +526,26 @@ function DashBoardMainContents() {
       <LineContainer>
         <FirstLine>
           <SmallBox>
-            <FirstBox20>
+            {/* <FirstBox20>
               On Active Project{" "}
               <TotalNum className="onActive">
                 {totalActiveProjectState}
               </TotalNum>
-            </FirstBox20>
-            <FirstBox20>
-              Total Team
-              <TotalNum className="totalTeam">
-                <Link to={`/myTeam`}>{totalTeam}</Link>
-              </TotalNum>
-            </FirstBox20>
-            <FirstBox20>
-              Total Project
-              <TotalNum className="totalProject">
-                <Link to={`/allProject`}>{totalProjectState}</Link>
-              </TotalNum>
-            </FirstBox20>
+            </FirstBox20> */}
+            <CountBox>
+              <FirstBox20 className="totalTeamBox">
+                Total Team
+                <TotalNum className="totalTeam">
+                  <Link to={`/myTeam`}>{totalTeam}</Link>
+                </TotalNum>
+              </FirstBox20>
+              <FirstBox20 className="totalProjectBox">
+                Total Project
+                <TotalNum className="totalProject">
+                  <Link to={`/allProject`}>{totalProjectState}</Link>
+                </TotalNum>
+              </FirstBox20>
+            </CountBox>
 
             <CalDiv>
               <CalBox20>
@@ -519,147 +554,149 @@ function DashBoardMainContents() {
             </CalDiv>
           </SmallBox>
 
-          <ChartDivBar>
-            <ChartBox30>
-              <div>
-                <VictoryChart
-                  theme={VictoryTheme.material}
-                  // domain={{ y: [0.5, 10.5] }}
-                  width={420}
-                  height={340}
-                >
-                  <VictoryLabel
-                    text="Each Team Status"
-                    x={205}
-                    y={30}
-                    textAnchor="middle"
-                  />
-                  {/* <VictoryAxis
-                    width={100}
-                    tickFormat={[
-                      `firstlabel`,
-                      `secondlabel`,
-                      `thirdlabel`,
-                      `forthlabel`,
-                      `fifthlabel`,
-                    ]}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    tickFormat={[1, 2, 3, 4, 5, 6, 7, 8]}
-                  /> */}
-                  <VictoryGroup
-                    horizontal
-                    offset={15}
-                    style={{ data: { width: 5 } }}
-                    colorScale={["navy", "tomato", "gold"]}
+          <ChartContainer> 
+            <ChartDivBar>
+              <ChartBox30>
+                <div>
+                  <VictoryChart
+                    theme={VictoryTheme.material}
+                    // domain={{ y: [0.5, 10.5] }}
+                    width={420}
+                    height={340}
                   >
-                    <VictoryBar
-                      barWidth={8}
-                      // domainPadding={{ x: 4 }}
-                      labelComponent={<VictoryTooltip />}
-                      data={firstLine}
-                      // style={{
-                      //   data: {
-                      //     // fill: "#c43a31",
-                      //     // width: 25,
-                      //     padding: 25,
-                      //   },
-                      // }}
-                      // barRatio={0.2}
-                      x="teamName"
-                      y="NumberOfTeamMember"
-                      // colorScale={["brown", "tomato"]}
-                      // categories={{ x: ["apples", "oranges"] }}
-                      // style={{ labels: { fill: "black" } }}
+                    <VictoryLabel
+                      text="Each Team Status"
+                      x={205}
+                      y={30}
+                      textAnchor="middle"
                     />
-                    <VictoryBar
-                      labelComponent={<VictoryTooltip />}
-                      barWidth={8}
-                      data={secondLine}
-                      x="teamName"
-                      y="NumberOfProject"
-                    />
-                    {/* <VictoryBar data={thirdLine} /> */}
-                    {/* <VictoryBar
-                      data={[
-                        { x: "a", y: 2 },
-                        { x: "b", y: 3 },
-                        { x: "c", y: 4 },
-                        { x: "d", y: 5 },
-                        { x: "e", y: 5 },
+                    {/* <VictoryAxis
+                      width={100}
+                      tickFormat={[
+                        `firstlabel`,
+                        `secondlabel`,
+                        `thirdlabel`,
+                        `forthlabel`,
+                        `fifthlabel`,
                       ]}
                     />
-                    <VictoryBar
-                      data={[
-                        { x: "a", y: 1 },
-                        { x: "b", y: 2 },
-                        { x: "c", y: 3 },
-                        { x: "d", y: 4 },
-                        { x: "e", y: 4 },
-                      ]}
+                    <VictoryAxis
+                      dependentAxis
+                      tickFormat={[1, 2, 3, 4, 5, 6, 7, 8]}
                     /> */}
-                  </VictoryGroup>
-                </VictoryChart>
-              </div>
-            </ChartBox30>
-          </ChartDivBar>
-          <ChartDiv>
-            <ChartBox20>
-              <svg viewBox="0 0 450 500">
-                <VictoryPie
-                  labelPosition="centroid"
-                  standalone={false}
-                  width={500}
-                  height={500}
-                  // labels={({ datum }) => `y: ${datum.y}`}
-                  colorScale={["tomato", "gold", "navy"]}
-                  // data={[
-                  //   { x: 1, y: 50, label: "Active" },
-                  //   { x: "OnHold", y: 50 },
-                  //   { x: "Complete", y: 50 },
-                  // ]}
-                  data={[
-                    {
-                      x: 1,
-                      y: totalActiveProjectState,
-                      label: `Active: ${totalActiveProjectState}`,
-                    },
-                    {
-                      x: 2,
-                      y: totalOnHoldProjectState,
-                      label: `OnHold: ${totalOnHoldProjectState}`,
-                    },
-                    {
-                      x: 3,
-                      y: totalCompleteProjectState,
-                      label: `Complete: ${totalCompleteProjectState}`,
-                    },
-                  ]}
-                  startAngle={-45}
-                  endAngle={405}
-                  padAngle={({ datum }) => datum.y}
-                  innerRadius={100}
-                  labelRadius={220}
-                  style={{
-                    labels: {
-                      fontSize: 20,
-                      fill: "black",
-                      fontWeight: "400",
-                    },
-                  }}
-                  // categories={{ x: ["dogs", "cats", "mice"] }}
-                />
-                <VictoryLabel
-                  textAnchor="middle"
-                  style={{ fontSize: 20, fontWeight: 600 }}
-                  x={250}
-                  y={250}
-                  text="Projects' Status"
-                />
-              </svg>
-            </ChartBox20>
-          </ChartDiv>
+                    <VictoryGroup
+                      horizontal
+                      offset={15}
+                      style={{ data: { width: 5 } }}
+                      colorScale={["navy", "tomato", "gold"]}
+                    >
+                      <VictoryBar
+                        barWidth={8}
+                        // domainPadding={{ x: 4 }}
+                        labelComponent={<VictoryTooltip />}
+                        data={firstLine}
+                        // style={{
+                        //   data: {
+                        //     // fill: "#c43a31",
+                        //     // width: 25,
+                        //     padding: 25,
+                        //   },
+                        // }}
+                        // barRatio={0.2}
+                        x="teamName"
+                        y="NumberOfTeamMember"
+                        // colorScale={["brown", "tomato"]}
+                        // categories={{ x: ["apples", "oranges"] }}
+                        // style={{ labels: { fill: "black" } }}
+                      />
+                      <VictoryBar
+                        labelComponent={<VictoryTooltip />}
+                        barWidth={8}
+                        data={secondLine}
+                        x="teamName"
+                        y="NumberOfProject"
+                      />
+                      {/* <VictoryBar data={thirdLine} /> */}
+                      {/* <VictoryBar
+                        data={[
+                          { x: "a", y: 2 },
+                          { x: "b", y: 3 },
+                          { x: "c", y: 4 },
+                          { x: "d", y: 5 },
+                          { x: "e", y: 5 },
+                        ]}
+                      />
+                      <VictoryBar
+                        data={[
+                          { x: "a", y: 1 },
+                          { x: "b", y: 2 },
+                          { x: "c", y: 3 },
+                          { x: "d", y: 4 },
+                          { x: "e", y: 4 },
+                        ]}
+                      /> */}
+                    </VictoryGroup>
+                  </VictoryChart>
+                </div>
+              </ChartBox30>
+            </ChartDivBar>
+            <ChartDiv>
+              <ChartBox20>
+                <svg viewBox="0 0 450 500">
+                  <VictoryPie
+                    labelPosition="centroid"
+                    standalone={false}
+                    width={500}
+                    height={500}
+                    // labels={({ datum }) => `y: ${datum.y}`}
+                    colorScale={["tomato", "gold", "navy"]}
+                    // data={[
+                    //   { x: 1, y: 50, label: "Active" },
+                    //   { x: "OnHold", y: 50 },
+                    //   { x: "Complete", y: 50 },
+                    // ]}
+                    data={[
+                      {
+                        x: 1,
+                        y: totalActiveProjectState,
+                        label: `Active: ${totalActiveProjectState}`,
+                      },
+                      {
+                        x: 2,
+                        y: totalOnHoldProjectState,
+                        label: `OnHold: ${totalOnHoldProjectState}`,
+                      },
+                      {
+                        x: 3,
+                        y: totalCompleteProjectState,
+                        label: `Complete: ${totalCompleteProjectState}`,
+                      },
+                    ]}
+                    startAngle={-45}
+                    endAngle={405}
+                    padAngle={({ datum }) => datum.y}
+                    innerRadius={100}
+                    labelRadius={220}
+                    style={{
+                      labels: {
+                        fontSize: 20,
+                        fill: "black",
+                        fontWeight: "400",
+                      },
+                    }}
+                    // categories={{ x: ["dogs", "cats", "mice"] }}
+                  />
+                  <VictoryLabel
+                    textAnchor="middle"
+                    style={{ fontSize: 20, fontWeight: 600 }}
+                    x={250}
+                    y={250}
+                    text="Projects' Status"
+                  />
+                </svg>
+              </ChartBox20>
+            </ChartDiv>
+          </ChartContainer>
         </FirstLine>
 
         <ListContainer>

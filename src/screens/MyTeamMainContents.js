@@ -213,7 +213,7 @@ const settingCustomStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "600px",
-    height: "470px",
+    height: "500px",
   },
 };
 
@@ -229,13 +229,13 @@ const SearchTeam = styled.div`
 const TeamBody = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 50px;
+  grid-gap: 30px;
   justify-items: stretch;
   margin-top: 30px;
 `;
 
 const TeamList = styled.div`
-  height: 30px;
+  height: 60px;
   margin-top: 10px;
   width: 100%;
   display: flex;
@@ -246,11 +246,12 @@ const TeamList = styled.div`
 `;
 
 const ImageBox = styled.div`
-  width: 100px;
-  height: 80px;
+  width: 150px;
+  height: 100px;
   background-color: red;
-  margin: auto;
-  margin-top: 5px;
+  margin: 20px auto 0 auto;
+  border-radius: 12px;
+  /* margin-top: 5px; */
   background-color: white;
   background-image: url(${(props) => props.src});
   background-size: cover;
@@ -271,18 +272,19 @@ const ListEachTeam = styled.li`
   width: 100%;
   height: 100%;
   list-style: none;
-  height: 150px;
+  background-color: #f1f1f1;
+  /* height: 150px; */
 `;
 
 const SettingBtn = styled.button`
   float: right;
   cursor: pointer;
   border: none;
-  background-color: white;
+  background: none;
   margin-bottom: -30px;
-  color: lightgray;
+  color: #bcbcbc;
   &:hover {
-    color: gray;
+    color: #878787;
   }
 `;
 
@@ -341,7 +343,8 @@ const ModalBtn2 = styled.div`
 `;
 
 const ModalBody2 = styled.div`
-  margin: 25px 30px;
+  margin: 25px 30px 0 30px;
+  /* height: 200px; */
 `;
 
 const ModalSet = styled.div`
@@ -370,12 +373,21 @@ const MemberL = styled.div`
   font-size: 12px;
 `;
 
+const ListTableContainerTop = styled.table`
+  border: 1px solid white;
+  height: 15px;
+  width: 100%;
+  padding: 0;
+  border-collapse: collapse;
+  background-color: white;
+`;
+
 const TableDiv = styled.div`
-  overflow: auto;
-  height: 100%;
+  overflow: overlay;
+  height: 55%;
   width: 100%;
   background-color: white;
-  margin: 15px auto;
+  /* margin: 15px auto; */
 `;
 
 const ListTableContainer = styled.table`
@@ -555,7 +567,7 @@ function MyTeamMainContents() {
   // console.log("팀네임", data?.seeAllMyTeam?.teamName);
 
   const handleSettingModal = (teamName) => {
-    console.log("teamName", teamName);
+    // console.log("teamName", teamName);
     setIsDModalOpen(true);
     setTeamName(teamName);
     setIsAbout({ bgColor: "lightgray" });
@@ -584,7 +596,7 @@ function MyTeamMainContents() {
     setIsDModalOpen(false);
     setIsAbout(true);
     setIsDelete(false);
-    console.log("teamId", typeof teamId);
+    // console.log("teamId", typeof teamId);
     deleteTeam({
       variables: {
         teamId,
@@ -702,8 +714,7 @@ function MyTeamMainContents() {
                           {teamData?.seeTeam?.teamMember?.length})
                         </MemberSetSub>
                       </MemberL>
-                      <TableDiv>
-                        <ListTableContainer className="sortable">
+                        <ListTableContainerTop className="sortable">
                           <ListThead>
                             <ListTr>
                               <ListTh className="lAvatar"></ListTh>
@@ -711,6 +722,9 @@ function MyTeamMainContents() {
                               <ListTh className="lRole">Role</ListTh>
                             </ListTr>
                           </ListThead>
+                        </ListTableContainerTop>
+                      <TableDiv>
+                        <ListTableContainer>
                           <ListTbody>
                             {teamData?.seeTeam?.teamMember?.map((member) => (
                               <ListTr key={member.id}>

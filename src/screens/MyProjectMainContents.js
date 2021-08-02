@@ -383,7 +383,7 @@ const TableDiv = styled.div`
 
 const TableContainer = styled.table`
   height: 100%;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   width: 100%;
   padding: 0;
   border-collapse: collapse;

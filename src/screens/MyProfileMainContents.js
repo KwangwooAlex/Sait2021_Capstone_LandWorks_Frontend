@@ -105,7 +105,7 @@ const InfoSection = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 5%;
-  margin-left: 20%;
+  margin-left: 15%;
 `;
 
 const InputContainer = styled.div`
@@ -125,6 +125,7 @@ const PersonalInfo = styled.div`
 
 const InfoTitle = styled.h2`
   font-size: 20px;
+  font-weight: 600;
 `;
 
 const InfoSubTitle = styled.h5`
@@ -205,6 +206,15 @@ const ProfileImg = styled.div`
   margin-left: 40px;
 `;
 
+const AvatarImg = styled.img`
+  margin-top: -20px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 1px solid lightgray;
+  box-shadow: 0px 3px 8px gray;
+`;
+
 const ShowImg = styled.div`
   margin-top: 50px;
 `;
@@ -241,12 +251,12 @@ const SaveEditImg = styled.button`
   font-weight: bold;
 `;
 
-const AvatarImg = styled.img`
-  margin-top: -20px;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  border: 1px solid lightgray;
+const InputField =  styled(Input)`
+  /* border-radius: 15px; */
+  border: none;
+  border-bottom: 1px solid;
+  background-color: #f4f4f4;
+  /* box-shadow: 0px 2px 4px gray; */
 `;
 
 function getCurrentDate() {
@@ -424,6 +434,7 @@ function MyProfileMainContents() {
               <InfoTitle>Account Information</InfoTitle>
               <InfoSubTitle>User Name</InfoSubTitle>
               <>
+                {/* <InputField */}
                 <Input
                   ref={register({ required: "Username is required",
                                   minLength: { value: 4, message: "Username should be atleast 4 characters" },
@@ -441,6 +452,7 @@ function MyProfileMainContents() {
               </>
               <InfoSubTitle>Company Name</InfoSubTitle>
               <>
+                {/* <InputField */}
                 <Input
                   ref={register({ required: "Company name is required",
                                   minLength: { value: 2, message: "Company name should be atleast 2 characters" },
@@ -458,6 +470,7 @@ function MyProfileMainContents() {
               </>
               <InfoSubTitle>Email</InfoSubTitle>
               <>
+                {/* <InputField */}
                 <Input
                   ref={register({ required: "Email is required",
                                   pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid Email" }
@@ -475,6 +488,7 @@ function MyProfileMainContents() {
               </>
               <InfoSubTitle>Phone Number</InfoSubTitle>
               <>
+                {/* <InputField */}
                 <Input
                   ref={register({ required: "Phone number is required",
                                   pattern: { value: /^[0-9]{3}[0-9]{3}[0-9]{4}$/i, message: "Enter a valid Phone Number" }
@@ -504,7 +518,8 @@ function MyProfileMainContents() {
                   />*/}
 
                   <InfoSubTitle>Password</InfoSubTitle>
-                  <Input
+                {/* <InputField */}
+                <Input
                     ref={register}
                     type="password"
                     name="password"
@@ -520,7 +535,8 @@ function MyProfileMainContents() {
             <PersonalInfo>
               <InfoTitle>Personal Information</InfoTitle>
               <InfoSubTitle>Date of Birth</InfoSubTitle>
-              <Input
+                {/* <InputField */}
+                <Input
                 ref={register}
                 value={watch("birth")}
                 type="text"
@@ -531,7 +547,8 @@ function MyProfileMainContents() {
                 onChange={handleChange}
               />
               <InfoSubTitle>Country/Region</InfoSubTitle>
-              <Input
+                {/* <InputField */}
+                <Input
                 ref={register}
                 value={watch("country")}
                 type="text"
@@ -541,7 +558,8 @@ function MyProfileMainContents() {
                 onChange={handleChange}
               />
               <InfoSubTitle>State</InfoSubTitle>
-              <Input
+                {/* <InputField */}
+                <Input
                 ref={register}
                 value={watch("state")}
                 type="text"
@@ -551,7 +569,8 @@ function MyProfileMainContents() {
                 onChange={handleChange}
               />
               <InfoSubTitle>City</InfoSubTitle>
-              <Input
+                {/* <InputField */}
+                <Input
                 ref={register}
                 value={watch("city")}
                 type="text"
@@ -561,7 +580,8 @@ function MyProfileMainContents() {
                 onChange={handleChange}
               />
               <InfoSubTitle>Street</InfoSubTitle>
-              <Input
+                {/* <InputField */}
+                <Input
                 ref={register({ minLength: { value: 6, message: "Street should be atleast 6 characters" },
                                 maxLength: { value: 30, message: "Company name should be less than 30 characters"}
                               })}

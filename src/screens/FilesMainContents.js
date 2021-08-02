@@ -9,6 +9,14 @@ import Input from "../components/auth/Input";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import ImageIcon from '@material-ui/icons/Image';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { 
+  faFileExcel, faFileWord, faFilePowerpoint, faFilePdf 
+} from "@fortawesome/free-solid-svg-icons";
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -130,6 +138,7 @@ const LETTERS = styled.h4`
   font-weight: 600;
   font-size: 20px;
   margin-left: 15px;
+  &.path { color: gray;  }
 `;
 
 const ProjectPath = styled.div`
@@ -308,6 +317,7 @@ const TableDiv = styled.div`
 
 const TableContainer = styled.table`
   height: 100%;
+  /* overflow-y: auto; */
   width: 100%;
   padding: 0;
   border-collapse: collapse;
@@ -630,7 +640,7 @@ function FilesMainContents() {
         <TeamName>
           <Link to={`/myProject/${teamName}`}>{teamName}</Link>
         </TeamName>
-        <LETTERS>&#10154;</LETTERS>
+        <LETTERS className="path"><DoubleArrowIcon /></LETTERS>
         <ProjectPath>
           <Link to={`/myProject/${teamName}/${projectId}`}>
             {projectData?.seeProject?.projectName}
@@ -709,8 +719,7 @@ function FilesMainContents() {
           {/* <CopyBtn>Copy</CopyBtn> */}
         </FourBtn>
       </SixBtn>
-      <TableDiv>
-        <TableContainer className="sortable">
+        <TableContainerTop className="sortable">
           <Thead>
             <Tr>
               <Th className="num" onClick={numberSorting}>
@@ -727,6 +736,9 @@ function FilesMainContents() {
               <Th className="fDelete">Delete</Th>
             </Tr>
           </Thead>
+          </TableContainerTop>
+      <TableDiv>
+          <TableContainer>
           <Tbody>
             {/* 파일업로드 파트 전체 수정해야함. 지금이건 프로젝트 리스트로 대신 하드코딩 해둔거임 */}
             {fileList?.map((file, index) => (
@@ -735,7 +747,40 @@ function FilesMainContents() {
                 <Td className="num">{file.id}</Td>
                 <Td className="num">
                   {/* {file.fileUrl.slice(file.fileUrl.length - 3)} */}
-                  {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1]}
+                  {/* {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1]} */}
+                  
+                  {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1] === 'pdf' &&
+                    <FontAwesomeIcon
+                      className="pdf"
+                      icon={faFilePdf}
+                      size="2x"
+                    />
+                  }
+                  {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1] === 'docx' &&
+                    <FontAwesomeIcon
+                      className="pdf"
+                      icon={faFileWord}
+                      size="2x"
+                    />
+                  }
+                  {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1] === 'xlsx' &&
+                    <FontAwesomeIcon
+                      className="pdf"
+                      icon={faFileExcel}
+                      size="2x"
+                    />
+                  }
+                  {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1] === 'pptx' &&
+                    <FontAwesomeIcon
+                      className="pdf"
+                      icon={faFilePowerpoint}
+                      size="2x"
+                    />
+                  }
+{/* 
+                    <InsertDriveFileIcon />
+                  } */}
+
                 </Td>
                 <Td className="fName">
                   {file.fileName}

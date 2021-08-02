@@ -5,6 +5,7 @@ import { gql, useQuery } from "@apollo/client";
 import Chart from "../asset/chart.PNG";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
 const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -199,6 +200,10 @@ const SmallBox = styled.div`
   height: 30%;
 `;
 
+const DateBox = styled.div`
+  height: 100%;
+`;
+
 const FirstBox20 = styled.div`
   width: 90%;
   height: 45%;
@@ -208,8 +213,23 @@ const FirstBox20 = styled.div`
   margin-bottom: 24px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  /* margin-top: 30px; */
+  justify-content: space-between;
+  font-weight: 600;
+  color: white;
+  font-size: 15px;
+  &.startBox{ background-color: #2784C7; }
+  &.endBox{ background-color: #FFD700; color: black; }
+`;
+
+const SmallDate = styled.div`
+  margin-left: 30px;
+`;
+
+const DatePart = styled.div`
+  margin-right: 30px;
+  font-size: 20px;
+  &.start {  }
+  &.end {  }
 `;
 
 const CalDiv = styled.div`
@@ -231,12 +251,15 @@ const TeamCalender = styled(Calendar)`
   justify-content: center;
 `;
 
-const SecondBox20 = styled.div`
+const CalBox20 = styled.div`
   width: 90%;
   height: 100%;
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 25px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
 `;
 
 const SecondBox30 = styled.div`
@@ -259,10 +282,10 @@ const ThirdBox60 = styled.div`
 const ListTableContainerTop = styled.table`
   border: 1px solid white;
   height: 15px;
-  width: 99%;
+  width: 95%;
   padding: 0;
   border-collapse: collapse;
-  border: 1px solid lightgray; 
+  /* border: 1px solid lightgray;  */
   border-bottom: none;
   margin: 20px auto 0 auto;
 `;
@@ -270,7 +293,7 @@ const ListTableContainerTop = styled.table`
 const TableDiv = styled.div`
   overflow: overlay;
   height: 90%;
-  width: 99%;
+  width: 95%;
   padding:0;
   margin: 0 auto;
   /* margin: auto; */
@@ -285,7 +308,8 @@ const ListTableContainer = styled.table`
 `;
 
 const ListThead = styled.thead`
-  background-color: #f3f3f3;
+  background-color: #004070;
+  color: white;
 `;
 // const file = [{id:"", projectName:""},{}]
 const ListTbody = styled.thead``;
@@ -294,20 +318,20 @@ const ListTr = styled.tr`
   border-bottom: 1px solid gray;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  /* width: 90%; */
 `;
 const ListTh = styled.th`
   /* background-color: lightblue; */
-  padding: 10px;
+  padding: 5px;
   margin: 0 10px;
   width: 100%;
   text-align: left;
   font-weight: 600;
   &.lAvatar {
-    width: 5%;
+    width: 8%;
   }
   &.lName {
-    width: 50%;
+    width: 47%;
   }
   &.lRole {
     width: 45%;
@@ -321,10 +345,10 @@ const ListTd = styled.td`
   width: 100%;
   text-align: left;
   &.lAvatar {
-    width: 5%;
+    width: 8%;
   }
   &.lName {
-    width: 50%;
+    width: 47%;
   }
   &.lRole {
     width: 45%;
@@ -345,6 +369,7 @@ const LETTERS = styled.h4`
   font-weight: 600;
   font-size: 20px;
   margin-left: 15px;
+  &.path { color: gray;  }
 `;
 
 const ProjectPath = styled.div`
@@ -374,10 +399,6 @@ const Avatar = styled.img`
   height: 30px;
   cursor: pointer;
   border-radius: 50%;
-`;
-
-const DateBox = styled.div`
-  height: 100%;
 `;
 
 function OverviewMainContents() {
@@ -426,7 +447,7 @@ function OverviewMainContents() {
         <TeamName>
           <Link to={`/myProject/${teamName}`}>{teamName}</Link>
         </TeamName>
-        <LETTERS>&#10154;</LETTERS>
+        <LETTERS className="path"><DoubleArrowIcon /></LETTERS>
         {/* 수정해야함 */}
         <ProjectPath>
           <Link to={`/myProject/${teamName}/${projectId}`}>
@@ -459,20 +480,26 @@ function OverviewMainContents() {
             {/* <FirstBox20>Start Date: { `${format(sDate, 'yyyy-MM-dd')?.toString()}` } </FirstBox20> */}
             {projectData !== undefined && (
               <DateBox>
-                <FirstBox20>
-                  Start Date: {`${format(sDate, "yyyy-MM-dd")?.toString()}`}
+                <FirstBox20 className="startBox">
+                  <SmallDate>Start Date:</SmallDate>
+                  <DatePart className="start">
+                    {`${format(sDate, "yyyy-MM-dd")?.toString()}`}
+                  </DatePart>
                 </FirstBox20>
-                <FirstBox20>
-                  End Date: {`${format(eDate, "yyyy-MM-dd")?.toString()}`}
+                <FirstBox20  className="endBox">
+                  <SmallDate>End Date: </SmallDate>
+                  <DatePart className="end">
+                    {`${format(eDate, "yyyy-MM-dd")?.toString()}`}
+                  </DatePart>
                 </FirstBox20>
               </DateBox>
             )}
           </SmallBox>
           <CalDiv>
-            <SecondBox20>
+            <CalBox20>
               <TeamCalender onChange={onChange} value={value} />
               {/* <ChartImg src={Chart} /> */}
-            </SecondBox20>
+            </CalBox20>
           </CalDiv>
         </FirstLine>
 
@@ -480,7 +507,6 @@ function OverviewMainContents() {
           <SecondBox30>
             <Link to={`/members/${teamName}`}>
               <LETTER> MEMBER LIST </LETTER>
-            </Link>
               <ListTableContainerTop className="sortable">
                 <ListThead>
                   <ListTr>
@@ -491,7 +517,7 @@ function OverviewMainContents() {
                 </ListThead>
                 </ListTableContainerTop>
 
-            <TableDiv>
+              <TableDiv>
                 <ListTableContainer>
                 <ListTbody>
                   {teamData?.seeTeam?.teamMember?.map((member) => (
@@ -517,15 +543,17 @@ function OverviewMainContents() {
                       )}                      
                       </ListTd>
                     </ListTr>
-                  ))}
-                </ListTbody>
-              </ListTableContainer>
-            </TableDiv>
+                    ))}
+                  </ListTbody>
+                </ListTableContainer>
+              </TableDiv>
+            </Link>
           </SecondBox30>
         </SecondLine>
 
         <ThirdLine>
           <ThirdBox60>
+          <Link to={`/myProject/${teamName}/${projectId}/files`}>
             <LETTER> FILE LIST </LETTER>
               <ListTableContainerTop className="sortable">
                 <ListThead>
@@ -556,6 +584,7 @@ function OverviewMainContents() {
                 </ListTbody>
               </ListTableContainer>
             </TableDiv>
+            </Link>
           </ThirdBox60>
         </ThirdLine>
       </LineContainer>
