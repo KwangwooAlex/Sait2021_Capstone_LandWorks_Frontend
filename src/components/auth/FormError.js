@@ -15,6 +15,7 @@ const Warning = styled.img`
   width: 26px;
   height: auto;
   max-width: 100%;
+  margin-top: 6px;
 `;
 
 function FormError({ message }) {

@@ -205,31 +205,33 @@ function Login() {
         <FormBox>
           <FormTitle>WELCOME TO LRMI PROJECT</FormTitle>
           <form onSubmit={handleSubmit(onSubmitValid, onSubmitInvalid)}>
-            <FormError message={errors?.email?.message} />
-            <FormError message={errors?.password?.message} />
+            {/* <FormError message={errors?.email?.message} />
+            <FormError message={errors?.password?.message} /> */}
             <FormError message={errors?.result?.message} />
             <Input
               ref={register({
                 required: "Email is required",
                 // required가 true가 되면 메시지가 안나가고 검사만함
-                minLength: {
-                  value: 5,
-                  message: "Email should be longer than 5 chars.",
-                },
-                //pattern : "", <-을통해 정규식 이용가능
+                // minLength: {
+                //   value: 5,
+                //   message: "Email should be longer than 5 chars",
+                // },
+                pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid Email" }
                 // validate:(currentValue)=> currentValue.includes("@")
               })}
               onChange={clearLoginError}
               name="email"
               type="text"
               placeholder="email@address.com"
+              autofocus="true"
               hasError={Boolean(errors?.email?.message)}
               // hasError는 임의로 만들어준것임! 빨간 테두리 위해!
             />
+            <FormError message={errors?.email?.message} />
 
             <Input
               ref={register({
-                required: "Password is required.",
+                required: "Password is required",
               })}
               onChange={clearLoginError}
               name="password"
@@ -237,6 +239,7 @@ function Login() {
               placeholder="Password"
               hasError={Boolean(errors?.password?.message)}
             />
+            <FormError message={errors?.password?.message} />
 
             <RememberMeBox>
               <RememberMeCheckBox></RememberMeCheckBox>
