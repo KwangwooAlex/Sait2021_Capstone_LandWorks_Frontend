@@ -567,7 +567,7 @@ const ListTd = styled.td`
   }
   &.lName {
     width: 25%;
-    cursor: pointer;
+    /* cursor: pointer; */
   }
   &.lRole {
     width: 25%;
@@ -678,6 +678,51 @@ const UserBoxes = styled.div`
   background-color: red;
 `;
 
+// ---------------------------------------------
+const MemberContatCustomStyles = {
+  content: {
+    padding: "0",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "400px",
+    height: "500px",
+  },
+};
+
+const ModalMemberHeader = styled.div`
+  margin: 0;
+  padding: 10px;
+  background: #004070;
+  color: white;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const CloseBtn = styled.button`
+  background: white;
+  padding: 0 auto;
+  font-size: 10px;
+  cursor: pointer;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalMemberInfo = styled.div`
+`;
+
+
+
+// ---------------------------------------------
+
 function MembersMainContents() {
   // const [memberRole, setMemberRole] = useState("");
   const [reverseName, setReverseName] = useState(false);
@@ -694,6 +739,25 @@ function MembersMainContents() {
   //     keyword,
   //   },
   // });
+
+  // ------------------------------------------------------------------------------
+  
+  const [isModalMemberOpen, setIsModalMemberOpen] = useState(false);
+
+  const handleMemberModal = () => {
+    setIsModalMemberOpen(true);
+  };
+
+  const handleXBtnModal = () => {
+    setIsModalMemberOpen(false);
+  };
+
+  // --------------------------------------------------------------------------------
+
+
+
+
+
   const [searchUsersQuery, { loading: SearchLoading, data: searchData }] =
     useLazyQuery(SEARCH_USERS);
 
@@ -1207,7 +1271,6 @@ function MembersMainContents() {
         </RightBtn>
       </TopBtn>
 
-      
         <ListTableContainerTop className="sortable">
           <ListThead>
             <ListTr>
@@ -1229,7 +1292,7 @@ function MembersMainContents() {
             {teamMemberList?.map((member) => (
               <ListTr key={member.id}>
                 <ListTd className="lAvatar">
-                  <Avatar src={member.avatar} />
+                  <Avatar src={member.avatar} onClick={handleMemberModal} />
                 </ListTd>
                 <ListTd className="lName">{member.username}</ListTd>
                 <ListTd className="lRole">
@@ -1339,6 +1402,19 @@ function MembersMainContents() {
           </ListTbody>
         </ListTableContainer>
       </TableDiv>
+
+{/* /* ---------------------------------------------------------------------------------- */}
+      <Modal isOpen={isModalMemberOpen} style={MemberContatCustomStyles}>
+        <ModalMemberHeader>
+          Member Information
+          <CloseBtn onClick={handleXBtnModal}>X</CloseBtn>
+        </ModalMemberHeader>
+          <ModalMemberInfo>
+
+
+          </ModalMemberInfo>
+        </Modal>
+{/* ---------------------------------------------------------------------------------- */}
     </Container>
   );
 }
