@@ -150,18 +150,18 @@ function SignUp() {
           <FormTitle>WELCOME TO LRMI PROJECT</FormTitle>
           <FormSubtitle>Create an account</FormSubtitle>
           <form onSubmit={handleSubmit(onSubmitValid, onSubmitInvalid)}>
-            <FormError message={errors?.email?.message} />
+            {/* <FormError message={errors?.email?.message} />
             <FormError message={errors?.password?.message} />
             <FormError message={errors?.phoneNumber?.message} />
             <FormError message={errors?.companyName?.message} />
             <FormError message={errors?.username?.message} />
-            <FormError message={errors?.result?.message} />
+            <FormError message={errors?.result?.message} /> */}
 
             <Input
               ref={register({
                 required: "Email is required",
                 // required가 true가 되면 메시지가 안나가고 검사만함
-                pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid Email" } // Peter
+                pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid Email" }
                 //pattern : "", <-을통해 정규식 이용가능
                 // validate:(currentValue)=> currentValue.includes("@")
               })}
@@ -170,8 +170,10 @@ function SignUp() {
               type="text"
               placeholder="email@address.com"
               hasError={Boolean(errors?.email?.message)}
+              autofocus="true"
               // hasError는 임의로 만들어준것임! 빨간 테두리 위해!
             />
+            <FormError message={errors?.email?.message} />
 
             <Input
               ref={register({
@@ -183,38 +185,43 @@ function SignUp() {
               placeholder="Password"
               hasError={Boolean(errors?.password?.message)}
             />
+            <FormError message={errors?.password?.message} />
 
             <Input
               ref={register({
                 required: "Phone number is required",
-                pattern: { value: /^[0-9]{3}[0-9]{3}[0-9]{4}$/i, message: "Enter a valid Phone Number" } // Peter
+                pattern: { value: /^[0-9]{3}[0-9]{3}[0-9]{4}$/i, message: "Enter a valid Phone Number" }
               })}
               name="phoneNumber"
               type="text"
               placeholder="Phone Number"
-              hasError={Boolean(errors?.phoneNumber?.message)} // Peter
+              hasError={Boolean(errors?.phoneNumber?.message)}
             />
+            <FormError message={errors?.phoneNumber?.message} />
+
             <Input
               ref={register({
-                minLength: { value: 2, message: "Company name should be longer" }, // Peter
-                maxLength: { value: 50, message: "Company name should be shorter"} // Peter
+                minLength: { value: 2, message: "Company name should be longer" },
+                maxLength: { value: 50, message: "Company name should be shorter"}
               })}
               name="companyName"
               type="text"
               placeholder="Company Name"
-              hasError={Boolean(errors?.companyName?.message)} // Peter
+              hasError={Boolean(errors?.companyName?.message)}
             />
+            <FormError message={errors?.companyName?.message} />
 
             <Input
               ref={register({
                 required: "Username is required",
-                minLength: { value: 4, message: "Username should be atleast 4 characters" }, // Peter
-                maxLength: { value: 30, message: "Username should be less than 30 characters"} // Peter
+                minLength: { value: 2, message: "Username should be atleast 2 characters" },
+                maxLength: { value: 30, message: "Username should be less than 30 characters"}
               })}
               name="username"
               type="text"
               placeholder="User Name"
             />
+            <FormError message={errors?.username?.message} />
 
             <SignUpButton
               type="submit"

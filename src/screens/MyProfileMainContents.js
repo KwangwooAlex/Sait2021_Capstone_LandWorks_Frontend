@@ -448,7 +448,7 @@ function MyProfileMainContents() {
               <InputField
                 // <Input
                   ref={register({ required: "Username is required",
-                                  minLength: { value: 4, message: "Username should be atleast 4 characters" },
+                                  minLength: { value: 2, message: "Username should be atleast 2 characters" },
                                   maxLength: { value: 30, message: "Username should be less than 30 characters"}
                                 })}
                   type="text"
