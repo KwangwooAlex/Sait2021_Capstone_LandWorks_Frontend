@@ -152,16 +152,16 @@ function SignUp() {
           <form onSubmit={handleSubmit(onSubmitValid, onSubmitInvalid)}>
             <FormError message={errors?.email?.message} />
             <FormError message={errors?.password?.message} />
+            <FormError message={errors?.phoneNumber?.message} />
+            <FormError message={errors?.companyName?.message} />
+            <FormError message={errors?.username?.message} />
             <FormError message={errors?.result?.message} />
 
             <Input
               ref={register({
                 required: "Email is required",
                 // required가 true가 되면 메시지가 안나가고 검사만함
-                minLength: {
-                  value: 5,
-                  message: "Email should be longer than 5 chars.",
-                },
+                pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid Email" } // Peter
                 //pattern : "", <-을통해 정규식 이용가능
                 // validate:(currentValue)=> currentValue.includes("@")
               })}
@@ -175,7 +175,7 @@ function SignUp() {
 
             <Input
               ref={register({
-                required: "Password is required.",
+                required: "Password is required",
               })}
               onChange={clearLoginError}
               name="password"
@@ -186,22 +186,30 @@ function SignUp() {
 
             <Input
               ref={register({
-                required: "Phone number is required.",
+                required: "Phone number is required",
+                pattern: { value: /^[0-9]{3}[0-9]{3}[0-9]{4}$/i, message: "Enter a valid Phone Number" } // Peter
               })}
               name="phoneNumber"
               type="text"
               placeholder="Phone Number"
+              hasError={Boolean(errors?.phoneNumber?.message)} // Peter
             />
             <Input
-              ref={register}
+              ref={register({
+                minLength: { value: 2, message: "Company name should be longer" }, // Peter
+                maxLength: { value: 50, message: "Company name should be shorter"} // Peter
+              })}
               name="companyName"
               type="text"
               placeholder="Company Name"
+              hasError={Boolean(errors?.companyName?.message)} // Peter
             />
 
             <Input
               ref={register({
-                required: "Username is required.",
+                required: "Username is required",
+                minLength: { value: 4, message: "Username should be atleast 4 characters" }, // Peter
+                maxLength: { value: 30, message: "Username should be less than 30 characters"} // Peter
               })}
               name="username"
               type="text"

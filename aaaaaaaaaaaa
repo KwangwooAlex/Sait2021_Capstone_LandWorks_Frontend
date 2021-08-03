@@ -1,0 +1,285 @@
+[33mcommit 0ba8566167eb10b2533aa5beaa172e9fad9a5c67[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/JuyoungReal[m[33m)[m
+Author: Peter Lien <799768@ACDM.DS.SAIT.CA>
+Date:   Thu Jul 29 16:11:21 2021 -0600
+
+    Add: validation by Peter
+
+[33mcommit 58756708fd7726572589b41dcf67ff39c1fd9670[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Wed Jul 28 23:29:51 2021 -0600
+
+    Fix: chart 3
+
+[33mcommit 52ce63add1ab1627e0cfdc20c753cc5b102a3bf5[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Wed Jul 28 23:14:38 2021 -0600
+
+    Fix: Chart2
+
+[33mcommit 8da25f85f9bba314eb4e9c47981a06bf2ed0ba2e[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Wed Jul 28 23:12:21 2021 -0600
+
+    Fix: Chart
+
+[33mcommit 78e2c137e1c53e65b488b4d11bfb1e01503c039f[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Wed Jul 28 22:24:53 2021 -0600
+
+    Add: Chart
+
+[33mcommit 05a5ae0b1d4a9ceaf57b1a3c7933c9a4bf67abf4[m
+Author: akiiozzzo <ljy9407@gmail.com>
+Date:   Wed Jul 28 19:47:23 2021 -0600
+
+    Add Box for chart space in dashboard
+
+[33mcommit bfdf8793fc1c7096a4b7a996a83533bff57a4d09[m
+Author: akiiozzzo <ljy9407@gmail.com>
+Date:   Tue Jul 27 11:32:23 2021 -0600
+
+    Fix: Css table and section and Create company info  Modal
+
+[33mcommit 47ef3dd6295b8d4f838a2371160a279856330bcf[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Mon Jul 26 17:05:56 2021 -0600
+
+    Add: File Size and Filter
+
+[33mcommit 18508089bb320e0b0f2fd7a6415d28877c6a99dc[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Mon Jul 26 16:21:48 2021 -0600
+
+    Add: FileList
+
+[33mcommit 31fdf33c0ff08e05ca6abecfac7686db794bdfeb[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Mon Jul 26 16:01:52 2021 -0600
+
+    Add: Delete File
+
+[33mcommit 00d035cbfd3857e35665d83a0f6fdbe1847a72b7[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Mon Jul 26 15:31:44 2021 -0600
+
+    Add: Upload File
+
+[33mcommit d06f9ef7074d9b6e0cda20812cb1f951f6473043[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Mon Jul 26 13:33:49 2021 -0600
+
+    Fix : Team Member Role
+
+[33mcommit f01741ac02fb0320ffc5853d3c278442d05d83ad[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Sun Jul 25 22:05:50 2021 -0600
+
+    Add: Add edit role alert
+
+[33mcommit 63598af8a10843f0fa174404a66263c9fd7fa015[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Sun Jul 25 21:49:40 2021 -0600
+
+    Add: Permission, Auto add role
+
+[33mcommit c0aaab7ed0e07f8668a39cca7623c9cbf8d90af0[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Sun Jul 25 13:54:43 2021 -0600
+
+    Update: done Deployement test
+
+[33mcommit d717c80bb4c4544935e2f2dd6975a14903a6daf0[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Sun Jul 25 13:12:40 2021 -0600
+
+    Update: Deployement test2
+
+[33mcommit ee4b0471a2fe3506640e417e945fc55bcce7a294[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Sun Jul 25 13:07:52 2021 -0600
+
+    Update: Deployement test
+
+[33mcommit c6ef2e04abb3c2036db2fdbc77e0776e6bc7bfa8[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Thu Jul 22 20:00:49 2021 -0600
+
+    Add: Sorting and Searching
+
+[33mcommit ce93bf9be3cac93bd95c96e43b2dbc9c9d5aaf95[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Wed Jul 21 23:35:20 2021 -0600
+
+    Add: Delete, Uploading
+
+[33mcommit feba163e9de0af733d493d832e984d20992bf000[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Wed Jul 21 12:18:25 2021 -0600
+
+    Try Edit..but...... 2
+
+[33mcommit f24af69e88f77abf4d36b1e9a546fc513a4b64b2[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Mon Jul 19 16:57:47 2021 -0600
+
+    Try Edit..but......
+
+[33mcommit ec2e54851e884a549f74b04a2210703b5b59ebf6[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Thu Jul 15 23:21:14 2021 -0600
+
+    Fixed bugs and Modified each part
+
+[33mcommit 7b776efc477aa012c9f2103bb498634e7cb1ec9a[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Wed Jul 14 23:54:20 2021 -0600
+
+    Tried many things but............
+
+[33mcommit 3beb9a346be199ed50776c29be339c575194d75d[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Wed Jul 14 20:55:44 2021 -0600
+
+    Add Avatar
+
+[33mcommit 195bd8d38eda832b619acf2bc4124ff02b8628d9[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Mon Jul 12 20:26:40 2021 -0600
+
+    Add delete button in files
+
+[33mcommit 9b7666b5746b84b261fcd8f44d4c5e97594b23c0[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Mon Jul 12 12:08:17 2021 -0600
+
+    Modified all without Edit/delete function
+
+[33mcommit c26409f386ae9c35d2c1348c79395f49c1086134[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Fri Jul 9 23:18:04 2021 -0600
+
+    Modified CSS 2
+
+[33mcommit a4da984534de9859bf8852660d423fbda5e8e05b[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Fri Jul 9 19:15:18 2021 -0600
+
+    Modified CSS
+
+[33mcommit 49ec0e76f4f8bbd52fad6f3a52b901d197f61e1c[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Thu Jul 8 22:55:11 2021 -0600
+
+    Modified CSS
+
+[33mcommit eb8727a1a647a1012f9efeaae5d9c4d7d10db1a8[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Wed Jul 7 00:00:23 2021 -0600
+
+    Modified List Numbering
+
+[33mcommit 7d754ae3bfae6e171c522e6d4d87420d56031f15[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Mon Jul 5 10:12:17 2021 -0600
+
+    Modified list table, display member and All project list
+
+[33mcommit 874a85f8aa1b31b4650d78e0d2143fe57124d74e[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Fri Jul 2 21:12:38 2021 -0600
+
+    Modified Project Summary and Linked each page
+
+[33mcommit 40ba487197093dac0b4c41ac1a3f6bb6a63f17c8[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Thu Jul 1 20:47:51 2021 -0600
+
+    Display Project List
+
+[33mcommit 81cb5b0646366a6918ee382bb4f3d058f314943b[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Tue Jun 29 22:47:38 2021 -0600
+
+    Modified team list to display and project creation
+
+[33mcommit ddf04b30c7a52349521543a13a46253d2cebeedf[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Tue Jun 29 13:02:07 2021 -0600
+
+    Fix: seeAllMyTeam
+
+[33mcommit d3eb629093b37dda6bdac2133de2156b0b16a98f[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Mon Jun 28 23:59:14 2021 -0600
+
+    Create layout MyProject Page
+
+[33mcommit c1297db76b9eaccd6ff3c30210a8f32ddeb08601[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Mon Jun 28 14:20:13 2021 -0600
+
+    Add Project page
+
+[33mcommit 5c21a6ad08ba8ccfe049e576f0427a354bc7d846[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Thu Jun 24 22:56:32 2021 -0600
+
+    Tried to Create Team
+
+[33mcommit 961599223c6883d99f7d1e69d1118e8340154a9d[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Thu Jun 24 19:31:26 2021 -0600
+
+    Modified handleSubmit using setValue
+
+[33mcommit 01771ce9d901f729a4c51c5390a84453d2010400[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Wed Jun 23 08:20:55 2021 -0600
+
+    Modified team modal styling
+
+[33mcommit 456124cd4ee97689c0fa9940b5bc181fbde4dbd7[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Mon Jun 21 23:18:01 2021 -0600
+
+     Add Profile  Modal styling
+
+[33mcommit 0c0ab02fd241d7ef517df3a04ebe9737ff1ea18a[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Mon Jun 21 21:30:11 2021 -0600
+
+    Modified to change the input value for Profile
+
+[33mcommit 36dc53a02fb669a093cfeed1f24795ee31db558f[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Mon Jun 21 16:13:01 2021 -0600
+
+    Add : useUser
+
+[33mcommit 9a18b1d17c21140bf1d795d4cda4ca97babc776c[m
+Author: Kwangwoo <bnc3049@gmail.com>
+Date:   Mon Jun 21 15:22:19 2021 -0600
+
+    Fixed : dataloading
+
+[33mcommit d590bc35704414dc8052c611924ebb1685d92031[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Sat Jun 19 18:55:33 2021 -0600
+
+    Added Modal for editing Profile Image
+
+[33mcommit 8a16dd9cca49f863196dfb59b03939bcfce42491[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Fri Jun 18 23:47:00 2021 -0600
+
+    Load profile information
+
+[33mcommit cc27d6871a819583a3d3dfad2ce774f289d47306[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Thu Jun 17 23:44:05 2021 -0600
+
+    Build Layout for  MyProfile, MyTeam and Sidebar
+
+[33mcommit abd4d0227e845f0a91eaff77cc0928156bab5fac[m
+Author: Chang Han Kim <827637@ACDM.DS.SAIT.CA>
+Date:   Thu Jun 17 20:23:36 2
