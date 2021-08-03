@@ -122,7 +122,7 @@ const CloseBtn = styled.button`
 `;
 const ModalBody = styled.div`
   background-image: url("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80");
-  width: 100%; 
+  width: 100%;
   height: 426px;
   margin-top: -3%;
   opacity: 0.9;
@@ -138,38 +138,35 @@ const ModalInfoTop = styled.div`
   margin-top: 3%;
 `;
 
- 
 const CompanyName = styled.h1`
-font-size: 25px;
-text-align: center;
-padding-top:30px;
-z-index: 1;
-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-font-weight: bold;
-color: black;
-
+  font-size: 25px;
+  text-align: center;
+  padding-top: 30px;
+  z-index: 1;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  color: black;
 `;
 const CompanyInfo = styled.div`
-padding-top:10px;
-padding-left:18px;
-font-size: 17px;
-font-family: Roboto, Arial, sans-serif;
-font-weight: bold;
-z-index: 1;
+  padding-top: 10px;
+  padding-left: 18px;
+  font-size: 17px;
+  font-family: Roboto, Arial, sans-serif;
+  font-weight: bold;
+  z-index: 1;
 
-line-height:24px;
-color:black;
+  line-height: 24px;
+  color: black;
 `;
 
 const CompanyInfoCard = styled.div`
-
-margin-left: 12%;
-margin-top: 34%;
-width: 450px;
-height: 140px;
-border-radius:10px;
-opacity: 0.78;
-background:white;
+  margin-left: 12%;
+  margin-top: 34%;
+  width: 450px;
+  height: 140px;
+  border-radius: 10px;
+  opacity: 0.78;
+  background: white;
 `;
 
 const CompanyPhoto = styled.div`
@@ -185,18 +182,15 @@ function DashBoardHeader() {
 
   const handleQuestionModal = () => {
     setIsModalOpen(true);
-  }
+  };
 
   const handleXBtnModal = () => {
     setIsModalOpen(false);
   };
 
-
   return (
     <Container>
-      <LeftMenu>
-        {/* <HamburgerMenu src={hamburgerMenu} /> */}
-      </LeftMenu>
+      <LeftMenu>{/* <HamburgerMenu src={hamburgerMenu} /> */}</LeftMenu>
       <Link to="/">
         <MiddleTitle>Landwork Resource Management Inc</MiddleTitle>
       </Link>
@@ -211,30 +205,28 @@ function DashBoardHeader() {
             <CloseBtn onClick={handleXBtnModal}>X</CloseBtn>
           </ModalHeader>
           <ModalBody>
-              <ModalInfo>
-                <ModalInfoTop>
-                  <CompanyName>Landwork Reasource Management Inc.</CompanyName>
-                </ModalInfoTop>
-                
+            <ModalInfo>
+              <ModalInfoTop>
+                <CompanyName>Landwork Reasource Management Inc.</CompanyName>
+              </ModalInfoTop>
+
               {/* <CompanyPhoto>                           
                 <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" width="100%" height="426px"></img>
               </CompanyPhoto> */}
 
               <CompanyInfoCard>
                 <CompanyInfo>
-                <p>Company Email : landworkinfo@gmail.com</p>
-                <p>Comapny number: 1-403-660-1720</p>
-                <p>Business Hours: Mon-Fri 9AM - 5PM</p>
-                            
+                  <p>Company Email : landworkinfo@gmail.com</p>
+                  <p>Comapny number: 1-403-660-1720</p>
+                  <p>Business Hours: Mon-Fri 9AM - 5PM</p>
+
                   <CompanyLocation>
-                  <p>Location: Suite 168, 315 - 5155 - 130th Avenue S.E.</p>
-                  <p>Calgary, Alberta T2Z 0N3</p>
+                    <p>Location: Suite 168, 315 - 5155 - 130th Avenue S.E.</p>
+                    <p>Calgary, Alberta T2Z 0N3</p>
                   </CompanyLocation>
-                </CompanyInfo> 
-
-                </CompanyInfoCard>
-
-              </ModalInfo>
+                </CompanyInfo>
+              </CompanyInfoCard>
+            </ModalInfo>
           </ModalBody>
         </Modal>
 

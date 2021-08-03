@@ -674,107 +674,96 @@ function MyTeamMainContents() {
               />
               <TeamList>{team.teamName}</TeamList>
             </Link>
-
-            <Modal isOpen={isDModalOpen} style={settingCustomStyles}>
-              <SetModalHeader>
-                MANAGE TEAM
-                <CancelBtn2 onClick={handleXBtnModal}>X</CancelBtn2>
-              </SetModalHeader>
-
-              {/* 팀 멤버 리스트 / 팀 삭제 */}
-              <ModalBody2>
-                <ModalMain>
-                  <ModalNav>
-                    <NavTitle
-                      onClick={settingAboutClick}
-                      style={{ backgroundColor: isAbout.bgColor }}
-                      className="aboutTeam"
-                    >
-                      ABOUT TEAM
-                    </NavTitle>
-                    <NavTitle
-                      onClick={settingDeleteClick}
-                      className="delete"
-                      style={{ backgroundColor: isDelete.bgColor }}
-                    >
-                      DELETE TEAM
-                    </NavTitle>
-                  </ModalNav>
-
-                  {isAbout && (
-                    <ModalSet>
-                      <SetTitle>ABOUT TEAM INFORMATION</SetTitle>
-                      <MemberSetSub>
-                        Team Name: <B>{teamData?.seeTeam?.teamName}</B>{" "}
-                      </MemberSetSub>
-                      <MemberL>
-                        <MemberSetSub>Member list:</MemberSetSub>
-                        <MemberSetSub>
-                          Total of members (
-                          {teamData?.seeTeam?.teamMember?.length})
-                        </MemberSetSub>
-                      </MemberL>
-                        <ListTableContainerTop className="sortable">
-                          <ListThead>
-                            <ListTr>
-                              <ListTh className="lAvatar"></ListTh>
-                              <ListTh className="lName">Name</ListTh>
-                              <ListTh className="lRole">Role</ListTh>
-                            </ListTr>
-                          </ListThead>
-                        </ListTableContainerTop>
-                      <TableDiv>
-                        <ListTableContainer>
-                          <ListTbody>
-                            {teamData?.seeTeam?.teamMember?.map((member) => (
-                              <ListTr key={member.id}>
-                                <ListTd className="lAvatar">
-                                  <FontAwesomeIcon
-                                    icon={faUserCircle}
-                                    size="2x"
-                                  />
-                                </ListTd>
-                                <ListTd className="lName">
-                                  {member.username}
-                                </ListTd>
-                                <ListTd className="lRole">
-                                  Project Manager
-                                </ListTd>
-                              </ListTr>
-                            ))}
-                          </ListTbody>
-                        </ListTableContainer>
-                      </TableDiv>
-                    </ModalSet>
-                  )}
-
-                  {isDelete && (
-                    <ModalSet>
-                      <SetTitle>DELETE TEAM</SetTitle>
-                      <DeleteSetSub>
-                        Are you sure you want to delete the team{" "}
-                        <B>{teamData?.seeTeam?.teamName}</B>
-                        <br />
-                        If you click <B>"Delete Team"</B> button, your all
-                        projects <br />
-                        and files for this team will be delete.
-                      </DeleteSetSub>
-
-                      <DeleteBtn
-                        onClick={() =>
-                          handleDeleteBtnModal(teamData?.seeTeam?.id)
-                        }
-                      >
-                        Delete Team
-                      </DeleteBtn>
-                    </ModalSet>
-                  )}
-                </ModalMain>
-              </ModalBody2>
-            </Modal>
           </ListEachTeam>
         ))}
       </TeamBody>
+      <Modal isOpen={isDModalOpen} style={settingCustomStyles}>
+        <SetModalHeader>
+          MANAGE TEAM
+          <CancelBtn2 onClick={handleXBtnModal}>X</CancelBtn2>
+        </SetModalHeader>
+
+        {/* 팀 멤버 리스트 / 팀 삭제 */}
+        <ModalBody2>
+          <ModalMain>
+            <ModalNav>
+              <NavTitle
+                onClick={settingAboutClick}
+                style={{ backgroundColor: isAbout.bgColor }}
+                className="aboutTeam"
+              >
+                ABOUT TEAM
+              </NavTitle>
+              <NavTitle
+                onClick={settingDeleteClick}
+                className="delete"
+                style={{ backgroundColor: isDelete.bgColor }}
+              >
+                DELETE TEAM
+              </NavTitle>
+            </ModalNav>
+
+            {isAbout && (
+              <ModalSet>
+                <SetTitle>ABOUT TEAM INFORMATION</SetTitle>
+                <MemberSetSub>
+                  Team Name: <B>{teamData?.seeTeam?.teamName}</B>{" "}
+                </MemberSetSub>
+                <MemberL>
+                  <MemberSetSub>Member list:</MemberSetSub>
+                  <MemberSetSub>
+                    Total of members ({teamData?.seeTeam?.teamMember?.length})
+                  </MemberSetSub>
+                </MemberL>
+                <ListTableContainerTop className="sortable">
+                  <ListThead>
+                    <ListTr>
+                      <ListTh className="lAvatar"></ListTh>
+                      <ListTh className="lName">Name</ListTh>
+                      <ListTh className="lRole">Role</ListTh>
+                    </ListTr>
+                  </ListThead>
+                </ListTableContainerTop>
+                <TableDiv>
+                  <ListTableContainer>
+                    <ListTbody>
+                      {teamData?.seeTeam?.teamMember?.map((member) => (
+                        <ListTr key={member.id}>
+                          <ListTd className="lAvatar">
+                            <FontAwesomeIcon icon={faUserCircle} size="2x" />
+                          </ListTd>
+                          <ListTd className="lName">{member.username}</ListTd>
+                          <ListTd className="lRole">Project Manager</ListTd>
+                        </ListTr>
+                      ))}
+                    </ListTbody>
+                  </ListTableContainer>
+                </TableDiv>
+              </ModalSet>
+            )}
+
+            {isDelete && (
+              <ModalSet>
+                <SetTitle>DELETE TEAM</SetTitle>
+                <DeleteSetSub>
+                  Are you sure you want to delete the team{" "}
+                  <B>{teamData?.seeTeam?.teamName}</B>
+                  <br />
+                  If you click <B>"Delete Team"</B> button, your all projects{" "}
+                  <br />
+                  and files for this team will be delete.
+                </DeleteSetSub>
+
+                <DeleteBtn
+                  onClick={() => handleDeleteBtnModal(teamData?.seeTeam?.id)}
+                >
+                  Delete Team
+                </DeleteBtn>
+              </ModalSet>
+            )}
+          </ModalMain>
+        </ModalBody2>
+      </Modal>
     </Container>
   );
 }

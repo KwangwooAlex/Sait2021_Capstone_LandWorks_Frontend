@@ -9,13 +9,16 @@ import Input from "../components/auth/Input";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
-import ImageIcon from '@material-ui/icons/Image';
-import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
+import ImageIcon from "@material-ui/icons/Image";
+import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { 
-  faFileExcel, faFileWord, faFilePowerpoint, faFilePdf 
+import {
+  faFileExcel,
+  faFileWord,
+  faFilePowerpoint,
+  faFilePdf,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SEE_TEAM_QUERY = gql`
@@ -138,7 +141,9 @@ const LETTERS = styled.h4`
   font-weight: 600;
   font-size: 20px;
   margin-left: 15px;
-  &.path { color: gray;  }
+  &.path {
+    color: gray;
+  }
 `;
 
 const ProjectPath = styled.div`
@@ -298,7 +303,7 @@ const ModalCancelBtn = styled.button`
 
 const TableContainerTop = styled.table`
   margin-top: 10px;
-  border: 1px solid lightgray;  
+  border: 1px solid lightgray;
   border-bottom: none;
   height: 20px;
   width: 100%;
@@ -321,7 +326,7 @@ const TableContainer = styled.table`
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  font-size: 13px;  
+  font-size: 13px;
 `;
 
 const Thead = styled.thead`
@@ -640,7 +645,9 @@ function FilesMainContents() {
         <TeamName>
           <Link to={`/myProject/${teamName}`}>{teamName}</Link>
         </TeamName>
-        <LETTERS className="path"><DoubleArrowIcon /></LETTERS>
+        <LETTERS className="path">
+          <DoubleArrowIcon />
+        </LETTERS>
         <ProjectPath>
           <Link to={`/myProject/${teamName}/${projectId}`}>
             {projectData?.seeProject?.projectName}
@@ -719,26 +726,26 @@ function FilesMainContents() {
           {/* <CopyBtn>Copy</CopyBtn> */}
         </FourBtn>
       </SixBtn>
-        <TableContainerTop className="sortable">
-          <Thead>
-            <Tr>
-              <Th className="num" onClick={numberSorting}>
-                No. &darr;
-              </Th>
-              <Th className="num">Type</Th>
-              <Th className="fName" onClick={nameSorting}>
-                Name &darr;
-              </Th>
-              <Th className="fUpdateBy">Update by</Th>
-              <Th className="fLast">Last Update</Th>
-              <Th className="fEdit">DownLoad</Th>
-              {/* <Th className="fEdit">Edit</Th> */}
-              <Th className="fDelete">Delete</Th>
-            </Tr>
-          </Thead>
-          </TableContainerTop>
+      <TableContainerTop className="sortable">
+        <Thead>
+          <Tr>
+            <Th className="num" onClick={numberSorting}>
+              No. &darr;
+            </Th>
+            <Th className="num">Type</Th>
+            <Th className="fName" onClick={nameSorting}>
+              Name &darr;
+            </Th>
+            <Th className="fUpdateBy">Update by</Th>
+            <Th className="fLast">Last Update</Th>
+            <Th className="fEdit">DownLoad</Th>
+            {/* <Th className="fEdit">Edit</Th> */}
+            <Th className="fDelete">Delete</Th>
+          </Tr>
+        </Thead>
+      </TableContainerTop>
       <TableDiv>
-          <TableContainer>
+        <TableContainer>
           <Tbody>
             {/* 파일업로드 파트 전체 수정해야함. 지금이건 프로젝트 리스트로 대신 하드코딩 해둔거임 */}
             {fileList?.map((file, index) => (
@@ -748,39 +755,55 @@ function FilesMainContents() {
                 <Td className="num">
                   {/* {file.fileUrl.slice(file.fileUrl.length - 3)} */}
                   {/* {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1]} */}
-                  
-                  {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1] === 'pdf' &&
-                    <FontAwesomeIcon
-                      className="pdf"
-                      icon={faFilePdf}
-                      size="2x"
-                    />
-                  }
-                  {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1] === 'docx' &&
-                    <FontAwesomeIcon
-                      className="pdf"
-                      icon={faFileWord}
-                      size="2x"
-                    />
-                  }
-                  {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1] === 'xlsx' &&
-                    <FontAwesomeIcon
-                      className="pdf"
-                      icon={faFileExcel}
-                      size="2x"
-                    />
-                  }
-                  {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1] === 'pptx' &&
-                    <FontAwesomeIcon
-                      className="pdf"
-                      icon={faFilePowerpoint}
-                      size="2x"
-                    />
-                  }
-{/* 
-                    <InsertDriveFileIcon />
-                  } */}
-
+                  {file.fileUrl.split(".")[
+                    file.fileUrl.split(".").length - 1
+                  ] === "pdf" ||
+                    file.fileUrl.split(".")[
+                      file.fileUrl.split(".").length - 1
+                    ] === "docx" ||
+                    file.fileUrl.split(".")[
+                      file.fileUrl.split(".").length - 1
+                    ] === "xlsx" ||
+                    file.fileUrl.split(".")[
+                      file.fileUrl.split(".").length - 1
+                    ] === "pptx" ? (<> {file.fileUrl.split(".")[
+                      file.fileUrl.split(".").length - 1
+                    ] === "pdf" && (
+                      <FontAwesomeIcon
+                        className="pdf"
+                        icon={faFilePdf}
+                        size="2x"
+                      />
+                    )}
+                    {file.fileUrl.split(".")[
+                      file.fileUrl.split(".").length - 1
+                    ] === "docx" && (
+                      <FontAwesomeIcon
+                        className="pdf"
+                        icon={faFileWord}
+                        size="2x"
+                      />
+                    )}
+                    {file.fileUrl.split(".")[
+                      file.fileUrl.split(".").length - 1
+                    ] === "xlsx" && (
+                      <FontAwesomeIcon
+                        className="pdf"
+                        icon={faFileExcel}
+                        size="2x"
+                      />
+                    )}
+                    {file.fileUrl.split(".")[
+                      file.fileUrl.split(".").length - 1
+                    ] === "pptx" && (
+                      <FontAwesomeIcon
+                        className="pdf"
+                        icon={faFilePowerpoint}
+                        size="2x"
+                      />
+                    )}</>):( 
+                      <InsertDriveFileIcon />) }
+                
                 </Td>
                 <Td className="fName">
                   {file.fileName}
