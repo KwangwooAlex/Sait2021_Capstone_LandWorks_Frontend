@@ -208,7 +208,7 @@ const FirstBox20 = styled.div`
   width: 90%;
   height: 45%;
   border-radius: 20px;
-  box-shadow: 0px 3px 8px gray;
+  box-shadow: 0px 3px 8px lightgray;
   margin-right: 25px;
   margin-bottom: 24px;
   display: flex;
@@ -217,8 +217,14 @@ const FirstBox20 = styled.div`
   font-weight: 600;
   color: white;
   font-size: 15px;
-  &.startBox{ background-color: #2784C7; }
-  &.endBox{ background-color: #FFD700; color: black; }
+  &.startBox{ 
+    background-color: #11569A; 
+    color: white; 
+  }
+  &.endBox{ 
+    border: 2px solid #11569A;
+    color: #11569A;
+  }
 `;
 
 const SmallDate = styled.div`

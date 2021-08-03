@@ -104,7 +104,7 @@ const InfoSection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5%;
+  margin-top: 4%;
   margin-left: 15%;
 `;
 
@@ -124,13 +124,21 @@ const PersonalInfo = styled.div`
 `;
 
 const InfoTitle = styled.h2`
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 600;
+  color: white;
+  text-align: center;
+  background-color: #11569A;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px lightgray;
 `;
 
 const InfoSubTitle = styled.h5`
   margin-bottom: -20px;
   margin-top: 25px;
+  padding-left: 10px;
+  width: 90%;
 `;
 
 const ProfileImgEdit = styled.span`
@@ -207,7 +215,7 @@ const ProfileImg = styled.div`
 `;
 
 const AvatarImg = styled.img`
-  margin-top: -20px;
+  margin-top: -30px;
   width: 200px;
   height: 200px;
   border-radius: 50%;
@@ -252,11 +260,14 @@ const SaveEditImg = styled.button`
 `;
 
 const InputField =  styled(Input)`
-  /* border-radius: 15px; */
-  border: none;
-  border-bottom: 1px solid;
-  background-color: #f4f4f4;
-  /* box-shadow: 0px 2px 4px gray; */
+  border-radius: 10px;
+  padding-left: 15px;
+  border: 1px solid
+    ${(props) => (props.hasError ? "tomato" : "gray")};
+  box-shadow: 0px 2px 5px lightgray;
+  /* border: none;
+  border-bottom: 1px solid gray;
+  background-color: #f7f7f7; */
 `;
 
 function getCurrentDate() {
@@ -434,8 +445,8 @@ function MyProfileMainContents() {
               <InfoTitle>Account Information</InfoTitle>
               <InfoSubTitle>User Name</InfoSubTitle>
               <>
-                {/* <InputField */}
-                <Input
+              <InputField
+                // <Input
                   ref={register({ required: "Username is required",
                                   minLength: { value: 4, message: "Username should be atleast 4 characters" },
                                   maxLength: { value: 30, message: "Username should be less than 30 characters"}
@@ -452,8 +463,8 @@ function MyProfileMainContents() {
               </>
               <InfoSubTitle>Company Name</InfoSubTitle>
               <>
-                {/* <InputField */}
-                <Input
+                <InputField
+                // <Input
                   ref={register({ required: "Company name is required",
                                   minLength: { value: 2, message: "Company name should be atleast 2 characters" },
                                   maxLength: { value: 50, message: "Company name should be less than 50 characters"}
@@ -470,8 +481,8 @@ function MyProfileMainContents() {
               </>
               <InfoSubTitle>Email</InfoSubTitle>
               <>
-                {/* <InputField */}
-                <Input
+                <InputField
+                // <Input
                   ref={register({ required: "Email is required",
                                   pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid Email" }
                                 })}
@@ -488,8 +499,8 @@ function MyProfileMainContents() {
               </>
               <InfoSubTitle>Phone Number</InfoSubTitle>
               <>
-                {/* <InputField */}
-                <Input
+                <InputField
+                // <Input
                   ref={register({ required: "Phone number is required",
                                   pattern: { value: /^[0-9]{3}[0-9]{3}[0-9]{4}$/i, message: "Enter a valid Phone Number" }
                                 })}
@@ -518,8 +529,8 @@ function MyProfileMainContents() {
                   />*/}
 
                   <InfoSubTitle>Password</InfoSubTitle>
-                {/* <InputField */}
-                <Input
+                <InputField
+                // <Input
                     ref={register}
                     type="password"
                     name="password"
@@ -535,8 +546,8 @@ function MyProfileMainContents() {
             <PersonalInfo>
               <InfoTitle>Personal Information</InfoTitle>
               <InfoSubTitle>Date of Birth</InfoSubTitle>
-                {/* <InputField */}
-                <Input
+                <InputField
+                // <Input
                 ref={register}
                 value={watch("birth")}
                 type="text"
@@ -547,8 +558,8 @@ function MyProfileMainContents() {
                 onChange={handleChange}
               />
               <InfoSubTitle>Country/Region</InfoSubTitle>
-                {/* <InputField */}
-                <Input
+                <InputField
+                // <Input
                 ref={register}
                 value={watch("country")}
                 type="text"
@@ -558,8 +569,8 @@ function MyProfileMainContents() {
                 onChange={handleChange}
               />
               <InfoSubTitle>State</InfoSubTitle>
-                {/* <InputField */}
-                <Input
+                <InputField
+                // <Input
                 ref={register}
                 value={watch("state")}
                 type="text"
@@ -569,8 +580,8 @@ function MyProfileMainContents() {
                 onChange={handleChange}
               />
               <InfoSubTitle>City</InfoSubTitle>
-                {/* <InputField */}
-                <Input
+              <InputField
+                // <Input
                 ref={register}
                 value={watch("city")}
                 type="text"
@@ -580,8 +591,8 @@ function MyProfileMainContents() {
                 onChange={handleChange}
               />
               <InfoSubTitle>Street</InfoSubTitle>
-                {/* <InputField */}
-                <Input
+              <InputField
+                // <Input
                 ref={register({ minLength: { value: 6, message: "Street should be atleast 6 characters" },
                                 maxLength: { value: 30, message: "Company name should be less than 30 characters"}
                               })}
