@@ -13,6 +13,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import EditProjects from "../components/EditProjects";
+import { trimText } from "../components/Utils";
 
 const DELETE_PROJECT = gql`
   mutation deleteProject($projectId: Int!) {
@@ -1208,8 +1209,8 @@ function MyProjectMainContents() {
                     <Link to={`/myProject/${teamName}/${projects?.id}`}>
                       <Tr key={projects.id}>
                         <Td className="num">{projects.id}</Td>
-                        <Td className="pName">{projects.projectName}</Td>
-                        <Td className="pDesc">{projects.description}</Td>
+                        <Td className="pName">{trimText(projects.projectName, 35)}</Td>
+                        <Td className="pDesc">{trimText(projects.description, 35)}</Td>
                         <Td className="pStatus">{projects.projectStatus}</Td>
                         <Td className="pSecurity">{projects.securityLevel}</Td>
                         <Td

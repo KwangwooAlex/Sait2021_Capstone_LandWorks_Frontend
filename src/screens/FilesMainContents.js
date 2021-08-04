@@ -9,7 +9,7 @@ import Input from "../components/auth/Input";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFileExcel,
@@ -20,6 +20,7 @@ import {
 import {
   faFile,
 } from "@fortawesome/free-regular-svg-icons";
+import { trimText } from "../components/Utils";
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -646,7 +647,7 @@ function FilesMainContents() {
           <Link to={`/myProject/${teamName}`}>{teamName}</Link>
         </TeamName>
         <LETTERS className="path">
-          <DoubleArrowIcon />
+          <ArrowRightIcon />
         </LETTERS>
         <ProjectPath>
           <Link to={`/myProject/${teamName}/${projectId}`}>
@@ -811,7 +812,7 @@ function FilesMainContents() {
                 
                 </Td>
                 <Td className="fName">
-                  {file.fileName}
+                  {trimText(file.fileName, 35)}
                   {/* {isEditMode ? (
                       <EditFileName
                         // ref={register}

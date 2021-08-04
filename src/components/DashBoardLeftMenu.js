@@ -130,7 +130,7 @@ function DashBoardLeftMenu() {
           <ICON>
             <FontAwesomeIcon icon={faVideo} size="lg" />
           </ICON>
-          <Letter>Video Chat</Letter>
+          <Letter>VIDEO CHAT</Letter>
         </MyTeam>
       </Link>
       {/* </ButtonSection> */}

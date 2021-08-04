@@ -216,7 +216,7 @@ function DashBoardHeader() {
               <CompanyInfoCard>
                 <CompanyInfo>
                   <p>Company Email : landworkinfo@gmail.com</p>
-                  <p>Comapny number: 1-403-660-1720</p>
+                  <p>Company number: 1-403-660-1720</p>
                   <p>Business Hours: Mon-Fri 9AM - 5PM</p>
 
                   <CompanyLocation>

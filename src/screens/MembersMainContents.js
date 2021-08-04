@@ -16,6 +16,7 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import PhoneIcon from '@material-ui/icons/Phone';
+import { trimText } from "../components/Utils";
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -357,10 +358,10 @@ const Th = styled.th`
     width: 7%;
   }
   &.mName {
-    width: 30%;
+    width: 28%;
   }
   &.mTeam {
-    width: 22%;
+    width: 20%;
   }
   &.mMail {
     width: 30%;
@@ -381,10 +382,10 @@ const Td = styled.td`
     justify-content: center;
   }
   &.mName {
-    width: 30%;
+    width: 28%;
   }
   &.mTeam {
-    width: 22%;
+    width: 20%;
   }
   &.mMail {
     width: 30%;
@@ -401,6 +402,10 @@ const SummaryLabel = styled.label`
   width: 100%;
   &.dateLabel {
     width: 200px;
+  }
+  &.editLabel {
+  display: flex;
+  align-items: center;
   }
 `;
 
@@ -1254,9 +1259,9 @@ function MembersMainContents() {
                                 <Td className="mAvatar">
                                   <Avatar src={user?.avatar} />
                                 </Td>
-                                <Td className="mName">{user?.username} </Td>
+                                <Td className="mName">{trimText(user?.username, 20)} </Td>
                                 <Td className="mTeam">{user?.phoneNumber}</Td>
-                                <Td className="mMail">{user?.email} </Td>
+                                <Td className="mMail">{trimText(user?.email, 20)} </Td>
                                 <Td className="mBtn">
                                   {selectedMember?.filter(
                                     (selectedUser) =>
@@ -1321,15 +1326,15 @@ function MembersMainContents() {
                               <Td className="mAvatar">
                                 <Avatar src={user?.avatar} />
                               </Td>
-                              <Td className="mName">{user.username} </Td>
+                              <Td className="mName">{trimText(user.username, 30)} </Td>
                               <Td className="mTeam">{user.phoneNumber}</Td>
-                              <Td className="mMail">{user.email} </Td>
+                              <Td className="mMail">{trimText(user.email,20)} </Td>
                               <Td className="mBtn">
-                                <PlusBtn>
+                                <MinusBtn>
                                   <RemoveIcon
                                     onClick={() => removeMemberFunction(user)}
                                   />
-                                </PlusBtn>
+                                </MinusBtn>
                               </Td>
                             </Tr>
                           ))}
@@ -1370,7 +1375,7 @@ function MembersMainContents() {
           <ModalBody>
             <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
               <ModalInfo>
-                <SummaryLabel>
+                <SummaryLabel className="editLabel">
                   Project Status:
                   <InputResult>
                     <SelectStatus
@@ -1440,7 +1445,7 @@ function MembersMainContents() {
                       onClick={() => handleMemberModal(member.id)} 
                     />
                 </ListTd>
-                <ListTd className="lName">{member.username}</ListTd>
+                <ListTd className="lName">{trimText(member.username, 30)}</ListTd>
                 <ListTd className="lRole">
                   {teamData !== undefined &&
                   teamData?.seeTeam?.role?.filter(
@@ -1470,7 +1475,7 @@ function MembersMainContents() {
                     <> Project Manager </>
                   )} */}
                 </ListTd>
-                <ListTd className="lMail">{member.email}</ListTd>
+                <ListTd className="lMail">{trimText(member.email, 30)}</ListTd>
                 {/* {teamData?.seeTeam?.role?.filter(
                   (role) => role.userId === member.id
                 ).length > 0 ? (

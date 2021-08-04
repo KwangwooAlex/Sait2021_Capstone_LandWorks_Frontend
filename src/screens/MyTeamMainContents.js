@@ -75,6 +75,11 @@ const SEE_TEAM_QUERY = gql`
         email
         avatar
       }
+      role {
+        roleName
+        userId
+        teamId
+      }
     }
   }
 `;
@@ -758,7 +763,22 @@ function MyTeamMainContents() {
                             <Avatar src={member.avatar} />
                           </ListTd>
                           <ListTd className="lName">{member.username}</ListTd>
-                          <ListTd className="lRole">Project Manager</ListTd>
+                          <ListTd className="lRole" key={member.id}>
+                            {teamData !== undefined &&
+                            teamData?.seeTeam?.role?.filter(
+                              (role) => role.userId === member.id
+                            ).length > 0 ? (
+                              <>
+                                {
+                                  teamData.seeTeam.role.filter(
+                                    (role) => role.userId === member.id
+                                  )[0].roleName
+                                }
+                              </>
+                            ) : (
+                              "Guest"
+                            )}
+                          </ListTd>
                         </ListTr>
                       ))}
                     </ListTbody>

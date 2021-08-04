@@ -5,7 +5,7 @@ import { gql, useQuery } from "@apollo/client";
 import Chart from "../asset/chart.PNG";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFileExcel,
@@ -16,6 +16,7 @@ import {
 import {
   faFile,
 } from "@fortawesome/free-regular-svg-icons";
+import { trimText } from "../components/Utils";
 
 const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -388,7 +389,7 @@ const LETTERS = styled.h4`
   font-weight: 600;
   font-size: 20px;
   margin-left: 15px;
-  &.path { color: gray;  }
+  &.path { color: gray; }
 `;
 
 const ProjectPath = styled.div`
@@ -466,7 +467,9 @@ function OverviewMainContents() {
         <TeamName>
           <Link to={`/myProject/${teamName}`}>{teamName}</Link>
         </TeamName>
-        <LETTERS className="path"><DoubleArrowIcon /></LETTERS>
+        <LETTERS className="path">
+          <ArrowRightIcon />
+        </LETTERS>
         {/* 수정해야함 */}
         <ProjectPath>
           <Link to={`/myProject/${teamName}/${projectId}`}>
@@ -544,7 +547,7 @@ function OverviewMainContents() {
                       <ListTd className="lAvatar">
                         <Avatar src={member.avatar} />
                       </ListTd>
-                      <ListTd className="lName">{member.username}</ListTd>
+                      <ListTd className="lName">{trimText(member.username, 15)}</ListTd>
                       <ListTd className="lRole">
                       {teamData !== undefined &&
                         teamData?.seeTeam?.role?.filter(
@@ -644,7 +647,7 @@ function OverviewMainContents() {
                         />
                       ) }
                       </ListTd>
-                      <ListTd className="lName">{file.fileName}</ListTd>
+                      <ListTd className="lName">{trimText(file.fileName, 20)}</ListTd>
                       <ListTd className="lRole">{file.createdAt}</ListTd>
                     </ListTr>
                   ))}
