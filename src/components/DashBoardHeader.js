@@ -50,7 +50,11 @@ const Avatar = styled.img`
   height: 30px;
   cursor: pointer;
   border-radius: 50%;
-  border: 0.1px solid lightgray; 
+  border: 0.1px solid lightgray;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
   /* box-shadow: 0px 1px 3px white; */
 `;
 
@@ -58,12 +62,20 @@ const QuestionMark = styled.img`
   width: 30px;
   height: 30px;
   cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 const Logout = styled.img`
   width: 30px;
   height: 30px;
   cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 const LeftMenu = styled.div`

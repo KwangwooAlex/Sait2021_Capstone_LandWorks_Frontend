@@ -98,6 +98,9 @@ const EditBtn = styled.button`
   box-shadow: 0px 2px 4px gray;
   cursor: pointer;
   margin-top: 25px;
+  &:hover {
+    background: #012f52;
+  }
 `;
 
 const InfoSection = styled.div`
@@ -111,7 +114,6 @@ const InfoSection = styled.div`
 const InputContainer = styled.div`
   flex: 0.7;
   display: flex;
-
 `;
 
 const AccountInfo = styled.div`
@@ -129,7 +131,7 @@ const InfoTitle = styled.h2`
   font-weight: 600;
   color: white;
   text-align: center;
-  background-color: #11569A;
+  background-color: #11569a;
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 5px 5px lightgray;
@@ -143,7 +145,7 @@ const InputPart = styled.div`
 `;
 
 const Filed = styled.fieldset`
-  border: 1px solid #11569A;
+  border: 1px solid #11569a;
   /* margin-bottom: -5px; */
   margin-top: 25px;
   /* padding-left: 15px; */
@@ -156,17 +158,16 @@ const InfoSubTitle = styled.legend`
   margin-bottom: -50px;
   padding: 5px;
   font-size: 12px;
-  color: #11569A;
+  color: #11569a;
   margin-left: 15px;
   /* width: 90%; */
 `;
 
-const InputField =  styled(Input)`
+const InputField = styled(Input)`
   margin-top: 10px;
   border-radius: 10px;
   padding-left: 20px;
-  border: 1px solid
-    ${(props) => (props.hasError ? "tomato" : "gray")};
+  border: 1px solid ${(props) => (props.hasError ? "tomato" : "gray")};
   border: none;
   &:focus {
     background-color: rgba(165, 215, 240, 0.2);
@@ -211,9 +212,7 @@ const PhotoInfo = styled.div`
   margin-right: 15px;
 `;
 
-const UploadSection = styled.div`
-
-`;
+const UploadSection = styled.div``;
 
 const ImgTitle = styled.h1`
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -320,21 +319,23 @@ const SaveEditImg = styled.button`
   cursor: pointer;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
+  &:hover {
+    background: #012f52;
+  }
 `;
-
 
 function getCurrentDate() {
   var today = new Date();
   var dd = today.getDate();
-  var mm = today.getMonth() + 1; // January is 0 
+  var mm = today.getMonth() + 1; // January is 0
   var yyyy = today.getFullYear();
   if (dd < 10) {
-        dd = '0' + dd
-    } 
+    dd = "0" + dd;
+  }
   if (mm < 10) {
-        mm = '0' + mm
-    } 
-  today = yyyy + '-' + mm + '-' + dd;
+    mm = "0" + mm;
+  }
+  today = yyyy + "-" + mm + "-" + dd;
   return today;
 }
 
@@ -495,99 +496,129 @@ function MyProfileMainContents() {
         <InfoSection>
           <InputContainer>
             <AccountInfo>
-            <InputPart>
-              <InfoTitle>Account Information</InfoTitle>
-            </InputPart>
+              <InputPart>
+                <InfoTitle>Account Information</InfoTitle>
+              </InputPart>
 
               <InputPart>
-              
-              <Filed>
-              <InfoSubTitle>User Name</InfoSubTitle>
-              <>
-              <InputField
-                // <Input
-                  ref={register({ required: "Username is required",
-                                  minLength: { value: 2, message: "Username should be atleast 2 characters" },
-                                  maxLength: { value: 30, message: "Username should be less than 30 characters"}
-                                })}
-                  type="text"
-                  name="username"
-                  value={watch("username")}
-                  placeholder={userData?.me?.username}
-                  disabled={disabled}
-                  onChange={handleChange}
-                  hasError={Boolean(errors?.username?.message)}
-                />
-                {/* <FormError message={errors?.username?.message} /> */}
-              </>
-              </Filed>
-              <ErrorMsg><FormError message={errors?.username?.message} /></ErrorMsg>
+                <Filed>
+                  <InfoSubTitle>User Name</InfoSubTitle>
+                  <>
+                    <InputField
+                      // <Input
+                      ref={register({
+                        required: "Username is required",
+                        minLength: {
+                          value: 2,
+                          message: "Username should be atleast 2 characters",
+                        },
+                        maxLength: {
+                          value: 30,
+                          message: "Username should be less than 30 characters",
+                        },
+                      })}
+                      type="text"
+                      name="username"
+                      value={watch("username")}
+                      placeholder={userData?.me?.username}
+                      disabled={disabled}
+                      onChange={handleChange}
+                      hasError={Boolean(errors?.username?.message)}
+                    />
+                    {/* <FormError message={errors?.username?.message} /> */}
+                  </>
+                </Filed>
+                <ErrorMsg>
+                  <FormError message={errors?.username?.message} />
+                </ErrorMsg>
 
-              <Filed>
-              <InfoSubTitle>Company Name</InfoSubTitle>
-              <>
-                <InputField
-                // <Input
-                  ref={register({ required: "Company name is required",
-                                  minLength: { value: 2, message: "Company name should be atleast 2 characters" },
-                                  maxLength: { value: 50, message: "Company name should be less than 50 characters"}
-                                })}
-                  type="text"
-                  name="companyName"
-                  value={watch("companyName")}
-                  placeholder={userData?.me?.companyName}
-                  disabled={disabled}
-                  onChange={handleChange}
-                  hasError={Boolean(errors?.companyName?.message)}
-                />
-              </>
-              </Filed>
-              <ErrorMsg><FormError message={errors?.companyName?.message} /></ErrorMsg>
-              <Filed>
-              <InfoSubTitle>Email</InfoSubTitle>
-              <>
-                <InputField
-                // <Input
-                  ref={register({ required: "Email is required",
-                                  pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Enter a valid Email" }
-                                })}
-                  type="email"
-                  name="email"
-                  value={watch("email")}
-                  placeholder={userData?.me?.email}
-                  disabled={disabled}
-                  onChange={handleChange}
-                  hasE
-                  hasError={Boolean(errors?.email?.message)}
-                />
-              </>
-              </Filed>
-              <ErrorMsg><FormError message={errors?.email?.message} /></ErrorMsg>
-              <Filed>
-              <InfoSubTitle>Phone Number</InfoSubTitle>
-              <>
-                <InputField
-                // <Input
-                  ref={register({ required: "Phone number is required",
-                                  pattern: { value: /^[0-9]{3}[0-9]{3}[0-9]{4}$/i, message: "Enter a valid Phone Number" }
-                                })}
-                  type="number"
-                  name="phoneNumber"
-                  value={watch("phoneNumber")}
-                  placeholder={userData?.me?.phoneNumber}
-                  disabled={disabled}
-                  onChange={handleChange}
-                  hasError={Boolean(errors?.phoneNumber?.message)}
-                />
-              </>              
-              </Filed>
-              <ErrorMsg><FormError message={errors?.phoneNumber?.message} /></ErrorMsg>
+                <Filed>
+                  <InfoSubTitle>Company Name</InfoSubTitle>
+                  <>
+                    <InputField
+                      // <Input
+                      ref={register({
+                        required: "Company name is required",
+                        minLength: {
+                          value: 2,
+                          message:
+                            "Company name should be atleast 2 characters",
+                        },
+                        maxLength: {
+                          value: 50,
+                          message:
+                            "Company name should be less than 50 characters",
+                        },
+                      })}
+                      type="text"
+                      name="companyName"
+                      value={watch("companyName")}
+                      placeholder={userData?.me?.companyName}
+                      disabled={disabled}
+                      onChange={handleChange}
+                      hasError={Boolean(errors?.companyName?.message)}
+                    />
+                  </>
+                </Filed>
+                <ErrorMsg>
+                  <FormError message={errors?.companyName?.message} />
+                </ErrorMsg>
+                <Filed>
+                  <InfoSubTitle>Email</InfoSubTitle>
+                  <>
+                    <InputField
+                      // <Input
+                      ref={register({
+                        required: "Email is required",
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: "Enter a valid Email",
+                        },
+                      })}
+                      type="email"
+                      name="email"
+                      value={watch("email")}
+                      placeholder={userData?.me?.email}
+                      disabled={disabled}
+                      onChange={handleChange}
+                      hasE
+                      hasError={Boolean(errors?.email?.message)}
+                    />
+                  </>
+                </Filed>
+                <ErrorMsg>
+                  <FormError message={errors?.email?.message} />
+                </ErrorMsg>
+                <Filed>
+                  <InfoSubTitle>Phone Number</InfoSubTitle>
+                  <>
+                    <InputField
+                      // <Input
+                      ref={register({
+                        required: "Phone number is required",
+                        pattern: {
+                          value: /^[0-9]{3}[0-9]{3}[0-9]{4}$/i,
+                          message: "Enter a valid Phone Number",
+                        },
+                      })}
+                      type="number"
+                      name="phoneNumber"
+                      value={watch("phoneNumber")}
+                      placeholder={userData?.me?.phoneNumber}
+                      disabled={disabled}
+                      onChange={handleChange}
+                      hasError={Boolean(errors?.phoneNumber?.message)}
+                    />
+                  </>
+                </Filed>
+                <ErrorMsg>
+                  <FormError message={errors?.phoneNumber?.message} />
+                </ErrorMsg>
 
-              {activeConfirmPassword && (
-              <Filed>
-
-                <>
-                  {/* <InfoSubTitle>Password</InfoSubTitle>
+                {activeConfirmPassword && (
+                  <Filed>
+                    <>
+                      {/* <InfoSubTitle>Password</InfoSubTitle>
                   <Input
                     ref={register}
                     type="password"
@@ -598,98 +629,105 @@ function MyProfileMainContents() {
                     onChange={handleChange} 
                   />*/}
 
-                  <InfoSubTitle>Password</InfoSubTitle>
-                <InputField
-                // <Input
-                    ref={register}
-                    type="password"
-                    name="password"
-                    value={watch("password")}
-                    placeholder={userData?.me?.password}
-                    disabled={disabled}
-                    onChange={handleChange}
-                  />
-                </>
-              </Filed>
-
-              )}
+                      <InfoSubTitle>Password</InfoSubTitle>
+                      <InputField
+                        // <Input
+                        ref={register}
+                        type="password"
+                        name="password"
+                        value={watch("password")}
+                        placeholder={userData?.me?.password}
+                        disabled={disabled}
+                        onChange={handleChange}
+                      />
+                    </>
+                  </Filed>
+                )}
               </InputPart>
             </AccountInfo>
 
             <PersonalInfo>
-            <InputPart>
-              <InfoTitle>Personal Information</InfoTitle>
-            </InputPart>
               <InputPart>
-              <Filed>
-              <InfoSubTitle>Date of Birth</InfoSubTitle>
-                <InputField
-                // <Input
-                ref={register}
-                value={watch("birth")}
-                type="text"
-                name="birth"
-                placeholder={userData?.me?.birth}
-                // max={getCurrentDate()}
-                disabled={disabled}
-                onChange={handleChange}
-              />
-              </Filed>
-              <Filed>
-              <InfoSubTitle>Country/Region</InfoSubTitle>
-                <InputField
-                // <Input
-                ref={register}
-                value={watch("country")}
-                type="text"
-                name="country"
-                placeholder={userData?.me?.country}
-                disabled={disabled}
-                onChange={handleChange}
-              />
-              </Filed>
-              <Filed>
-              <InfoSubTitle>State</InfoSubTitle>
-                <InputField
-                // <Input
-                ref={register}
-                value={watch("state")}
-                type="text"
-                name="state"
-                placeholder={userData?.me?.state}
-                disabled={disabled}
-                onChange={handleChange}
-              />
-              </Filed>
-              <Filed>
-              <InfoSubTitle>City</InfoSubTitle>
-              <InputField
-                // <Input
-                ref={register}
-                value={watch("city")}
-                type="text"
-                name="city"
-                placeholder={userData?.me?.city}
-                disabled={disabled}
-                onChange={handleChange}
-              />
-              </Filed>
-              <Filed>
-              <InfoSubTitle>Street</InfoSubTitle>
-              <InputField
-                // <Input
-                ref={register({ minLength: { value: 6, message: "Street should be atleast 6 characters" },
-                                maxLength: { value: 30, message: "Company name should be less than 30 characters"}
-                              })}
-                value={watch("Street")}
-                type="text"
-                name="Street"
-                placeholder={userData?.me?.Street}
-                disabled={disabled}
-                onChange={handleChange}
-                hasError={Boolean(errors?.Street?.message)}
-              />
-              </Filed>
+                <InfoTitle>Personal Information</InfoTitle>
+              </InputPart>
+              <InputPart>
+                <Filed>
+                  <InfoSubTitle>Date of Birth</InfoSubTitle>
+                  <InputField
+                    // <Input
+                    ref={register}
+                    value={watch("birth")}
+                    type="text"
+                    name="birth"
+                    placeholder={userData?.me?.birth}
+                    // max={getCurrentDate()}
+                    disabled={disabled}
+                    onChange={handleChange}
+                  />
+                </Filed>
+                <Filed>
+                  <InfoSubTitle>Country/Region</InfoSubTitle>
+                  <InputField
+                    // <Input
+                    ref={register}
+                    value={watch("country")}
+                    type="text"
+                    name="country"
+                    placeholder={userData?.me?.country}
+                    disabled={disabled}
+                    onChange={handleChange}
+                  />
+                </Filed>
+                <Filed>
+                  <InfoSubTitle>State</InfoSubTitle>
+                  <InputField
+                    // <Input
+                    ref={register}
+                    value={watch("state")}
+                    type="text"
+                    name="state"
+                    placeholder={userData?.me?.state}
+                    disabled={disabled}
+                    onChange={handleChange}
+                  />
+                </Filed>
+                <Filed>
+                  <InfoSubTitle>City</InfoSubTitle>
+                  <InputField
+                    // <Input
+                    ref={register}
+                    value={watch("city")}
+                    type="text"
+                    name="city"
+                    placeholder={userData?.me?.city}
+                    disabled={disabled}
+                    onChange={handleChange}
+                  />
+                </Filed>
+                <Filed>
+                  <InfoSubTitle>Street</InfoSubTitle>
+                  <InputField
+                    // <Input
+                    ref={register({
+                      minLength: {
+                        value: 6,
+                        message: "Street should be atleast 6 characters",
+                      },
+                      maxLength: {
+                        value: 30,
+                        message:
+                          "Company name should be less than 30 characters",
+                      },
+                    })}
+                    value={watch("Street")}
+                    type="text"
+                    name="Street"
+                    placeholder={userData?.me?.Street}
+                    disabled={disabled}
+                    onChange={handleChange}
+                    hasError={Boolean(errors?.Street?.message)}
+                  />
+                </Filed>
               </InputPart>
             </PersonalInfo>
           </InputContainer>
@@ -732,7 +770,10 @@ function MyProfileMainContents() {
                 </UploadSection>
                 <ShowImg>
                   {avatar === undefined ? (
-                    <AvatarImg src={userData?.me?.avatar} className="modalAvatar" />
+                    <AvatarImg
+                      src={userData?.me?.avatar}
+                      className="modalAvatar"
+                    />
                   ) : (
                     <AvatarImg src={avatarUrl} className="modalAvatar" />
                   )}

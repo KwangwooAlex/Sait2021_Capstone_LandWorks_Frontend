@@ -140,6 +140,10 @@ const FirstBox20 = styled.div`
     color: white;
     /* opacity: 90%; */
   }
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.02);
+  }
 `;
 
 const TotalNum = styled.div`
@@ -169,6 +173,10 @@ const TotalNum = styled.div`
 const CalDiv = styled.div`
   width: 100%;
   height: 100%;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.01);
+  }
   /* margin-right: 10px; */
 `;
 
@@ -204,12 +212,20 @@ const ChartContainer = styled.div`
 const ChartDiv = styled.div`
   width: 50%;
   height: 100%;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.01);
+  }
 `;
 
 const ChartDivBar = styled.div`
   width: 50%;
   height: 100%;
   margin-right: 20px;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.01);
+  }
 `;
 
 const ChartBox20 = styled.div`
@@ -264,6 +280,10 @@ const SecondBox30 = styled.div`
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
   margin-right: 10px;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.01);
+  }
 `;
 
 const ThirdBox60 = styled.div`
@@ -273,6 +293,10 @@ const ThirdBox60 = styled.div`
   box-shadow: 0px 3px 8px gray;
   margin-left: 10px;
   margin-top: 5px;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.01);
+  }
 `;
 
 const TableContainerTop = styled.table`

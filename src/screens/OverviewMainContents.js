@@ -5,7 +5,7 @@ import { gql, useQuery } from "@apollo/client";
 import Chart from "../asset/chart.PNG";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFileExcel,
@@ -13,9 +13,7 @@ import {
   faFilePowerpoint,
   faFilePdf,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faFile,
-} from "@fortawesome/free-regular-svg-icons";
+import { faFile } from "@fortawesome/free-regular-svg-icons";
 import { trimText } from "../components/Utils";
 
 const SEE_ALL_MY_TEAM_QUERY = gql`
@@ -194,6 +192,10 @@ const SecondLine = styled.div`
   width: 40%;
   height: 100%;
   display: flex;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.01);
+  }
   /* justify-content: space-between; */
 `;
 
@@ -202,6 +204,10 @@ const ThirdLine = styled.div`
   width: 40%;
   height: 100%;
   display: flex;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.01);
+  }
   /* justify-content: space-between; */
 `;
 
@@ -228,13 +234,17 @@ const FirstBox20 = styled.div`
   font-weight: 600;
   color: white;
   font-size: 15px;
-  &.startBox{ 
-    background-color: #11569A; 
-    color: white; 
+  &.startBox {
+    background-color: #11569a;
+    color: white;
   }
-  &.endBox{ 
-    border: 2px solid #11569A;
-    color: #11569A;
+  &.endBox {
+    border: 2px solid #11569a;
+    color: #11569a;
+  }
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.01);
   }
 `;
 
@@ -245,14 +255,20 @@ const SmallDate = styled.div`
 const DatePart = styled.div`
   margin-right: 30px;
   font-size: 20px;
-  &.start {  }
-  &.end {  }
+  &.start {
+  }
+  &.end {
+  }
 `;
 
 const CalDiv = styled.div`
   width: 100%;
   height: 63%;
   margin-top: 10%;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.01);
+  }
   /* margin-top: 25px; */
 `;
 
@@ -311,7 +327,7 @@ const TableDiv = styled.div`
   overflow-y: overlay;
   height: 75%;
   width: 95%;
-  padding:0;
+  padding: 0;
   margin: 0 auto;
   /* margin: auto; */
 `;
@@ -389,7 +405,9 @@ const LETTERS = styled.h4`
   font-weight: 600;
   font-size: 20px;
   margin-left: 15px;
-  &.path { color: gray; }
+  &.path {
+    color: gray;
+  }
 `;
 
 const ProjectPath = styled.div`
@@ -508,7 +526,7 @@ function OverviewMainContents() {
                     {`${format(sDate, "yyyy-MM-dd")?.toString()}`}
                   </DatePart>
                 </FirstBox20>
-                <FirstBox20  className="endBox">
+                <FirstBox20 className="endBox">
                   <SmallDate>End Date: </SmallDate>
                   <DatePart className="end">
                     {`${format(eDate, "yyyy-MM-dd")?.toString()}`}
@@ -537,34 +555,36 @@ function OverviewMainContents() {
                     <ListTh className="lRole">Role</ListTh>
                   </ListTr>
                 </ListThead>
-                </ListTableContainerTop>
+              </ListTableContainerTop>
 
               <TableDiv>
                 <ListTableContainer>
-                <ListTbody>
-                  {teamData?.seeTeam?.teamMember?.map((member) => (
-                    <ListTr key={member.id}>
-                      <ListTd className="lAvatar">
-                        <Avatar src={member.avatar} />
-                      </ListTd>
-                      <ListTd className="lName">{trimText(member.username, 15)}</ListTd>
-                      <ListTd className="lRole">
-                      {teamData !== undefined &&
-                        teamData?.seeTeam?.role?.filter(
-                          (role) => role.userId === member.id
-                        ).length > 0 ? (
-                          <>
-                            {
-                              teamData.seeTeam.role.filter(
-                                (role) => role.userId === member.id
-                              )[0].roleName
-                            }
-                          </>
-                        ) : (
-                          "Guest"
-                      )}                      
-                      </ListTd>
-                    </ListTr>
+                  <ListTbody>
+                    {teamData?.seeTeam?.teamMember?.map((member) => (
+                      <ListTr key={member.id}>
+                        <ListTd className="lAvatar">
+                          <Avatar src={member.avatar} />
+                        </ListTd>
+                        <ListTd className="lName">
+                          {trimText(member.username, 15)}
+                        </ListTd>
+                        <ListTd className="lRole">
+                          {teamData !== undefined &&
+                          teamData?.seeTeam?.role?.filter(
+                            (role) => role.userId === member.id
+                          ).length > 0 ? (
+                            <>
+                              {
+                                teamData.seeTeam.role.filter(
+                                  (role) => role.userId === member.id
+                                )[0].roleName
+                              }
+                            </>
+                          ) : (
+                            "Guest"
+                          )}
+                        </ListTd>
+                      </ListTr>
                     ))}
                   </ListTbody>
                 </ListTableContainer>
@@ -575,8 +595,8 @@ function OverviewMainContents() {
 
         <ThirdLine>
           <ThirdBox60>
-          <Link to={`/myProject/${teamName}/${projectId}/files`}>
-            <LETTER> FILE LIST </LETTER>
+            <Link to={`/myProject/${teamName}/${projectId}/files`}>
+              <LETTER> FILE LIST </LETTER>
               <ListTableContainerTop className="sortable">
                 <ListThead>
                   <ListTr>
@@ -585,75 +605,82 @@ function OverviewMainContents() {
                     <ListTh className="lRole">Uploaded Date</ListTh>
                   </ListTr>
                 </ListThead>
-                </ListTableContainerTop>
+              </ListTableContainerTop>
 
-            <TableDiv>
+              <TableDiv>
                 <ListTableContainer>
-                <ListTbody>
-                  {seeFilesData?.seeFiles?.map((file) => (
-                    <ListTr key={file.id}>
-                      <ListTd className="lAvatar">
-                      {file.fileUrl.split(".")[
-                        file.fileUrl.split(".").length - 1
-                        ] === "pdf" ||
-                        file.fileUrl.split(".")[
-                          file.fileUrl.split(".").length - 1
-                        ] === "docx" ||
-                        file.fileUrl.split(".")[
-                          file.fileUrl.split(".").length - 1
-                        ] === "xlsx" ||
-                        file.fileUrl.split(".")[
-                          file.fileUrl.split(".").length - 1
-                        ] === "pptx" ? (<> {file.fileUrl.split(".")[
-                          file.fileUrl.split(".").length - 1
-                        ] === "pdf" && (
-                          <FontAwesomeIcon
-                            className="pdf"
-                            icon={faFilePdf}
-                            size="2x"
-                          />
-                        )}
-                        {file.fileUrl.split(".")[
-                          file.fileUrl.split(".").length - 1
-                        ] === "docx" && (
-                          <FontAwesomeIcon
-                            className="pdf"
-                            icon={faFileWord}
-                            size="2x"
-                          />
-                        )}
-                        {file.fileUrl.split(".")[
-                          file.fileUrl.split(".").length - 1
-                        ] === "xlsx" && (
-                          <FontAwesomeIcon
-                            className="pdf"
-                            icon={faFileExcel}
-                            size="2x"
-                          />
-                        )}
-                        {file.fileUrl.split(".")[
-                          file.fileUrl.split(".").length - 1
-                        ] === "pptx" && (
-                          <FontAwesomeIcon
-                            className="pdf"
-                            icon={faFilePowerpoint}
-                            size="2x"
-                          />
-                        )}</>):( 
-                        <FontAwesomeIcon
-                          className="pdf"
-                          icon={faFile}
-                          size="2x"
-                        />
-                      ) }
-                      </ListTd>
-                      <ListTd className="lName">{trimText(file.fileName, 20)}</ListTd>
-                      <ListTd className="lRole">{file.createdAt}</ListTd>
-                    </ListTr>
-                  ))}
-                </ListTbody>
-              </ListTableContainer>
-            </TableDiv>
+                  <ListTbody>
+                    {seeFilesData?.seeFiles?.map((file) => (
+                      <ListTr key={file.id}>
+                        <ListTd className="lAvatar">
+                          {file.fileUrl.split(".")[
+                            file.fileUrl.split(".").length - 1
+                          ] === "pdf" ||
+                          file.fileUrl.split(".")[
+                            file.fileUrl.split(".").length - 1
+                          ] === "docx" ||
+                          file.fileUrl.split(".")[
+                            file.fileUrl.split(".").length - 1
+                          ] === "xlsx" ||
+                          file.fileUrl.split(".")[
+                            file.fileUrl.split(".").length - 1
+                          ] === "pptx" ? (
+                            <>
+                              {" "}
+                              {file.fileUrl.split(".")[
+                                file.fileUrl.split(".").length - 1
+                              ] === "pdf" && (
+                                <FontAwesomeIcon
+                                  className="pdf"
+                                  icon={faFilePdf}
+                                  size="2x"
+                                />
+                              )}
+                              {file.fileUrl.split(".")[
+                                file.fileUrl.split(".").length - 1
+                              ] === "docx" && (
+                                <FontAwesomeIcon
+                                  className="pdf"
+                                  icon={faFileWord}
+                                  size="2x"
+                                />
+                              )}
+                              {file.fileUrl.split(".")[
+                                file.fileUrl.split(".").length - 1
+                              ] === "xlsx" && (
+                                <FontAwesomeIcon
+                                  className="pdf"
+                                  icon={faFileExcel}
+                                  size="2x"
+                                />
+                              )}
+                              {file.fileUrl.split(".")[
+                                file.fileUrl.split(".").length - 1
+                              ] === "pptx" && (
+                                <FontAwesomeIcon
+                                  className="pdf"
+                                  icon={faFilePowerpoint}
+                                  size="2x"
+                                />
+                              )}
+                            </>
+                          ) : (
+                            <FontAwesomeIcon
+                              className="pdf"
+                              icon={faFile}
+                              size="2x"
+                            />
+                          )}
+                        </ListTd>
+                        <ListTd className="lName">
+                          {trimText(file.fileName, 20)}
+                        </ListTd>
+                        <ListTd className="lRole">{file.createdAt}</ListTd>
+                      </ListTr>
+                    ))}
+                  </ListTbody>
+                </ListTableContainer>
+              </TableDiv>
             </Link>
           </ThirdBox60>
         </ThirdLine>

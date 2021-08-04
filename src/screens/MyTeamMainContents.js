@@ -194,6 +194,9 @@ const SaveTeam = styled.button`
   cursor: pointer;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
+  &:hover {
+    background: #012f52;
+  }
 `;
 
 // const SettingIcon = styled(SettingsIcon)`
