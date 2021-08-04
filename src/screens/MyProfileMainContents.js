@@ -146,11 +146,10 @@ const Filed = styled.fieldset`
   border: 1px solid #11569A;
   /* margin-bottom: -5px; */
   margin-top: 25px;
-  padding-left: 15px;
+  /* padding-left: 15px; */
   width: 90%;
   border-radius: 10px;
   box-shadow: 0px 2px 6px lightgray;
-
 `;
 
 const InfoSubTitle = styled.legend`
@@ -158,17 +157,20 @@ const InfoSubTitle = styled.legend`
   padding: 5px;
   font-size: 12px;
   color: #11569A;
+  margin-left: 15px;
   /* width: 90%; */
 `;
 
 const InputField =  styled(Input)`
   margin-top: 10px;
   border-radius: 10px;
-  /* padding-left: 15px; */
+  padding-left: 20px;
   border: 1px solid
     ${(props) => (props.hasError ? "tomato" : "gray")};
-
   border: none;
+  &:focus {
+    background-color: rgba(165, 215, 240, 0.2);
+  }
   /* border-bottom: 1px solid gray; */
   /* background-color: #f7f7f7; */
 `;

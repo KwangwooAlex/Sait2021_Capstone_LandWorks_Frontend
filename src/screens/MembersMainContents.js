@@ -233,7 +233,8 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "700px",
-    height: "720px",
+    height: "650px",
+    boxShadow: "0px 3px 8px gray",
   },
 };
 
@@ -248,6 +249,7 @@ const editCustomStyles = {
     transform: "translate(-50%, -50%)",
     width: "400px",
     height: "200px",
+    boxShadow: "0px 3px 8px gray",
     // backgroundColor: "red",
   },
 };
@@ -306,7 +308,7 @@ const SelectionLabel = styled.label`
 
 const TableBox = styled.div`
   /* margin-top: 10px; */
-  height: 200px;
+  height: 170px;
   width: 100%;
   overflow-y: overlay;
   /* background-color: red; */
@@ -326,7 +328,7 @@ const TableContainerTop = styled.table`
 
 const TableContainer = styled.table`
   border: 1px solid white;
-  height: 200px;
+  height: 170px;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
@@ -465,7 +467,7 @@ const NothingList = styled.div`
 
 const ModalBtn = styled.div`
   padding-top: 20px;
-  padding-bottom: 25px;
+  margin-bottom: 25px;
 `;
 
 const CancelModalBtn = styled.button`
