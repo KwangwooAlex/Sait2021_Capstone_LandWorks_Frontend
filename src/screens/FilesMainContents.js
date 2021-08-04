@@ -10,9 +10,6 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
-import ImageIcon from "@material-ui/icons/Image";
-import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFileExcel,
@@ -20,6 +17,9 @@ import {
   faFilePowerpoint,
   faFilePdf,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFile,
+} from "@fortawesome/free-regular-svg-icons";
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -802,7 +802,12 @@ function FilesMainContents() {
                         size="2x"
                       />
                     )}</>):( 
-                      <InsertDriveFileIcon />) }
+                      <FontAwesomeIcon
+                        className="pdf"
+                        icon={faFile}
+                        size="2x"
+                      />
+                    ) }
                 
                 </Td>
                 <Td className="fName">

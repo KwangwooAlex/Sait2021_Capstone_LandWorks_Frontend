@@ -50,6 +50,8 @@ const Avatar = styled.img`
   height: 30px;
   cursor: pointer;
   border-radius: 50%;
+  border: 0.1px solid lightgray; 
+  /* box-shadow: 0px 1px 3px white; */
 `;
 
 const QuestionMark = styled.img`
@@ -106,6 +108,7 @@ const ModalHeader = styled.div`
   color: white;
   font-size: 13px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 `;
 const CloseBtn = styled.button`
@@ -209,10 +212,6 @@ function DashBoardHeader() {
               <ModalInfoTop>
                 <CompanyName>Landwork Reasource Management Inc.</CompanyName>
               </ModalInfoTop>
-
-              {/* <CompanyPhoto>                           
-                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" width="100%" height="426px"></img>
-              </CompanyPhoto> */}
 
               <CompanyInfoCard>
                 <CompanyInfo>

@@ -6,6 +6,16 @@ import Chart from "../asset/chart.PNG";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFileExcel,
+  faFileWord,
+  faFilePowerpoint,
+  faFilePdf,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faFile,
+} from "@fortawesome/free-regular-svg-icons";
 
 const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -297,8 +307,8 @@ const ListTableContainerTop = styled.table`
 `;
 
 const TableDiv = styled.div`
-  overflow: overlay;
-  height: 90%;
+  overflow-y: overlay;
+  height: 75%;
   width: 95%;
   padding:0;
   margin: 0 auto;
@@ -319,6 +329,7 @@ const ListThead = styled.thead`
 `;
 // const file = [{id:"", projectName:""},{}]
 const ListTbody = styled.thead``;
+
 const ListTr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
@@ -335,9 +346,11 @@ const ListTh = styled.th`
   font-weight: 600;
   &.lAvatar {
     width: 8%;
+    display: flex;
+    justify-content: center;
   }
   &.lName {
-    width: 47%;
+    width: 45%;
   }
   &.lRole {
     width: 45%;
@@ -346,7 +359,7 @@ const ListTh = styled.th`
 
 const ListTd = styled.td`
   cursor: pointer;
-  padding: 10px;
+  padding: 10px 5px;
   margin: 0px 10px;
   width: 100%;
   text-align: left;
@@ -354,7 +367,7 @@ const ListTd = styled.td`
     width: 8%;
   }
   &.lName {
-    width: 47%;
+    width: 45%;
   }
   &.lRole {
     width: 45%;
@@ -577,11 +590,59 @@ function OverviewMainContents() {
                   {seeFilesData?.seeFiles?.map((file) => (
                     <ListTr key={file.id}>
                       <ListTd className="lAvatar">
-                        {
-                          file.fileUrl.split(".")[
-                            file.fileUrl.split(".").length - 1
-                          ]
-                        }
+                      {file.fileUrl.split(".")[
+                        file.fileUrl.split(".").length - 1
+                        ] === "pdf" ||
+                        file.fileUrl.split(".")[
+                          file.fileUrl.split(".").length - 1
+                        ] === "docx" ||
+                        file.fileUrl.split(".")[
+                          file.fileUrl.split(".").length - 1
+                        ] === "xlsx" ||
+                        file.fileUrl.split(".")[
+                          file.fileUrl.split(".").length - 1
+                        ] === "pptx" ? (<> {file.fileUrl.split(".")[
+                          file.fileUrl.split(".").length - 1
+                        ] === "pdf" && (
+                          <FontAwesomeIcon
+                            className="pdf"
+                            icon={faFilePdf}
+                            size="2x"
+                          />
+                        )}
+                        {file.fileUrl.split(".")[
+                          file.fileUrl.split(".").length - 1
+                        ] === "docx" && (
+                          <FontAwesomeIcon
+                            className="pdf"
+                            icon={faFileWord}
+                            size="2x"
+                          />
+                        )}
+                        {file.fileUrl.split(".")[
+                          file.fileUrl.split(".").length - 1
+                        ] === "xlsx" && (
+                          <FontAwesomeIcon
+                            className="pdf"
+                            icon={faFileExcel}
+                            size="2x"
+                          />
+                        )}
+                        {file.fileUrl.split(".")[
+                          file.fileUrl.split(".").length - 1
+                        ] === "pptx" && (
+                          <FontAwesomeIcon
+                            className="pdf"
+                            icon={faFilePowerpoint}
+                            size="2x"
+                          />
+                        )}</>):( 
+                        <FontAwesomeIcon
+                          className="pdf"
+                          icon={faFile}
+                          size="2x"
+                        />
+                      ) }
                       </ListTd>
                       <ListTd className="lName">{file.fileName}</ListTd>
                       <ListTd className="lRole">{file.createdAt}</ListTd>

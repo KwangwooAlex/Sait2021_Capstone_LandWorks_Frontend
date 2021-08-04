@@ -111,10 +111,11 @@ const InfoSection = styled.div`
 const InputContainer = styled.div`
   flex: 0.7;
   display: flex;
+
 `;
 
 const AccountInfo = styled.div`
-  margin-right: 50px;
+  margin-right: 30px;
   width: 100%;
 `;
 
@@ -132,13 +133,50 @@ const InfoTitle = styled.h2`
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 5px 5px lightgray;
+  width: 90%;
 `;
 
-const InfoSubTitle = styled.h5`
-  margin-bottom: -20px;
+const InputPart = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Filed = styled.fieldset`
+  border: 1px solid #11569A;
+  /* margin-bottom: -5px; */
   margin-top: 25px;
-  padding-left: 10px;
+  padding-left: 15px;
   width: 90%;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px lightgray;
+
+`;
+
+const InfoSubTitle = styled.legend`
+  margin-bottom: -50px;
+  padding: 5px;
+  font-size: 12px;
+  color: #11569A;
+  /* width: 90%; */
+`;
+
+const InputField =  styled(Input)`
+  margin-top: 10px;
+  border-radius: 10px;
+  /* padding-left: 15px; */
+  border: 1px solid
+    ${(props) => (props.hasError ? "tomato" : "gray")};
+
+  border: none;
+  /* border-bottom: 1px solid gray; */
+  /* background-color: #f7f7f7; */
+`;
+
+const ErrorMsg = styled.div`
+  margin-left: 15px;
+  margin-top: 10px;
+  margin-bottom: -10px;
 `;
 
 const ProfileImgEdit = styled.span`
@@ -161,18 +199,22 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     width: "500px",
     height: "310px",
+    boxShadow: "0px 3px 8px gray",
   },
 };
 
 const PhotoInfo = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-right: 15px;
 `;
 
-const UploadSection = styled.div``;
+const UploadSection = styled.div`
+
+`;
 
 const ImgTitle = styled.h1`
-  font-family: Source Han Sans KR;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin-top: 50px;
   text-align: left;
   font-weight: bold;
@@ -186,7 +228,7 @@ const ImgInput = styled.input`
 `;
 
 const UploadInput = styled.div`
-  margin-top: 20px;
+  margin-top: 30px;
   margin-left: 30px;
   /* display: inline-block; */
   padding: 6px 12px;
@@ -194,6 +236,7 @@ const UploadInput = styled.div`
   color: #004070;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 15px;
+  font-weight: 600;
 `;
 
 const UploadLabel = styled.label`
@@ -214,6 +257,11 @@ const ProfileImg = styled.div`
   margin-left: 40px;
 `;
 
+const ImgSection = styled.div`
+  /* display: flex;
+  flex-direction: column; */
+`;
+
 const AvatarImg = styled.img`
   margin-top: -30px;
   width: 200px;
@@ -221,6 +269,18 @@ const AvatarImg = styled.img`
   border-radius: 50%;
   border: 1px solid lightgray;
   box-shadow: 0px 3px 8px gray;
+  &.modalAvatar {
+    width: 150px;
+    height: 150px;
+    margin-top: -10px;
+    box-shadow: 2px 3px 8px gray;
+  }
+`;
+
+const AvatarName = styled.div`
+  font-weight: bold;
+  font-size: 20px;
+  /* margin-left: 40px; */
 `;
 
 const ShowImg = styled.div`
@@ -229,6 +289,7 @@ const ShowImg = styled.div`
 
 const PhotoBtn = styled.div`
   margin-top: 40px;
+  margin-right: 20px;
 `;
 
 const CancelEditImg = styled.button`
@@ -259,16 +320,6 @@ const SaveEditImg = styled.button`
   font-weight: bold;
 `;
 
-const InputField =  styled(Input)`
-  border-radius: 10px;
-  padding-left: 15px;
-  border: 1px solid
-    ${(props) => (props.hasError ? "tomato" : "gray")};
-  box-shadow: 0px 2px 5px lightgray;
-  /* border: none;
-  border-bottom: 1px solid gray;
-  background-color: #f7f7f7; */
-`;
 
 function getCurrentDate() {
   var today = new Date();
@@ -442,7 +493,13 @@ function MyProfileMainContents() {
         <InfoSection>
           <InputContainer>
             <AccountInfo>
+            <InputPart>
               <InfoTitle>Account Information</InfoTitle>
+            </InputPart>
+
+              <InputPart>
+              
+              <Filed>
               <InfoSubTitle>User Name</InfoSubTitle>
               <>
               <InputField
@@ -459,8 +516,12 @@ function MyProfileMainContents() {
                   onChange={handleChange}
                   hasError={Boolean(errors?.username?.message)}
                 />
-                <FormError message={errors?.username?.message} />
+                {/* <FormError message={errors?.username?.message} /> */}
               </>
+              </Filed>
+              <ErrorMsg><FormError message={errors?.username?.message} /></ErrorMsg>
+
+              <Filed>
               <InfoSubTitle>Company Name</InfoSubTitle>
               <>
                 <InputField
@@ -477,8 +538,10 @@ function MyProfileMainContents() {
                   onChange={handleChange}
                   hasError={Boolean(errors?.companyName?.message)}
                 />
-                <FormError message={errors?.companyName?.message} />
               </>
+              </Filed>
+              <ErrorMsg><FormError message={errors?.companyName?.message} /></ErrorMsg>
+              <Filed>
               <InfoSubTitle>Email</InfoSubTitle>
               <>
                 <InputField
@@ -495,8 +558,10 @@ function MyProfileMainContents() {
                   hasE
                   hasError={Boolean(errors?.email?.message)}
                 />
-                <FormError message={errors?.email?.message} />
               </>
+              </Filed>
+              <ErrorMsg><FormError message={errors?.email?.message} /></ErrorMsg>
+              <Filed>
               <InfoSubTitle>Phone Number</InfoSubTitle>
               <>
                 <InputField
@@ -512,10 +577,13 @@ function MyProfileMainContents() {
                   onChange={handleChange}
                   hasError={Boolean(errors?.phoneNumber?.message)}
                 />
-                <FormError message={errors?.phoneNumber?.message} />
-              </>
+              </>              
+              </Filed>
+              <ErrorMsg><FormError message={errors?.phoneNumber?.message} /></ErrorMsg>
 
               {activeConfirmPassword && (
+              <Filed>
+
                 <>
                   {/* <InfoSubTitle>Password</InfoSubTitle>
                   <Input
@@ -540,11 +608,18 @@ function MyProfileMainContents() {
                     onChange={handleChange}
                   />
                 </>
+              </Filed>
+
               )}
+              </InputPart>
             </AccountInfo>
 
             <PersonalInfo>
+            <InputPart>
               <InfoTitle>Personal Information</InfoTitle>
+            </InputPart>
+              <InputPart>
+              <Filed>
               <InfoSubTitle>Date of Birth</InfoSubTitle>
                 <InputField
                 // <Input
@@ -557,6 +632,8 @@ function MyProfileMainContents() {
                 disabled={disabled}
                 onChange={handleChange}
               />
+              </Filed>
+              <Filed>
               <InfoSubTitle>Country/Region</InfoSubTitle>
                 <InputField
                 // <Input
@@ -568,6 +645,8 @@ function MyProfileMainContents() {
                 disabled={disabled}
                 onChange={handleChange}
               />
+              </Filed>
+              <Filed>
               <InfoSubTitle>State</InfoSubTitle>
                 <InputField
                 // <Input
@@ -579,6 +658,8 @@ function MyProfileMainContents() {
                 disabled={disabled}
                 onChange={handleChange}
               />
+              </Filed>
+              <Filed>
               <InfoSubTitle>City</InfoSubTitle>
               <InputField
                 // <Input
@@ -590,6 +671,8 @@ function MyProfileMainContents() {
                 disabled={disabled}
                 onChange={handleChange}
               />
+              </Filed>
+              <Filed>
               <InfoSubTitle>Street</InfoSubTitle>
               <InputField
                 // <Input
@@ -604,16 +687,21 @@ function MyProfileMainContents() {
                 onChange={handleChange}
                 hasError={Boolean(errors?.Street?.message)}
               />
+              </Filed>
+              </InputPart>
             </PersonalInfo>
           </InputContainer>
 
           <ProfileImg>
-            <AvatarImg src={userData?.me?.avatar} />
-            {activeConfirmPassword && (
-              <ProfileImgEdit onClick={handleOpenModal}>
-                <EditIcon />{" "}
-              </ProfileImgEdit>
-            )}
+            <ImgSection>
+              <AvatarImg src={userData?.me?.avatar} />
+              {activeConfirmPassword && (
+                <ProfileImgEdit onClick={handleOpenModal}>
+                  <EditIcon />{" "}
+                </ProfileImgEdit>
+              )}
+              {/* <AvatarName>{userData?.me?.username}</AvatarName> */}
+            </ImgSection>
 
             <Modal isOpen={isModalOpen} style={customStyles}>
               <PhotoInfo>
@@ -642,9 +730,9 @@ function MyProfileMainContents() {
                 </UploadSection>
                 <ShowImg>
                   {avatar === undefined ? (
-                    <AvatarImg src={userData?.me?.avatar} />
+                    <AvatarImg src={userData?.me?.avatar} className="modalAvatar" />
                   ) : (
-                    <AvatarImg src={avatarUrl} />
+                    <AvatarImg src={avatarUrl} className="modalAvatar" />
                   )}
                 </ShowImg>
               </PhotoInfo>

@@ -56,10 +56,6 @@ const SearchProject = styled.div`
   padding: 0px;
 `;
 
-const RightSection = styled.div`
-  display: flex;
-`;
-
 const MainContents = styled.div``;
 
 const InputSearch = styled.input`
@@ -73,7 +69,7 @@ const InputSearch = styled.input`
 `;
 
 const TableContainerTop = styled.table`
-  margin-top: 10px;
+  margin-top: 25px;
   border: 1px solid lightgray;  
   border-bottom: none;
   height: 20px;
@@ -85,7 +81,7 @@ const TableContainerTop = styled.table`
 /* const = styled.div``; */
 const TableDiv = styled.div`
   overflow-y: overlay;
-  height: 55vh;
+  height: 60vh;
   width: 100%;
   border: 1px solid lightgray;
   border-top: none;

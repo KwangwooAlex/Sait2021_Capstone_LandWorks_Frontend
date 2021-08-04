@@ -183,6 +183,7 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     width: "600px",
     height: "530px",
+    boxShadow: "0px 3px 8px gray",
   },
 };
 
@@ -196,7 +197,8 @@ const summaryCustomStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "600px",
-    height: "440px",
+    height: "530px",
+    boxShadow: "0px 3px 8px gray",
   },
 };
 
@@ -211,6 +213,7 @@ const editCustomStyles = {
     transform: "translate(-50%, -50%)",
     width: "600px",
     height: "520px",
+    boxShadow: "0px 3px 8px gray",
   },
 };
 
@@ -222,29 +225,30 @@ const AllBtn = styled.div`
 
 const LeftBtn = styled.div``;
 
-const ModalInfo = styled.div``;
-
 const ModalHeader = styled.h4`
   margin: 0;
   padding: 10px;
   background: #004070;
   color: white;
   font-size: 13px;
+  position: sticky;
+  top:0;
 `;
 
 const ModalBody = styled.div`
-  margin: 30px 30px;
+  margin: 25px 30px;
+  overflow-y: overlay;
+`;
+
+const ModalInfo = styled.div`
 `;
 
 const ProjectLabel = styled.label`
   display: flex;
   /* flex-direction: column; */
+  align-items: center;
   margin-bottom: 15px;
   width: 100%;
-`;
-
-const ErrorSection = styled.div`
-  flex-direction: column;
 `;
 
 const InputText = styled.input`
@@ -254,6 +258,11 @@ const InputText = styled.input`
   margin-left: 20px;
   padding: 5px;
   width: 75%;
+`;
+
+const ErrorSection = styled.div`
+  /* margin-top: -10px; */
+  margin-left: 10px;
 `;
 
 const SelectStatus = styled(Select)`
@@ -276,7 +285,7 @@ const EndD = styled.div`
 `;
 
 const DatePickerForm = styled(DatePicker)`
-  height: 20px;
+  height: 15px;
   width: 150px;
   font-size: 15px;
   text-align: center;
@@ -291,16 +300,23 @@ const DesLabel = styled.label`
   display: flex;
   flex-direction: column;
   margin: 20px 0;
+  &.summayDesLabel{
+    margin-top: 25px;
+  }
 `;
 
 const Description = styled.textarea`
   padding: 10px;
   width: 100%;
   height: 100px;
+  /* margin-bottom: 10px; */
+  &.editDes {
+    margin-bottom: 15px;
+  }
 `;
 
 const ModalBtn = styled.div`
-  margin: 20px auto;
+  margin: 30px auto;
 `;
 
 const NextBtn = styled.button`
@@ -331,6 +347,13 @@ const CancelBtn = styled.button`
   font-weight: bold;
 `;
 
+const ModalSummaryHeader = styled.div`
+  margin-bottom: 25px;
+  border-bottom: 1px solid gray;
+  padding-bottom: 15px;
+  font-weight: bold;
+`;
+
 const SummaryLabel = styled.label`
   display: flex;
   margin-bottom: 20px;
@@ -344,14 +367,16 @@ const InputResult = styled.div`
   margin-left: 10px;
   font-weight: 600;
   width: 20%;
+  color: darkblue;
   &.desResult {
     margin-left: 0px;
     overflow: auto;
     height: 100px;
-    border: 1px dashed;
+    border: 1px dashed gray;
     width: 100%;
-    padding: 5px;
+    padding: 10px;
     margin-top: -10px;
+    margin-bottom: 40px;
   }
   &.dateResult {
     width: 50%;
@@ -872,8 +897,7 @@ function MyProjectMainContents() {
               <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
                 <ModalBody>
                   <ModalInfo>
-                    {/* <ErrorSection> */}
-                    <ProjectLabel>
+                    <ProjectLabel className="pNameLabel">
                       Project name:
                       <InputText
                         ref={register({ required: "Project Name is required" })}
@@ -885,8 +909,9 @@ function MyProjectMainContents() {
                         hasError={Boolean(errors?.projectName?.message)}
                       />
                     </ProjectLabel>
-                    <FormError message={errors?.projectName?.message} />
-                    {/* </ErrorSection> */}
+                    <ErrorSection>
+                      <FormError message={errors?.projectName?.message} />
+                    </ErrorSection>
 
                     <ProjectLabel>
                       Project Status:
@@ -911,7 +936,7 @@ function MyProjectMainContents() {
                         hasError={Boolean(errors?.projectType?.message)}
                       />
                     </ProjectLabel>
-                    <FormError message={errors?.projectType?.message} />
+                    {/* <FormError message={errors?.projectType?.message} /> */}
 
                     <ProcessDate>
                       <StartD>
@@ -937,6 +962,7 @@ function MyProjectMainContents() {
                             dateFormat="yy-MM-dd"
                             onChange={(date) => setEndDate(date)}
                             value={watch("endDate")}
+                            minDate={new Date(startDate)}
                           />
                         </ProjectLabel>
                       </EndD>
@@ -965,7 +991,9 @@ function MyProjectMainContents() {
                         placeholder="Let people know what this project is about..."
                         hasError={Boolean(errors?.description?.message)}
                       />
-                      <FormError message={errors?.description?.message} />
+                      <ErrorSection>
+                        <FormError message={errors?.description?.message} />
+                      </ErrorSection>
                     </>
                   </ModalInfo>
                   <ModalBtn>
@@ -980,6 +1008,7 @@ function MyProjectMainContents() {
               <ModalHeader>NEW PROJECT</ModalHeader>
 
               <ModalBody>
+                <ModalSummaryHeader>SUMMARY</ModalSummaryHeader>
                 <ModalInfo>
                   <SummaryLabel>
                     Project name:
@@ -1023,7 +1052,7 @@ function MyProjectMainContents() {
                     <InputResult>{security}</InputResult>
                   </SummaryLabel>
 
-                  <DesLabel>Description: </DesLabel>
+                  <DesLabel className="summayDesLabel">Description: </DesLabel>
                   <InputResult className="desResult">
                     {submitData?.description}
                   </InputResult>
@@ -1041,7 +1070,7 @@ function MyProjectMainContents() {
             <ModalHeader>Edit PROJECT</ModalHeader>
             <ModalBody>
               <ModalInfo>
-                <SummaryLabel>
+                <ProjectLabel>
                   Project name:
                   <InputResult>
                     <Input
@@ -1054,9 +1083,9 @@ function MyProjectMainContents() {
                       hasError={Boolean(errors?.projectName?.message)}
                     ></Input>
                   </InputResult>
-                </SummaryLabel>
+                </ProjectLabel>
 
-                <SummaryLabel>
+                <ProjectLabel>
                   Project Status:
                   <InputResult>
                     <SelectStatus
@@ -1068,9 +1097,9 @@ function MyProjectMainContents() {
                       placeholder={isEditMode?.projectStatus}
                     />
                   </InputResult>
-                </SummaryLabel>
+                </ProjectLabel>
 
-                <SummaryLabel>
+                <ProjectLabel>
                   Project Type:
                   <InputResult>
                     <Input
@@ -1083,9 +1112,9 @@ function MyProjectMainContents() {
                       hasError={Boolean(errors?.projectType?.message)}
                     ></Input>
                   </InputResult>
-                </SummaryLabel>
+                </ProjectLabel>
 
-                <SummaryLabel>
+                <ProjectLabel>
                   Security Level:
                   <InputResult>
                     <SelectStatus
@@ -1097,7 +1126,7 @@ function MyProjectMainContents() {
                       placeholder={isEditMode?.securityLevel}
                     />
                   </InputResult>
-                </SummaryLabel>
+                </ProjectLabel>
 
                 <DesLabel>Description: </DesLabel>
                 {/* <InputResult className="desResult"> */}
@@ -1111,6 +1140,7 @@ function MyProjectMainContents() {
                   onChange={handleEdit}
                   placeholder={isEditMode?.description}
                   hasError={Boolean(errors?.description?.message)}
+                  className="editDes"
                 />
                 {/* </InputResult> */}
               </ModalInfo>

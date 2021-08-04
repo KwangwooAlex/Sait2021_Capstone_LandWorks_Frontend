@@ -200,6 +200,7 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     width: "550px",
     height: "380px",
+    boxShadow: "0px 3px 8px gray",
   },
 };
 
@@ -214,6 +215,7 @@ const settingCustomStyles = {
     transform: "translate(-50%, -50%)",
     width: "600px",
     height: "500px",
+    boxShadow: "0px 3px 8px gray",
   },
 };
 
@@ -229,7 +231,7 @@ const SearchTeam = styled.div`
 const TeamBody = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 30px;
+  grid-gap: 40px;
   justify-items: stretch;
   margin-top: 30px;
 `;
@@ -296,6 +298,9 @@ const SetModalHeader = styled.div`
   font-size: 13px;
   display: flex;
   justify-content: space-between;
+  position: sticky;
+  top:0;
+  align-items: center;
 `;
 
 const CancelBtn2 = styled.button`
@@ -350,7 +355,9 @@ const ModalBody2 = styled.div`
 const ModalSet = styled.div`
   /* margin-top: 30px; */
   width: 100%;
+  height: 420px;
 `;
+
 const SetTitle = styled.h3`
   font-size: 15px;
   font-weight: 600;
@@ -380,11 +387,12 @@ const ListTableContainerTop = styled.table`
   padding: 0;
   border-collapse: collapse;
   background-color: white;
+  margin-top: 5px;
 `;
 
 const TableDiv = styled.div`
   overflow: overlay;
-  height: 55%;
+  height: 50%;
   width: 100%;
   background-color: white;
   /* margin: 15px auto; */
@@ -436,7 +444,7 @@ const ListTd = styled.td`
   width: 100%;
   text-align: left;
   &.lAvatar {
-    width: 5%;
+    width: 7%;
   }
   &.lName {
     width: 48%;
@@ -444,6 +452,13 @@ const ListTd = styled.td`
   &.lRole {
     width: 45%;
   }
+`;
+
+const Avatar = styled.img`
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 50%;
 `;
 
 const DeleteSetSub = styled.p`
@@ -457,6 +472,7 @@ const DeleteBtn = styled.button`
   width: 80%;
   border: none;
   height: 40px;
+  cursor: pointer;
   &:hover {
     background-color: red;
     color: white;
@@ -466,6 +482,12 @@ const DeleteBtn = styled.button`
 
 const B = styled.b`
   font-weight: 600;
+  &.deleteLetter {
+    color: red;
+  }
+  &.tNameLetter {
+    color: blue;
+  }
 `;
 
 function MyTeamMainContents() {
@@ -702,7 +724,10 @@ function MyTeamMainContents() {
                 DELETE TEAM
               </NavTitle>
             </ModalNav>
-
+ {/* {allTeamData?.seeAllMyTeam?.map((team) => (
+          <ListEachTeam key={team.id}>
+            <SettingBtn onClick={() => handleSettingModal(team.teamName)}>
+              <SettingsIcon /> */}
             {isAbout && (
               <ModalSet>
                 <SetTitle>ABOUT TEAM INFORMATION</SetTitle>
@@ -730,7 +755,7 @@ function MyTeamMainContents() {
                       {teamData?.seeTeam?.teamMember?.map((member) => (
                         <ListTr key={member.id}>
                           <ListTd className="lAvatar">
-                            <FontAwesomeIcon icon={faUserCircle} size="2x" />
+                            <Avatar src={member.avatar} />
                           </ListTd>
                           <ListTd className="lName">{member.username}</ListTd>
                           <ListTd className="lRole">Project Manager</ListTd>
@@ -747,9 +772,9 @@ function MyTeamMainContents() {
                 <SetTitle>DELETE TEAM</SetTitle>
                 <DeleteSetSub>
                   Are you sure you want to delete the team{" "}
-                  <B>{teamData?.seeTeam?.teamName}</B>
+                  <B className="tNameLetter">{teamData?.seeTeam?.teamName}</B>
                   <br />
-                  If you click <B>"Delete Team"</B> button, your all projects{" "}
+                  If you click <B className="deleteLetter">"Delete Team"</B> button, your all projects{" "}
                   <br />
                   and files for this team will be delete.
                 </DeleteSetSub>

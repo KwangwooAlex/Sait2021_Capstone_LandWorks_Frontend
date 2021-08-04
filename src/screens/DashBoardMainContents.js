@@ -195,6 +195,7 @@ const TeamCalender = styled(Calendar)`
   overflow: overlay;
   /* justify-content: center; */
 `;
+
 const ChartContainer = styled.div`
   display: flex;
   width: 55%;
@@ -253,6 +254,7 @@ const ThirdBox60 = styled.div`
   border-radius: 40px;
   box-shadow: 0px 3px 8px gray;
   margin-left: 10px;
+  margin-top: 5px;
 `;
 
 const TableContainerTop = styled.table`

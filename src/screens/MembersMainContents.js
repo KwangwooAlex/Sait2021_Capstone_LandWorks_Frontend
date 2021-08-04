@@ -14,6 +14,8 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import Select from "react-select";
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import PhoneIcon from '@material-ui/icons/Phone';
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -24,7 +26,10 @@ const SEE_TEAM_QUERY = gql`
         id
         username
         email
+        companyName
+        phoneNumber
         avatar
+        country
       }
       role {
         roleName
@@ -370,6 +375,8 @@ const Td = styled.td`
   text-align: left;
   &.mAvatar {
     width: 7%;
+    display: flex;
+    justify-content: center;
   }
   &.mName {
     width: 30%;
@@ -564,6 +571,8 @@ const ListTd = styled.td`
   text-align: left;
   &.lAvatar {
     width: 5%;
+    display: flex;
+    justify-content: center;
   }
   &.lName {
     width: 25%;
@@ -689,7 +698,7 @@ const MemberContatCustomStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "400px",
-    height: "500px",
+    height: "320px",
   },
 };
 
@@ -700,6 +709,7 @@ const ModalMemberHeader = styled.div`
   color: white;
   font-size: 13px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 `;
 
@@ -717,6 +727,118 @@ const CloseBtn = styled.button`
 `;
 
 const ModalMemberInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  /* margin-right: 15px; */
+`;
+
+const MemTop = styled.div`
+  width: 90%;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid gray;
+  padding-bottom: 25px;
+  margin: 30px auto 20px auto;
+`;
+
+const MemRight = styled.div`
+  margin-left: 50px;
+`;
+
+const ModalMemberProfileImageBox = styled.div`
+/* margin: 34px 19.5px 10.2px 29px; */
+  width: 120px;
+  height: 120px; 
+  margin-left: -20px; 
+/* border-radius: 50%; */
+/* overflow: hidden; */
+
+`;
+
+const ModalMemberProfileImage = styled.img`
+width: 100%;
+height: 100%;
+object-fit: cover;
+border-radius: 50%;
+margin-left: -10px;  
+/* border: 0.5px solid white; */
+/* box-shadow: 0px 3px 8px; */
+`;
+
+const ModalMemberName = styled.div`
+/* margin: -110px 0px 0px 180px; */
+font-family: Roboto;
+font-size: 20px;
+font-weight: bold;
+margin-bottom: 15px;
+/* text-align: left; */
+/* color: #000000; */
+`;
+
+const ModalMemberCompanyName = styled.div`
+  /* margin: 8px 0px 0px 180px;  */
+  font-family: Roboto;
+  font-size: 12.5px;
+  margin-bottom: 10px;
+  /* text-align: left; */
+  /* color: #787474; */
+`;
+
+const ModalMemberTitle = styled.div`
+  /* margin: 20px 0px 0px 180px;  */
+  font-family: Roboto;
+  font-size: 12.5px;
+  /* text-align: left; */
+  /* color: #787474; */
+  /* float:none; */
+  
+`;
+
+// const ModalMemberLine = styled.div`
+//   /* margin: 85px 0px 0px 15px;  */
+//   width: 330px;
+//   height: 1px;
+//   background-color: #c4c4c4;
+//   transform: translate(30px,-35px);
+//   `;
+
+const MemBottom = styled.div`
+  width: 90%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+  const ModalMemberTel = styled.div`
+  /* margin: -20px 0px 5px 180px;  */
+  /* margin-left: 190px; */
+  margin-bottom: 5px;
+  font-family: Roboto;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  `;
+
+  const ModalMemberEmail = styled.div`
+  /* margin: 18px 0px 0px 180px;  */
+  /* margin-left: 190px; */
+  font-family: Roboto;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  `;
+
+const Icon = styled.div`
+/* width: 15px; */
+margin-right: 10px;
+color: gray;
+/* margin: 10px 0px 0px -20px;  */
+/* float:left; */
 `;
 
 
@@ -734,27 +856,14 @@ function MembersMainContents() {
   const [keyword, setKeyword] = useState("");
   const [selectedMember, setSelectedMember] = useState([]);
   const [teamMemberList, setTeamMemberList] = useState([]);
+  const [id, setId] = useState("");
   // const { data: searchData } = useQuery(SEARCH_USERS, {
   //   variables: {
   //     keyword,
   //   },
   // });
-
-  // ------------------------------------------------------------------------------
-  
-  const [isModalMemberOpen, setIsModalMemberOpen] = useState(false);
-
-  const handleMemberModal = () => {
-    setIsModalMemberOpen(true);
-  };
-
-  const handleXBtnModal = () => {
-    setIsModalMemberOpen(false);
-  };
-
-  // --------------------------------------------------------------------------------
-
-
+  const { data: userData } = useQuery(ME_QUERY);
+  // console.log("teamData", teamData?.seeTeam);
 
 
 
@@ -779,15 +888,15 @@ function MembersMainContents() {
     { value: "Member", label: "Member" },
   ];
 
-  const { data: userData } = useQuery(ME_QUERY);
-  console.log("MEMBER", teamData?.seeTeam);
-  console.log(
-    "MEMBER role",
-    teamData?.seeTeam?.role?.filter((role) => role.userId === 2)
-  );
+  // console.log("MEMBER", teamData?.seeTeam);
+  // console.log(
+  //   "MEMBER role",
+  //   teamData?.seeTeam?.role?.filter((role) => role.userId === 2)
+  // );
   // console.log("searchData", searchData);
   // const [username, setUsername] = useState('');
   // const { data: searchData } = useQuery(SEARCH_USER_QUERY);
+
 
   const [searchWordBeforeSubmit, setSearchWordBeforeSubmit] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -853,10 +962,6 @@ function MembersMainContents() {
     handleOpenModal();
   };
 
-  const handleDeleteModal = () => {
-    setIsDModalOpen(true);
-  };
-
   const handleDCancelBtnModal = () => {
     setIsDModalOpen(false);
   };
@@ -871,7 +976,7 @@ function MembersMainContents() {
       setSelectedMember([user]);
     }
   };
-
+    // console.log("selected user", user);
   const removeMemberFunction = (selecteduser) => {
     // console.log("selected user", user);
     // console.log("삭제");
@@ -1029,6 +1134,42 @@ function MembersMainContents() {
       },
     });
   };
+
+  // ------------------------------------------------------------------------------
+  // const addMemberFunction = (user) => {
+  //   if (selectedMember !== undefined) {
+  //     // console.log("더추가됨");
+  //     setSelectedMember([...selectedMember, user]);
+  //   } else {
+  //     // console.log("처음추가");
+  //     setSelectedMember([user]);
+  //   }
+  // };
+  //   // console.log("selected user", user);
+  // const removeMemberFunction = (selecteduser) => {
+  //   setSelectedMember(
+  //     selectedMember.filter((user) => user.email !== selecteduser.email)
+  //   );
+
+  // };
+  const [isModalMemberOpen, setIsModalMemberOpen] = useState(false);
+  // const [id, setId] = useState("");
+
+  const handleMemberModal = (id) => {
+    setIsModalMemberOpen(true);
+    setId(id);
+    // console.log("selected user", id);
+}
+
+  const handleXBtnModal = () => {
+    setIsModalMemberOpen(false);
+  };
+
+  // console.log("teamMemberList",teamMemberList);
+
+  // --------------------------------------------------------------------------------
+
+
   return (
     <Container>
       <TeamName>
@@ -1223,7 +1364,7 @@ function MembersMainContents() {
 
         {/* Role Edit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
         <Modal isOpen={isEditMode} style={editCustomStyles}>
-          <ModalHeader>ADD TEAM MEMBERS</ModalHeader>
+          <ModalHeader>EDIT TEAM MEMBERS</ModalHeader>
           <ModalBody>
             <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
               <ModalInfo>
@@ -1292,7 +1433,10 @@ function MembersMainContents() {
             {teamMemberList?.map((member) => (
               <ListTr key={member.id}>
                 <ListTd className="lAvatar">
-                  <Avatar src={member.avatar} onClick={handleMemberModal} />
+                    <Avatar 
+                      src={member.avatar} 
+                      onClick={() => handleMemberModal(member.id)} 
+                    />
                 </ListTd>
                 <ListTd className="lName">{member.username}</ListTd>
                 <ListTd className="lRole">
@@ -1409,11 +1553,65 @@ function MembersMainContents() {
           Member Information
           <CloseBtn onClick={handleXBtnModal}>X</CloseBtn>
         </ModalMemberHeader>
-          <ModalMemberInfo>
+            {teamData?.seeTeam?.teamMember?.map((p) => (
+              <ModalMemberInfo key={p.id}>
+              {p.id === id &&
+              <>
+              <MemTop>
+                <ModalMemberProfileImageBox>
+                  <ModalMemberProfileImage src={p?.avatar} />
+                </ModalMemberProfileImageBox> 
 
+                <MemRight>     
+                  <ModalMemberName>
+                  {p?.username}       
+                  </ModalMemberName>    
 
+                  <ModalMemberCompanyName>
+                  {p?.companyName}
+                  </ModalMemberCompanyName>
+
+                  {teamMemberList?.map((member) => (
+                    <ModalMemberTitle key={member.id}>
+                      {member.id === id && <> 
+                        {teamData !== undefined &&
+                        teamData?.seeTeam?.role?.filter(
+                          (role) => role.userId === member.id
+                        ).length > 0 ? (
+                          <>
+                            {
+                              teamData.seeTeam.role.filter(
+                                (role) => role.userId === member.id
+                              )[0].roleName
+                            }
+                          </>
+                        ) : (
+                          "Guest"
+                        )}
+                      </>}
+                  </ModalMemberTitle>
+                  ))}
+                </MemRight>
+              </MemTop>
+
+              <MemBottom>
+                <ModalMemberTel>
+                  <Icon><PhoneIcon /></Icon>
+                  {p?.phoneNumber}
+                </ModalMemberTel>
+
+                <ModalMemberEmail>
+                  <Icon><MailOutlineIcon /></Icon>
+                  {p?.email}
+                </ModalMemberEmail>         
+              </MemBottom>
+
+              </>
+            }
           </ModalMemberInfo>
+          ))}
         </Modal>
+
 {/* ---------------------------------------------------------------------------------- */}
     </Container>
   );
