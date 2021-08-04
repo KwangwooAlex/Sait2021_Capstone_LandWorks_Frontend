@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {
-  faNewspaper,
-} from "@fortawesome/free-regular-svg-icons";
+import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 import {
   faBoxes,
   faPeopleCarry,
   faProjectDiagram,
+  faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -30,7 +29,7 @@ const Letter = styled.div`
 
 const DashBoardSection = styled.div`
   padding-left: 20px;
-  color: #CDCDCD;
+  color: #cdcdcd;
   font-size: 18px;
   align-items: center;
   display: flex;
@@ -49,7 +48,7 @@ const MyTeam = styled.div`
   cursor: pointer;
   align-items: center;
   display: flex;
-  color: #CDCDCD;
+  color: #cdcdcd;
   font-size: 18px;
   margin-top: 25px;
   font-weight: 600;
@@ -65,7 +64,7 @@ const MyProfile = styled.div`
   cursor: pointer;
   align-items: center;
   display: flex;
-  color: #CDCDCD;
+  color: #cdcdcd;
   font-size: 18px;
   margin-top: 25px;
   font-weight: 600;
@@ -120,8 +119,17 @@ function DashBoardLeftMenu() {
           <Letter>All PROJECT</Letter>
         </MyTeam>
       </Link>
-
-     
+      <Link
+        to={{ pathname: "https://capstone-sait-kwangwoo.herokuapp.com/video" }}
+        target="_blank"
+      >
+        <MyTeam>
+          <ICON>
+            <FontAwesomeIcon icon={faVideo} size="lg" />
+          </ICON>
+          <Letter>Video Chat</Letter>
+        </MyTeam>
+      </Link>
       {/* </ButtonSection> */}
     </Container>
   );
