@@ -210,7 +210,7 @@ function DashBoardHeader() {
           <ModalBody>
             <ModalInfo>
               <ModalInfoTop>
-                <CompanyName>Landwork Reasource Management Inc.</CompanyName>
+                <CompanyName>Landwork Resource Management Inc.</CompanyName>
               </ModalInfoTop>
 
               <CompanyInfoCard>

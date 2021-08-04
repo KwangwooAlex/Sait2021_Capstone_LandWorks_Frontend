@@ -426,6 +426,10 @@ const SummaryLabel = styled.label`
   &.dateLabel {
     width: 200px;
   }
+  &.fileName {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const InputResult = styled.div`
@@ -685,7 +689,7 @@ function FilesMainContents() {
                   <ModalInfo>
                     <UploadHeader>Upload files</UploadHeader>
 
-                    <SummaryLabel>
+                    <SummaryLabel className="fileName">
                       File name:
                       <InputResult>
                         <InputTitle
@@ -695,6 +699,7 @@ function FilesMainContents() {
                           type="text"
                           name="fileName"
                           value={watch("fileName")}
+                          placeholder="Enter the file name..."
                           // placeholder={isEditMode?.projectName}
                           onChange={handleFileTitle}
                           hasError={Boolean(errors?.projectName?.message)}

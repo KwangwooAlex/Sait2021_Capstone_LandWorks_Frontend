@@ -9,6 +9,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import FormError from "../components/auth/FormError";
+import { trimText } from "../components/Utils";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -133,17 +134,21 @@ const TeamLabel = styled.label`
   flex-direction: column;
 `;
 
+const InputTeam = styled(Input)`
+  margin-top: 10px;
+`;
+
 const DesLabel = styled.label`
   display: flex;
   flex-direction: column;
-  margin: 20px 0;
+  margin: 30px 0;
 `;
 
 const Description = styled.textarea`
   padding: 10px;
   width: 100%;
   height: 100px;
-  margin-top: 25px;
+  margin-top: 10px;
 `;
 
 const ModalBtn = styled.div`
@@ -392,7 +397,7 @@ const ListTableContainerTop = styled.table`
   padding: 0;
   border-collapse: collapse;
   background-color: white;
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
 const TableDiv = styled.div`
@@ -651,7 +656,7 @@ function MyTeamMainContents() {
             <ModalInfo>
               <TeamLabel>
                 Team name
-                <Input
+                <InputTeam
                   ref={register({ required: "Team name is required" })}
                   type="text"
                   name="teamName"
@@ -762,7 +767,7 @@ function MyTeamMainContents() {
                           <ListTd className="lAvatar">
                             <Avatar src={member.avatar} />
                           </ListTd>
-                          <ListTd className="lName">{member.username}</ListTd>
+                          <ListTd className="lName">{trimText(member.username, 15)}</ListTd>
                           <ListTd className="lRole" key={member.id}>
                             {teamData !== undefined &&
                             teamData?.seeTeam?.role?.filter(
