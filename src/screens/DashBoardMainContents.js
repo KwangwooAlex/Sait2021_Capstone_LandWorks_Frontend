@@ -131,12 +131,12 @@ const FirstBox20 = styled.div`
   font-size: 15px;
   &.totalTeamBox {
     margin-bottom: 25px;
-    background-color: #2784C7;
+    background-color: #2784c7;
     color: white;
     /* opacity: 90%; */
   }
   &.totalProjectBox {
-    background-color: #11569A;
+    background-color: #11569a;
     color: white;
     /* opacity: 90%; */
   }
@@ -224,6 +224,24 @@ const ChartBox20 = styled.div`
   /* align-items: center; */
   padding: 10px;
   padding-left: 20px;
+  /* margin-right: -40px; */
+`;
+
+const ChartBoxNothing = styled.div`
+  width: 100%;
+  height: 100%;
+  border-radius: 40px;
+  box-shadow: 0px 3px 8px gray;
+  /* margin-right: 15px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* align-items: center; */
+  padding: 10px;
+  padding-left: 20px;
+  margin: auto;
+  font-weight: 500;
   /* margin-right: -40px; */
 `;
 
@@ -556,7 +574,7 @@ function DashBoardMainContents() {
             </CalDiv>
           </SmallBox>
 
-          <ChartContainer> 
+          <ChartContainer>
             <ChartDivBar>
               <ChartBox30>
                 <div>
@@ -643,60 +661,67 @@ function DashBoardMainContents() {
               </ChartBox30>
             </ChartDivBar>
             <ChartDiv>
-              <ChartBox20>
-                <svg viewBox="0 0 450 500">
-                  <VictoryPie
-                    labelPosition="centroid"
-                    standalone={false}
-                    width={500}
-                    height={500}
-                    // labels={({ datum }) => `y: ${datum.y}`}
-                    colorScale={["tomato", "gold", "navy"]}
-                    // data={[
-                    //   { x: 1, y: 50, label: "Active" },
-                    //   { x: "OnHold", y: 50 },
-                    //   { x: "Complete", y: 50 },
-                    // ]}
-                    data={[
-                      {
-                        x: 1,
-                        y: totalActiveProjectState,
-                        label: `Active: ${totalActiveProjectState}`,
-                      },
-                      {
-                        x: 2,
-                        y: totalOnHoldProjectState,
-                        label: `OnHold: ${totalOnHoldProjectState}`,
-                      },
-                      {
-                        x: 3,
-                        y: totalCompleteProjectState,
-                        label: `Complete: ${totalCompleteProjectState}`,
-                      },
-                    ]}
-                    startAngle={-45}
-                    endAngle={405}
-                    padAngle={({ datum }) => datum.y}
-                    innerRadius={100}
-                    labelRadius={220}
-                    style={{
-                      labels: {
-                        fontSize: 20,
-                        fill: "black",
-                        fontWeight: "400",
-                      },
-                    }}
-                    // categories={{ x: ["dogs", "cats", "mice"] }}
-                  />
-                  <VictoryLabel
-                    textAnchor="middle"
-                    style={{ fontSize: 20, fontWeight: 600 }}
-                    x={250}
-                    y={250}
-                    text="Projects' Status"
-                  />
-                </svg>
-              </ChartBox20>
+              {firstLine?.length > 0 ? (
+                <ChartBox20>
+                  <svg viewBox="0 0 450 500">
+                    <VictoryPie
+                      labelPosition="centroid"
+                      standalone={false}
+                      width={500}
+                      height={500}
+                      // labels={({ datum }) => `y: ${datum.y}`}
+                      colorScale={["tomato", "gold", "navy"]}
+                      // data={[
+                      //   { x: 1, y: 50, label: "Active" },
+                      //   { x: "OnHold", y: 50 },
+                      //   { x: "Complete", y: 50 },
+                      // ]}
+                      data={[
+                        {
+                          x: 1,
+                          y: totalActiveProjectState,
+                          label: `Active: ${totalActiveProjectState}`,
+                        },
+                        {
+                          x: 2,
+                          y: totalOnHoldProjectState,
+                          label: `OnHold: ${totalOnHoldProjectState}`,
+                        },
+                        {
+                          x: 3,
+                          y: totalCompleteProjectState,
+                          label: `Complete: ${totalCompleteProjectState}`,
+                        },
+                      ]}
+                      startAngle={-45}
+                      endAngle={405}
+                      padAngle={({ datum }) => datum.y}
+                      innerRadius={100}
+                      labelRadius={220}
+                      style={{
+                        labels: {
+                          fontSize: 20,
+                          fill: "black",
+                          fontWeight: "400",
+                        },
+                      }}
+                      // categories={{ x: ["dogs", "cats", "mice"] }}
+                    />
+                    <VictoryLabel
+                      textAnchor="middle"
+                      style={{ fontSize: 20, fontWeight: 600 }}
+                      x={250}
+                      y={250}
+                      text="Projects' Status"
+                    />
+                  </svg>
+                </ChartBox20>
+              ) : (
+                <ChartBoxNothing>
+                  {" "}
+                  Please Create Team and Project..
+                </ChartBoxNothing>
+              )}
             </ChartDiv>
           </ChartContainer>
         </FirstLine>

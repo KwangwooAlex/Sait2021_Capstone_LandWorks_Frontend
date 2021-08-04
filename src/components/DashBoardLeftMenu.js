@@ -43,6 +43,18 @@ const DashBoardSection = styled.div`
   }
 `;
 
+const NowDashMenu = styled.div`
+  padding-left: 20px;
+  color: white;
+  background-color: #fcfcfd49;
+  font-size: 18px;
+  align-items: center;
+  display: flex;
+  font-weight: 600;
+  cursor: pointer;
+  height: 45px;
+`;
+
 const MyTeam = styled.div`
   padding-left: 20px;
   height: 45px;
@@ -75,6 +87,19 @@ const MyProfile = styled.div`
   }
 `;
 
+const NowMenu = styled.div`
+  padding-left: 20px;
+  height: 45px;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  color: white;
+  background-color: #fcfcfd49;
+  font-size: 18px;
+  margin-top: 25px;
+  font-weight: 600;
+`;
+
 const ICON = styled.div`
   width: 30px;
   height: 100%;
@@ -84,44 +109,100 @@ const ICON = styled.div`
 `;
 
 function DashBoardLeftMenu() {
-
-
+  console.log("window.location.href", window.location.href);
+  console.log(
+    "window.location.href",
+    window.location.href.includes("myProfile")
+  );
   return (
     <Container>
       {/* <ButtonSection> */}
-      <Link to="/">
-        <DashBoardSection>
-          <ICON>
-            <FontAwesomeIcon icon={faBoxes} size="lg" />
-          </ICON>
-          <Letter>DASHBOARD</Letter>
-        </DashBoardSection>
-      </Link>
-      <Link to="/myProfile">
-        <MyProfile>
-          <ICON>
-            {" "}
-            <FontAwesomeIcon icon={faNewspaper} size="lg" />
-          </ICON>
-          <Letter>MY PROFILE</Letter>{" "}
-        </MyProfile>
-      </Link>
-      <Link to="/myTeam">
-        <MyTeam>
-          <ICON>
-            <FontAwesomeIcon icon={faPeopleCarry} size="lg" />
-          </ICON>
-          <Letter>MY TEAM</Letter>
-        </MyTeam>
-      </Link>
-      <Link to="/allProject">
-        <MyTeam>
-          <ICON>
-            <FontAwesomeIcon icon={faProjectDiagram} size="lg" />
-          </ICON>
-          <Letter>All PROJECT</Letter>
-        </MyTeam>
-      </Link>
+      {!window.location.href.includes("myProfile") &&
+      !window.location.href.includes("myTeam") &&
+      !window.location.href.includes("allProject") &&
+      !window.location.href.includes("myProject") &&
+      !window.location.href.includes("member") ? (
+        <Link to="/">
+          <NowDashMenu>
+            <ICON>
+              <FontAwesomeIcon icon={faBoxes} size="lg" />
+            </ICON>
+            <Letter>DASHBOARD</Letter>
+          </NowDashMenu>
+        </Link>
+      ) : (
+        <Link to="/">
+          <DashBoardSection>
+            <ICON>
+              <FontAwesomeIcon icon={faBoxes} size="lg" />
+            </ICON>
+            <Letter>DASHBOARD</Letter>
+          </DashBoardSection>
+        </Link>
+      )}
+
+      {window.location.href.includes("myProfile") ? (
+        <Link to="/myProfile">
+          <NowMenu>
+            <ICON>
+              <FontAwesomeIcon icon={faNewspaper} size="lg" />
+            </ICON>
+            <Letter>MY PROFILE</Letter>
+          </NowMenu>
+        </Link>
+      ) : (
+        <Link to="/myProfile">
+          <MyProfile>
+            <ICON>
+              <FontAwesomeIcon icon={faNewspaper} size="lg" />
+            </ICON>
+            <Letter>MY PROFILE</Letter>
+          </MyProfile>
+        </Link>
+      )}
+
+      {window.location.href.includes("myTeam") ||
+      window.location.href.includes("myProject") ||
+      window.location.href.includes("member") ? (
+        <Link to="/myTeam">
+          <NowMenu>
+            <ICON>
+              <FontAwesomeIcon icon={faPeopleCarry} size="lg" />
+            </ICON>
+            <Letter>MY TEAM</Letter>
+          </NowMenu>
+        </Link>
+      ) : (
+        <Link to="/myTeam">
+          <MyTeam>
+            <ICON>
+              <FontAwesomeIcon icon={faPeopleCarry} size="lg" />
+            </ICON>
+            <Letter>MY TEAM</Letter>
+          </MyTeam>
+        </Link>
+      )}
+
+      {window.location.href.includes("allProject") ? (
+        <Link to="/allProject">
+          <NowMenu>
+            <ICON>
+              <FontAwesomeIcon icon={faProjectDiagram} size="lg" />
+            </ICON>
+            <Letter>All PROJECT</Letter>
+          </NowMenu>
+        </Link>
+      ) : (
+        <Link to="/allProject">
+          <MyTeam>
+            <ICON>
+              <FontAwesomeIcon icon={faProjectDiagram} size="lg" />
+            </ICON>
+            <Letter>All PROJECT</Letter>
+          </MyTeam>
+        </Link>
+      )}
+
       <Link
         to={{ pathname: "https://capstone-sait-kwangwoo.herokuapp.com/video" }}
         target="_blank"

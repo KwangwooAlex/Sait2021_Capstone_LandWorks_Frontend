@@ -9,7 +9,7 @@ import Input from "../components/auth/Input";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFileExcel,
@@ -17,9 +17,7 @@ import {
   faFilePowerpoint,
   faFilePdf,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faFile,
-} from "@fortawesome/free-regular-svg-icons";
+import { faFile } from "@fortawesome/free-regular-svg-icons";
 import { trimText } from "../components/Utils";
 
 const SEE_TEAM_QUERY = gql`
@@ -184,6 +182,9 @@ const UploadBtn = styled.button`
   font-size: 15px;
   box-shadow: 0px 2px 4px gray;
   cursor: pointer;
+  &:hover {
+    background: #012f52;
+  }
 `;
 
 const DownloadBtn = styled.button`
@@ -764,57 +765,57 @@ function FilesMainContents() {
                   {file.fileUrl.split(".")[
                     file.fileUrl.split(".").length - 1
                   ] === "pdf" ||
-                    file.fileUrl.split(".")[
-                      file.fileUrl.split(".").length - 1
-                    ] === "docx" ||
-                    file.fileUrl.split(".")[
-                      file.fileUrl.split(".").length - 1
-                    ] === "xlsx" ||
-                    file.fileUrl.split(".")[
-                      file.fileUrl.split(".").length - 1
-                    ] === "pptx" ? (<> {file.fileUrl.split(".")[
-                      file.fileUrl.split(".").length - 1
-                    ] === "pdf" && (
-                      <FontAwesomeIcon
-                        className="pdf"
-                        icon={faFilePdf}
-                        size="2x"
-                      />
-                    )}
-                    {file.fileUrl.split(".")[
-                      file.fileUrl.split(".").length - 1
-                    ] === "docx" && (
-                      <FontAwesomeIcon
-                        className="pdf"
-                        icon={faFileWord}
-                        size="2x"
-                      />
-                    )}
-                    {file.fileUrl.split(".")[
-                      file.fileUrl.split(".").length - 1
-                    ] === "xlsx" && (
-                      <FontAwesomeIcon
-                        className="pdf"
-                        icon={faFileExcel}
-                        size="2x"
-                      />
-                    )}
-                    {file.fileUrl.split(".")[
-                      file.fileUrl.split(".").length - 1
-                    ] === "pptx" && (
-                      <FontAwesomeIcon
-                        className="pdf"
-                        icon={faFilePowerpoint}
-                        size="2x"
-                      />
-                    )}</>):( 
-                      <FontAwesomeIcon
-                        className="pdf"
-                        icon={faFile}
-                        size="2x"
-                      />
-                    ) }
-                
+                  file.fileUrl.split(".")[
+                    file.fileUrl.split(".").length - 1
+                  ] === "docx" ||
+                  file.fileUrl.split(".")[
+                    file.fileUrl.split(".").length - 1
+                  ] === "xlsx" ||
+                  file.fileUrl.split(".")[
+                    file.fileUrl.split(".").length - 1
+                  ] === "pptx" ? (
+                    <>
+                      {" "}
+                      {file.fileUrl.split(".")[
+                        file.fileUrl.split(".").length - 1
+                      ] === "pdf" && (
+                        <FontAwesomeIcon
+                          className="pdf"
+                          icon={faFilePdf}
+                          size="2x"
+                        />
+                      )}
+                      {file.fileUrl.split(".")[
+                        file.fileUrl.split(".").length - 1
+                      ] === "docx" && (
+                        <FontAwesomeIcon
+                          className="pdf"
+                          icon={faFileWord}
+                          size="2x"
+                        />
+                      )}
+                      {file.fileUrl.split(".")[
+                        file.fileUrl.split(".").length - 1
+                      ] === "xlsx" && (
+                        <FontAwesomeIcon
+                          className="pdf"
+                          icon={faFileExcel}
+                          size="2x"
+                        />
+                      )}
+                      {file.fileUrl.split(".")[
+                        file.fileUrl.split(".").length - 1
+                      ] === "pptx" && (
+                        <FontAwesomeIcon
+                          className="pdf"
+                          icon={faFilePowerpoint}
+                          size="2x"
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <FontAwesomeIcon className="pdf" icon={faFile} size="2x" />
+                  )}
                 </Td>
                 <Td className="fName">
                   {trimText(file.fileName, 35)}

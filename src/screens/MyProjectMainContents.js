@@ -162,6 +162,9 @@ const NewProjectBtn = styled.button`
   font-size: 15px;
   box-shadow: 0px 2px 4px gray;
   cursor: pointer;
+  &:hover {
+    background: #012f52;
+  }
 `;
 
 const InputSearch = styled.input`
@@ -233,7 +236,7 @@ const ModalHeader = styled.h4`
   color: white;
   font-size: 13px;
   position: sticky;
-  top:0;
+  top: 0;
 `;
 
 const ModalBody = styled.div`
@@ -241,8 +244,7 @@ const ModalBody = styled.div`
   overflow-y: overlay;
 `;
 
-const ModalInfo = styled.div`
-`;
+const ModalInfo = styled.div``;
 
 const ProjectLabel = styled.label`
   display: flex;
@@ -301,7 +303,7 @@ const DesLabel = styled.label`
   display: flex;
   flex-direction: column;
   margin: 20px 0;
-  &.summayDesLabel{
+  &.summayDesLabel {
     margin-top: 25px;
   }
 `;
@@ -386,17 +388,17 @@ const InputResult = styled.div`
 
 const TableContainerTop = styled.table`
   margin-top: 10px;
-  border: 1px solid lightgray;  
+  border: 1px solid lightgray;
   border-bottom: none;
   height: 20px;
   width: 100%;
   padding: 0;
   border-collapse: collapse;
   font-size: 13px;
-  `;
+`;
 
 const Thead = styled.thead`
-background-color: #f3f3f3;
+  background-color: #f3f3f3;
 `;
 
 const TableDiv = styled.div`
@@ -413,11 +415,10 @@ const TableContainer = styled.table`
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  font-size: 13px;  
+  font-size: 13px;
 `;
 
-const Tbody = styled.thead`
-`;
+const Tbody = styled.thead``;
 const Tr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
@@ -1154,26 +1155,26 @@ function MyProjectMainContents() {
             </ModalBody>
           </form>
         </Modal>
-          <TableContainerTop className="sortable">
-            <Thead>
-              <Tr>
-                <Th className="num" onClick={numberSorting}>
-                  No. &darr;
-                </Th>
-                <Th className="pName" onClick={nameSorting}>
-                  Name &darr;
-                </Th>
-                <Th className="pDesc">Description</Th>
-                <Th className="pStatus">Status</Th>
-                <Th className="pSecurity">Security</Th>
-                <Th className="pEdit">Edit</Th>
-                <Th className="pDelete">Delete</Th>
-              </Tr>
-            </Thead>
-            </TableContainerTop>
+        <TableContainerTop className="sortable">
+          <Thead>
+            <Tr>
+              <Th className="num" onClick={numberSorting}>
+                No. &darr;
+              </Th>
+              <Th className="pName" onClick={nameSorting}>
+                Name &darr;
+              </Th>
+              <Th className="pDesc">Description</Th>
+              <Th className="pStatus">Status</Th>
+              <Th className="pSecurity">Security</Th>
+              <Th className="pEdit">Edit</Th>
+              <Th className="pDelete">Delete</Th>
+            </Tr>
+          </Thead>
+        </TableContainerTop>
 
         <TableDiv>
-            <TableContainer>
+          <TableContainer>
             <Tbody>
               {projectList?.map((projects, index) => (
                 <>
@@ -1209,8 +1210,12 @@ function MyProjectMainContents() {
                     <Link to={`/myProject/${teamName}/${projects?.id}`}>
                       <Tr key={projects.id}>
                         <Td className="num">{projects.id}</Td>
-                        <Td className="pName">{trimText(projects.projectName, 35)}</Td>
-                        <Td className="pDesc">{trimText(projects.description, 35)}</Td>
+                        <Td className="pName">
+                          {trimText(projects.projectName, 35)}
+                        </Td>
+                        <Td className="pDesc">
+                          {trimText(projects.description, 35)}
+                        </Td>
                         <Td className="pStatus">{projects.projectStatus}</Td>
                         <Td className="pSecurity">{projects.securityLevel}</Td>
                         <Td

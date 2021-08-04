@@ -12,10 +12,10 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import Select from "react-select";
-import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import PhoneIcon from '@material-ui/icons/Phone';
+import HourglassEmptyIcon from "@material-ui/icons/HourglassEmpty";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
+import PhoneIcon from "@material-ui/icons/Phone";
 import { trimText } from "../components/Utils";
 
 const SEE_TEAM_QUERY = gql`
@@ -222,6 +222,9 @@ const AddBtn = styled.button`
   font-size: 15px;
   box-shadow: 0px 2px 4px gray;
   cursor: pointer;
+  &:hover {
+    background: #012f52;
+  }
 `;
 
 const customStyles = {
@@ -404,8 +407,8 @@ const SummaryLabel = styled.label`
     width: 200px;
   }
   &.editLabel {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -505,7 +508,7 @@ const AddModalBtn = styled.button`
 
 const ListTableContainerTop = styled.table`
   margin-top: 10px;
-  border: 1px solid lightgray;  
+  border: 1px solid lightgray;
   border-bottom: none;
   height: 20px;
   width: 100%;
@@ -528,7 +531,7 @@ const ListTableContainer = styled.table`
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  font-size: 13px;  
+  font-size: 13px;
 `;
 
 const ListThead = styled.thead`
@@ -756,33 +759,32 @@ const MemRight = styled.div`
 `;
 
 const ModalMemberProfileImageBox = styled.div`
-/* margin: 34px 19.5px 10.2px 29px; */
+  /* margin: 34px 19.5px 10.2px 29px; */
   width: 120px;
-  height: 120px; 
-  margin-left: -20px; 
-/* border-radius: 50%; */
-/* overflow: hidden; */
-
+  height: 120px;
+  margin-left: -20px;
+  /* border-radius: 50%; */
+  /* overflow: hidden; */
 `;
 
 const ModalMemberProfileImage = styled.img`
-width: 100%;
-height: 100%;
-object-fit: cover;
-border-radius: 50%;
-margin-left: -10px;  
-/* border: 0.5px solid white; */
-/* box-shadow: 0px 3px 8px; */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-left: -10px;
+  /* border: 0.5px solid white; */
+  /* box-shadow: 0px 3px 8px; */
 `;
 
 const ModalMemberName = styled.div`
-/* margin: -110px 0px 0px 180px; */
-font-family: Roboto;
-font-size: 20px;
-font-weight: bold;
-margin-bottom: 15px;
-/* text-align: left; */
-/* color: #000000; */
+  /* margin: -110px 0px 0px 180px; */
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  /* text-align: left; */
+  /* color: #000000; */
 `;
 
 const ModalMemberCompanyName = styled.div`
@@ -801,7 +803,6 @@ const ModalMemberTitle = styled.div`
   /* text-align: left; */
   /* color: #787474; */
   /* float:none; */
-  
 `;
 
 // const ModalMemberLine = styled.div`
@@ -821,7 +822,7 @@ const MemBottom = styled.div`
   justify-content: center;
 `;
 
-  const ModalMemberTel = styled.div`
+const ModalMemberTel = styled.div`
   /* margin: -20px 0px 5px 180px;  */
   /* margin-left: 190px; */
   margin-bottom: 5px;
@@ -829,26 +830,24 @@ const MemBottom = styled.div`
   font-size: 13px;
   display: flex;
   align-items: center;
-  `;
+`;
 
-  const ModalMemberEmail = styled.div`
+const ModalMemberEmail = styled.div`
   /* margin: 18px 0px 0px 180px;  */
   /* margin-left: 190px; */
   font-family: Roboto;
   font-size: 13px;
   display: flex;
   align-items: center;
-  `;
-
-const Icon = styled.div`
-/* width: 15px; */
-margin-right: 10px;
-color: gray;
-/* margin: 10px 0px 0px -20px;  */
-/* float:left; */
 `;
 
-
+const Icon = styled.div`
+  /* width: 15px; */
+  margin-right: 10px;
+  color: gray;
+  /* margin: 10px 0px 0px -20px;  */
+  /* float:left; */
+`;
 
 // ---------------------------------------------
 
@@ -871,8 +870,6 @@ function MembersMainContents() {
   // });
   const { data: userData } = useQuery(ME_QUERY);
   // console.log("teamData", teamData?.seeTeam);
-
-
 
   const [searchUsersQuery, { loading: SearchLoading, data: searchData }] =
     useLazyQuery(SEARCH_USERS);
@@ -903,7 +900,6 @@ function MembersMainContents() {
   // console.log("searchData", searchData);
   // const [username, setUsername] = useState('');
   // const { data: searchData } = useQuery(SEARCH_USER_QUERY);
-
 
   const [searchWordBeforeSubmit, setSearchWordBeforeSubmit] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -983,7 +979,7 @@ function MembersMainContents() {
       setSelectedMember([user]);
     }
   };
-    // console.log("selected user", user);
+  // console.log("selected user", user);
   const removeMemberFunction = (selecteduser) => {
     // console.log("selected user", user);
     // console.log("삭제");
@@ -1166,7 +1162,7 @@ function MembersMainContents() {
     setIsModalMemberOpen(true);
     setId(id);
     // console.log("selected user", id);
-}
+  };
 
   const handleXBtnModal = () => {
     setIsModalMemberOpen(false);
@@ -1175,7 +1171,6 @@ function MembersMainContents() {
   // console.log("teamMemberList",teamMemberList);
 
   // --------------------------------------------------------------------------------
-
 
   return (
     <Container>
@@ -1259,9 +1254,13 @@ function MembersMainContents() {
                                 <Td className="mAvatar">
                                   <Avatar src={user?.avatar} />
                                 </Td>
-                                <Td className="mName">{trimText(user?.username, 20)} </Td>
+                                <Td className="mName">
+                                  {trimText(user?.username, 20)}{" "}
+                                </Td>
                                 <Td className="mTeam">{user?.phoneNumber}</Td>
-                                <Td className="mMail">{trimText(user?.email, 20)} </Td>
+                                <Td className="mMail">
+                                  {trimText(user?.email, 20)}{" "}
+                                </Td>
                                 <Td className="mBtn">
                                   {selectedMember?.filter(
                                     (selectedUser) =>
@@ -1283,9 +1282,9 @@ function MembersMainContents() {
                           <Tr>
                             <Td>
                               <NothingList>
-                                <HourglassEmptyIcon /> 
+                                <HourglassEmptyIcon />
                                 Please search your member...
-                              </NothingList>                           
+                              </NothingList>
                             </Td>
                           </Tr>
                         </Tbody>
@@ -1326,9 +1325,13 @@ function MembersMainContents() {
                               <Td className="mAvatar">
                                 <Avatar src={user?.avatar} />
                               </Td>
-                              <Td className="mName">{trimText(user.username, 30)} </Td>
+                              <Td className="mName">
+                                {trimText(user.username, 30)}{" "}
+                              </Td>
                               <Td className="mTeam">{user.phoneNumber}</Td>
-                              <Td className="mMail">{trimText(user.email,20)} </Td>
+                              <Td className="mMail">
+                                {trimText(user.email, 20)}{" "}
+                              </Td>
                               <Td className="mBtn">
                                 <MinusBtn>
                                   <RemoveIcon
@@ -1419,33 +1422,35 @@ function MembersMainContents() {
         </RightBtn>
       </TopBtn>
 
-        <ListTableContainerTop className="sortable">
-          <ListThead>
-            <ListTr>
-              <ListTh className="lAvatar"></ListTh>
-              <ListTh className="lName" onClick={nameSorting}>
-                Name &darr;
-              </ListTh>
-              <ListTh className="lRole">Role</ListTh>
-              <ListTh className="lMail">e-mail</ListTh>
-              <ListTh className="lEdit">Edit</ListTh>
-              <ListTh className="lDelete">Delete</ListTh>
-            </ListTr>
-          </ListThead>
-          </ListTableContainerTop>
+      <ListTableContainerTop className="sortable">
+        <ListThead>
+          <ListTr>
+            <ListTh className="lAvatar"></ListTh>
+            <ListTh className="lName" onClick={nameSorting}>
+              Name &darr;
+            </ListTh>
+            <ListTh className="lRole">Role</ListTh>
+            <ListTh className="lMail">e-mail</ListTh>
+            <ListTh className="lEdit">Edit</ListTh>
+            <ListTh className="lDelete">Delete</ListTh>
+          </ListTr>
+        </ListThead>
+      </ListTableContainerTop>
 
-        <TableDiv>
-          <ListTableContainer> 
+      <TableDiv>
+        <ListTableContainer>
           <ListTbody>
             {teamMemberList?.map((member) => (
               <ListTr key={member.id}>
                 <ListTd className="lAvatar">
-                    <Avatar 
-                      src={member.avatar} 
-                      onClick={() => handleMemberModal(member.id)} 
-                    />
+                  <Avatar
+                    src={member.avatar}
+                    onClick={() => handleMemberModal(member.id)}
+                  />
                 </ListTd>
-                <ListTd className="lName">{trimText(member.username, 30)}</ListTd>
+                <ListTd className="lName">
+                  {trimText(member.username, 30)}
+                </ListTd>
                 <ListTd className="lRole">
                   {teamData !== undefined &&
                   teamData?.seeTeam?.role?.filter(
@@ -1554,72 +1559,75 @@ function MembersMainContents() {
         </ListTableContainer>
       </TableDiv>
 
-{/* /* ---------------------------------------------------------------------------------- */}
+      {/* /* ---------------------------------------------------------------------------------- */}
       <Modal isOpen={isModalMemberOpen} style={MemberContatCustomStyles}>
         <ModalMemberHeader>
           Member Information
           <CloseBtn onClick={handleXBtnModal}>X</CloseBtn>
         </ModalMemberHeader>
-            {teamData?.seeTeam?.teamMember?.map((p) => (
-              <ModalMemberInfo key={p.id}>
-              {p.id === id &&
+        {teamData?.seeTeam?.teamMember?.map((p) => (
+          <ModalMemberInfo key={p.id}>
+            {p.id === id && (
               <>
-              <MemTop>
-                <ModalMemberProfileImageBox>
-                  <ModalMemberProfileImage src={p?.avatar} />
-                </ModalMemberProfileImageBox> 
+                <MemTop>
+                  <ModalMemberProfileImageBox>
+                    <ModalMemberProfileImage src={p?.avatar} />
+                  </ModalMemberProfileImageBox>
 
-                <MemRight>     
-                  <ModalMemberName>
-                  {p?.username}       
-                  </ModalMemberName>    
+                  <MemRight>
+                    <ModalMemberName>{p?.username}</ModalMemberName>
 
-                  <ModalMemberCompanyName>
-                  {p?.companyName}
-                  </ModalMemberCompanyName>
+                    <ModalMemberCompanyName>
+                      {p?.companyName}
+                    </ModalMemberCompanyName>
 
-                  {teamMemberList?.map((member) => (
-                    <ModalMemberTitle key={member.id}>
-                      {member.id === id && <> 
-                        {teamData !== undefined &&
-                        teamData?.seeTeam?.role?.filter(
-                          (role) => role.userId === member.id
-                        ).length > 0 ? (
+                    {teamMemberList?.map((member) => (
+                      <ModalMemberTitle key={member.id}>
+                        {member.id === id && (
                           <>
-                            {
-                              teamData.seeTeam.role.filter(
-                                (role) => role.userId === member.id
-                              )[0].roleName
-                            }
+                            {teamData !== undefined &&
+                            teamData?.seeTeam?.role?.filter(
+                              (role) => role.userId === member.id
+                            ).length > 0 ? (
+                              <>
+                                {
+                                  teamData.seeTeam.role.filter(
+                                    (role) => role.userId === member.id
+                                  )[0].roleName
+                                }
+                              </>
+                            ) : (
+                              "Guest"
+                            )}
                           </>
-                        ) : (
-                          "Guest"
                         )}
-                      </>}
-                  </ModalMemberTitle>
-                  ))}
-                </MemRight>
-              </MemTop>
+                      </ModalMemberTitle>
+                    ))}
+                  </MemRight>
+                </MemTop>
 
-              <MemBottom>
-                <ModalMemberTel>
-                  <Icon><PhoneIcon /></Icon>
-                  {p?.phoneNumber}
-                </ModalMemberTel>
+                <MemBottom>
+                  <ModalMemberTel>
+                    <Icon>
+                      <PhoneIcon />
+                    </Icon>
+                    {p?.phoneNumber}
+                  </ModalMemberTel>
 
-                <ModalMemberEmail>
-                  <Icon><MailOutlineIcon /></Icon>
-                  {p?.email}
-                </ModalMemberEmail>         
-              </MemBottom>
-
+                  <ModalMemberEmail>
+                    <Icon>
+                      <MailOutlineIcon />
+                    </Icon>
+                    {p?.email}
+                  </ModalMemberEmail>
+                </MemBottom>
               </>
-            }
+            )}
           </ModalMemberInfo>
-          ))}
-        </Modal>
+        ))}
+      </Modal>
 
-{/* ---------------------------------------------------------------------------------- */}
+      {/* ---------------------------------------------------------------------------------- */}
     </Container>
   );
 }

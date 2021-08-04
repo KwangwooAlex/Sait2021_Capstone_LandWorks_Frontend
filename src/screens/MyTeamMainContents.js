@@ -113,6 +113,9 @@ const CreateBtn = styled.button`
   font-size: 15px;
   box-shadow: 0px 2px 4px gray;
   cursor: pointer;
+  &:hover {
+    background: #012f52;
+  }
 `;
 
 const ModalHeader = styled.h4`
@@ -280,12 +283,19 @@ const ListEachTeam = styled.li`
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
-  background-color: white;
+  /* background-color: white; */
   width: 100%;
   height: 100%;
   list-style: none;
   background-color: #f1f1f1;
+  transition: 0.2s;
+  /* translate: 0 */
   /* height: 150px; */
+  &:hover {
+    background-color: #e6e4e4;
+    transform: scale(1.02);
+    /* animation: backwards 2s linear; */
+  }
 `;
 
 const SettingBtn = styled.button`
@@ -309,7 +319,7 @@ const SetModalHeader = styled.div`
   display: flex;
   justify-content: space-between;
   position: sticky;
-  top:0;
+  top: 0;
   align-items: center;
 `;
 
@@ -734,7 +744,7 @@ function MyTeamMainContents() {
                 DELETE TEAM
               </NavTitle>
             </ModalNav>
- {/* {allTeamData?.seeAllMyTeam?.map((team) => (
+            {/* {allTeamData?.seeAllMyTeam?.map((team) => (
           <ListEachTeam key={team.id}>
             <SettingBtn onClick={() => handleSettingModal(team.teamName)}>
               <SettingsIcon /> */}
@@ -767,7 +777,9 @@ function MyTeamMainContents() {
                           <ListTd className="lAvatar">
                             <Avatar src={member.avatar} />
                           </ListTd>
-                          <ListTd className="lName">{trimText(member.username, 15)}</ListTd>
+                          <ListTd className="lName">
+                            {trimText(member.username, 15)}
+                          </ListTd>
                           <ListTd className="lRole" key={member.id}>
                             {teamData !== undefined &&
                             teamData?.seeTeam?.role?.filter(
@@ -799,8 +811,10 @@ function MyTeamMainContents() {
                   Are you sure you want to delete the team{" "}
                   <B className="tNameLetter">{teamData?.seeTeam?.teamName}</B>
                   <br />
-                  If you click <B className="deleteLetter">"Delete Team"</B> button, your all projects{" "}
-                  <br />
+                  If you click <B className="deleteLetter">
+                    "Delete Team"
+                  </B>{" "}
+                  button, your all projects <br />
                   and files for this team will be delete.
                 </DeleteSetSub>
 
