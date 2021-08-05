@@ -17,6 +17,7 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import PhoneIcon from "@material-ui/icons/Phone";
 import { trimText } from "../components/Utils";
+import LoadingPage from "../components/LoadingPage";
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -855,7 +856,11 @@ function MembersMainContents() {
   // const [memberRole, setMemberRole] = useState("");
   const [reverseName, setReverseName] = useState(false);
   const { teamName, projectId } = useParams();
-  const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
+  const {
+    data: teamData,
+    refetch,
+    loading: teamDataLoading,
+  } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
   });
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -868,7 +873,7 @@ function MembersMainContents() {
   //     keyword,
   //   },
   // });
-  const { data: userData } = useQuery(ME_QUERY);
+  const { data: userData, loading: meLoading } = useQuery(ME_QUERY);
   // console.log("teamData", teamData?.seeTeam);
 
   const [searchUsersQuery, { loading: SearchLoading, data: searchData }] =
@@ -1172,7 +1177,9 @@ function MembersMainContents() {
 
   // --------------------------------------------------------------------------------
 
-  return (
+  return teamDataLoading && meLoading ? (
+    <LoadingPage />
+  ) : (
     <Container>
       <TeamName>
         <Link to={`/myProject/${teamName}`}>{teamName}</Link>

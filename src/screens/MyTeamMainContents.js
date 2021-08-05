@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import FormError from "../components/auth/FormError";
 import { trimText } from "../components/Utils";
+import LoadingPage from "../components/LoadingPage";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -557,9 +558,13 @@ function MyTeamMainContents() {
   const handleCreateTeam = () => {
     handleOpenModal();
   };
-  const { data: allTeamData, refetch } = useQuery(SEE_ALL_MY_TEAM_QUERY);
+  const {
+    data: allTeamData,
+    loading: seeAllTeamLoading,
+    refetch,
+  } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
-  const { data: teamData } = useQuery(SEE_TEAM_QUERY, {
+  const { data: teamData, loading: seeTeamLoading } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
   });
   console.log("teamData!!!!", teamData);
@@ -687,7 +692,9 @@ function MyTeamMainContents() {
     });
   };
 
-  return (
+  return seeAllTeamLoading && seeTeamLoading ? (
+    <LoadingPage />
+  ) : (
     <Container>
       <MainTitle>MY TEAM</MainTitle>
       <TeamHeader>

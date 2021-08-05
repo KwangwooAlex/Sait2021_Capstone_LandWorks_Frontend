@@ -14,6 +14,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import EditProjects from "../components/EditProjects";
 import { trimText } from "../components/Utils";
+import LoadingPage from "../components/LoadingPage";
 
 const DELETE_PROJECT = gql`
   mutation deleteProject($projectId: Int!) {
@@ -555,7 +556,11 @@ function MyProjectMainContents() {
   // console.log("projects");
   // console.log("submitData", submitData);
 
-  const { data: teamData, refetch } = useQuery(SEE_TEAM_QUERY, {
+  const {
+    data: teamData,
+    refetch,
+    loading: seeTeamLoading,
+  } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
   });
   // console.log("teamData", teamData?.seeTeam?.project);
@@ -866,7 +871,9 @@ function MyProjectMainContents() {
     setProjectList(sortingList);
     // users.sort((a, b) => a.idex.localeCompare(b.firstname))
   };
-  return (
+  return seeTeamLoading ? (
+    <LoadingPage />
+  ) : (
     <Container>
       <TeamName>
         <Link to={`/myTeam`}>{teamName}</Link>

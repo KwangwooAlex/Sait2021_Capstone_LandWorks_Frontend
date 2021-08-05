@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faFile } from "@fortawesome/free-regular-svg-icons";
 import { trimText } from "../components/Utils";
+import LoadingPage from "../components/LoadingPage";
 
 const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -443,7 +444,11 @@ function OverviewMainContents() {
   const [value, onChange] = useState(new Date());
   const { teamName, projectId } = useParams();
 
-  const { data: seeFilesData, refetch } = useQuery(SEE_FILES, {
+  const {
+    data: seeFilesData,
+    refetch,
+    loading: seeFilesLoading,
+  } = useQuery(SEE_FILES, {
     variables: { projectId: +projectId },
   });
 
@@ -451,12 +456,15 @@ function OverviewMainContents() {
 
   const { data: userData } = useQuery(ME_QUERY);
 
-  const { data: teamData } = useQuery(SEE_TEAM_QUERY, {
+  const { data: teamData, loading: seeTeamLoading } = useQuery(SEE_TEAM_QUERY, {
     variables: { teamName: teamName },
   });
-  const { data: projectData } = useQuery(SEE_PROJECT_QUERY, {
-    variables: { projectId: +projectId },
-  });
+  const { data: projectData, loading: seeProjectLoading } = useQuery(
+    SEE_PROJECT_QUERY,
+    {
+      variables: { projectId: +projectId },
+    }
+  );
 
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
@@ -479,7 +487,9 @@ function OverviewMainContents() {
   // console.log(format(sDate, "yyyy-MM-dd")?.toString());
   // console.log(format(eDate, "yyyy-MM-dd")?.toString());
 
-  return (
+  return seeFilesLoading && seeTeamLoading && seeProjectLoading ? (
+    <LoadingPage />
+  ) : (
     <Container>
       <TeamPath>
         <TeamName>

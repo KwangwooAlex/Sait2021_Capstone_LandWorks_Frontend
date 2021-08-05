@@ -16,6 +16,7 @@ import {
   VictoryTooltip,
   VictoryAxis,
 } from "victory";
+import LoadingPage from "../components/LoadingPage";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -467,7 +468,7 @@ function DashBoardMainContents() {
 
   // const {teamName, projectId} = useParams();
 
-  const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
+  const { data, loading } = useQuery(SEE_ALL_MY_TEAM_QUERY);
   const [totalProjectState, setTotalProjectState] = useState();
   const [totalActiveProjectState, setTotalActiveProjectState] = useState();
   const [totalOnHoldProjectState, setTotalOnHoldProjectState] = useState();
@@ -564,7 +565,9 @@ function DashBoardMainContents() {
     setTotalCompleteProjectState(completeProject);
   };
 
-  return (
+  return loading ? (
+    <LoadingPage />
+  ) : (
     <Container>
       <MainTitle>DASHBOARD</MainTitle>
       <LineContainer>

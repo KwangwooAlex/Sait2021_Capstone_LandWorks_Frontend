@@ -19,6 +19,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faFile } from "@fortawesome/free-regular-svg-icons";
 import { trimText } from "../components/Utils";
+import LoadingPage from "../components/LoadingPage";
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -474,13 +475,20 @@ function FilesMainContents() {
   const { handleSubmit, setValue, watch, register, errors } = useForm({
     mode: "onChange",
   });
-  const { data: seeFilesData, refetch } = useQuery(SEE_FILES, {
+  const {
+    data: seeFilesData,
+    refetch,
+    loading: seeFilesLoading,
+  } = useQuery(SEE_FILES, {
     variables: { projectId: +projectId },
   });
 
-  const { data: projectData } = useQuery(SEE_PROJECT_QUERY, {
-    variables: { projectId: +projectId },
-  });
+  const { data: projectData, loading: seeProjectLoading } = useQuery(
+    SEE_PROJECT_QUERY,
+    {
+      variables: { projectId: +projectId },
+    }
+  );
 
   const onCompleted = (data) => {
     console.log("fileData 업로드후", data);
@@ -645,7 +653,9 @@ function FilesMainContents() {
     // users.sort((a, b) => a.idex.localeCompare(b.firstname))
   };
 
-  return (
+  return seeFilesLoading && seeProjectLoading ? (
+    <LoadingPage />
+  ) : (
     <Container>
       <TeamPath>
         <TeamName>

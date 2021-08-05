@@ -5,6 +5,7 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { gql, useQuery } from "@apollo/client";
+import LoadingPage from "../components/LoadingPage";
 
 export const SEE_ALL_MY_TEAM_QUERY = gql`
   query seeAllMyTeam {
@@ -70,7 +71,7 @@ const InputSearch = styled.input`
 
 const TableContainerTop = styled.table`
   margin-top: 25px;
-  border: 1px solid lightgray;  
+  border: 1px solid lightgray;
   border-bottom: none;
   height: 20px;
   width: 100%;
@@ -92,7 +93,7 @@ const TableContainer = styled.table`
   width: 100%;
   padding: 0;
   border-collapse: collapse;
-  font-size: 13px;  
+  font-size: 13px;
 `;
 const Thead = styled.thead`
   background-color: #f3f3f3;
@@ -161,7 +162,7 @@ const CheckInput = styled.input``;
 function AllProjectMainContents() {
   const { teamName } = useParams();
 
-  const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
+  const { data, loading: seeLoading } = useQuery(SEE_ALL_MY_TEAM_QUERY);
   const [projectList, setProjectList] = useState([]);
   const [cloneProjectList, setCloneProjectList] = useState([]);
   const [reverseName, setReverseName] = useState(false);
@@ -232,7 +233,9 @@ function AllProjectMainContents() {
     setProjectList(filterProject);
   };
 
-  return (
+  return seeLoading ? (
+    <LoadingPage />
+  ) : (
     <Container>
       <MainTitle>ALL MY PROJECT LIST</MainTitle>
       <TeamHeader>
@@ -246,25 +249,25 @@ function AllProjectMainContents() {
       </TeamHeader>
 
       <MainContents>
-          <TableContainerTop className="sortable">
-            <Thead>
-              <Tr>
-                <Th className="num" onClick={numberSorting}>
-                  No. &darr;
-                </Th>
-                <Th className="pName" onClick={nameSorting}>
-                  Name &darr;
-                </Th>
-                <Th className="pDesc">Description</Th>
-                <Th className="pTeam">Team</Th>
-                <Th className="pStatus">Status</Th>
-                <Th className="pSecurity">Security</Th>
-              </Tr>
-            </Thead>
-            </TableContainerTop>
+        <TableContainerTop className="sortable">
+          <Thead>
+            <Tr>
+              <Th className="num" onClick={numberSorting}>
+                No. &darr;
+              </Th>
+              <Th className="pName" onClick={nameSorting}>
+                Name &darr;
+              </Th>
+              <Th className="pDesc">Description</Th>
+              <Th className="pTeam">Team</Th>
+              <Th className="pStatus">Status</Th>
+              <Th className="pSecurity">Security</Th>
+            </Tr>
+          </Thead>
+        </TableContainerTop>
 
         <TableDiv>
-            <TableContainer>
+          <TableContainer>
             <Tbody>
               {projectList?.map((project) => (
                 <Link to={`/myProject/${project?.teamName}/${project?.id}`}>
