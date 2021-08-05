@@ -520,6 +520,26 @@ function MyTeamMainContents() {
   const [isDModalOpen, setIsDModalOpen] = useState(false);
   const [isAbout, setIsAbout] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const [backGround, setBackGround] = useState();
+  let backgroundArray = [];
+  const saveBackground = () => {
+    let newBackGround;
+    for (var i = 0; i < allTeamData?.seeAllMyTeam?.length; i++) {
+      // console.log("i", i);
+      // console.log(
+      //   "allTeamData?.seeAllMyTeam?.length",
+      //   allTeamData.seeAllMyTeam.length
+      // );
+      newBackGround = `https://picsum.photos/${
+        Math.floor(Math.random() * 11) + 190
+      }/${Math.floor(Math.random() * 11) + 190}`;
+      backgroundArray.push(newBackGround);
+    }
+    console.log("backgroundArray", backgroundArray);
+    setBackGround(backgroundArray);
+    console.log("배경", backGround);
+  };
+  console.log("배경", backGround);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -561,13 +581,31 @@ function MyTeamMainContents() {
 
   console.log("전체팀보자", allTeamData);
 
+  // if (allTeamData?.seeAllMyTeam?.length > 0) {
+  //   let newBackGround;
+  //   for (var i = 0; i < allTeamData?.seeAllMyTeam?.length; i++) {
+  //     console.log(
+  //       "allTeamData?.seeAllMyTeam?.length",
+  //       allTeamData.seeAllMyTeam.length
+  //     );
+  //     newBackGround = `https://picsum.photos/${
+  //       Math.floor(Math.random() * 11) + 190
+  //     }/${Math.floor(Math.random() * 11) + 190}`;
+
+  //     setBackGround([...backGround, newBackGround]);
+  //   }
+  // }
+
   const { handleSubmit, setValue, watch, register, errors } = useForm({
     mode: "onChange",
   });
 
   useEffect(() => {
     setValue("teamName", allTeamData?.seeAllMyTeam?.teamName);
+    saveBackground();
   }, [allTeamData, setValue]);
+
+  // useEffect()
 
   const handleChange = (e) => {
     if (e.target.name === "teamName") {
@@ -706,21 +744,18 @@ function MyTeamMainContents() {
       </Modal>
 
       <TeamBody>
-        {allTeamData?.seeAllMyTeam?.map((team) => (
-          <ListEachTeam key={team.id}>
-            <SettingBtn onClick={() => handleSettingModal(team.teamName)}>
-              <SettingsIcon />
-            </SettingBtn>
-            <Link to={`/myProject/${team.teamName}`}>
-              <ImageBox
-                src={`https://picsum.photos/${
-                  Math.floor(Math.random() * 11) + 190
-                }/${Math.floor(Math.random() * 11) + 190}`}
-              />
-              <TeamList>{team.teamName}</TeamList>
-            </Link>
-          </ListEachTeam>
-        ))}
+        {backGround?.length > 0 &&
+          allTeamData?.seeAllMyTeam?.map((team, index) => (
+            <ListEachTeam key={team.id}>
+              <SettingBtn onClick={() => handleSettingModal(team.teamName)}>
+                <SettingsIcon />
+              </SettingBtn>
+              <Link to={`/myProject/${team.teamName}`}>
+                <ImageBox src={backGround[index]} />
+                <TeamList>{team.teamName}</TeamList>
+              </Link>
+            </ListEachTeam>
+          ))}
       </TeamBody>
       <Modal isOpen={isDModalOpen} style={settingCustomStyles}>
         <SetModalHeader>
