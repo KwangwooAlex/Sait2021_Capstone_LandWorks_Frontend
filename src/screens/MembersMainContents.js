@@ -1123,10 +1123,10 @@ function MembersMainContents() {
     const roleName = teamData?.seeTeam?.role?.filter(
       (role) => role.userId === userData.me.id
     );
-    if(roleName.length > 0 && roleName[0].roleName === "Project Manager") {
-      alert("You are a project manager. You cannot edit yourself");
-      return null;
-    }
+    // if(roleName.length > 0 && roleName[0].roleName === "Project Manager") {
+    //   alert("You are a project manager. You cannot edit yourself");
+    //   return null;
+    // }
     // console.log("roleName", roleName);
     if (roleName.length > 0 && roleName[0].roleName === "Project Manager") {
       setEditPerson(member);

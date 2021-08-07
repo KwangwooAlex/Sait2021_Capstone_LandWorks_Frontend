@@ -114,9 +114,11 @@ const Th = styled.th`
   text-align: left;
   &.num {
     width: 5%;
+    cursor: pointer;
   }
   &.pName {
     width: 25%;
+    cursor: pointer;
   }
   &.pDesc {
     width: 28%;

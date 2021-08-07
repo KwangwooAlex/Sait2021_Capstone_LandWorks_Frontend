@@ -353,14 +353,16 @@ const Th = styled.th`
   width: 100%;
   text-align: left;
   font-weight: 600;
-  &.check {
-    width: 3%;
+  &.fNum {
+    width: 5%;
+    cursor: pointer;
   }
-  &.num {
+  &.fType {
     width: 5%;
   }
   &.fName {
     width: 35%;
+    cursor: pointer;
   }
   &.fUpdateBy {
     width: 18%;
@@ -381,10 +383,10 @@ const Td = styled.td`
   margin: 10px;
   width: 100%;
   text-align: left;
-  &.check {
-    width: 3%;
+  &.fNum {
+    width: 5%;
   }
-  &.num {
+  &.fType {
     width: 5%;
   }
   &.fName {
@@ -761,10 +763,10 @@ function FilesMainContents() {
       <TableContainerTop className="sortable">
         <Thead>
           <Tr>
-            <Th className="num" onClick={numberSorting}>
+            <Th className="fNum" onClick={numberSorting}>
               No. &darr;
             </Th>
-            <Th className="num">Type</Th>
+            <Th className="fType">Type</Th>
             <Th className="fName" onClick={nameSorting}>
               Name &darr;
             </Th>
@@ -784,8 +786,8 @@ function FilesMainContents() {
             {fileList?.map((file, index) => (
               // <Link to={`/myProject/${teamName}/${files?.id}`}>
               <Tr key={(file.id, index)}>
-                <Td className="num">{file.id}</Td>
-                <Td className="num">
+                <Td className="fNum">{file.id}</Td>
+                <Td className="fType">
                   {/* {file.fileUrl.slice(file.fileUrl.length - 3)} */}
                   {/* {file.fileUrl.split(".")[file.fileUrl.split(".").length - 1]} */}
                   {file.fileUrl.split(".")[
