@@ -9,6 +9,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import FormError from "../components/auth/FormError";
+import DatePicker from "react-datepicker";
 
 const EDIT_PROFILE_MUTATION = gql`
   mutation editProfile(
@@ -172,9 +173,14 @@ const InputField = styled(Input)`
   &:focus {
     background-color: rgba(165, 215, 240, 0.2);
   }
+  &.birthDate {
+    display: flex;
+    align-items: center;
+  }
   /* border-bottom: 1px solid gray; */
   /* background-color: #f7f7f7; */
 `;
+
 
 const ErrorMsg = styled.div`
   margin-left: 15px;
@@ -348,6 +354,7 @@ function MyProfileMainContents() {
   const [inputChange, setInputChange] = useState("");
   const [avatar, setAvatar] = useState();
   const [avatarUrl, setAvatarUrl] = useState();
+  const [birth, setBirth] = useState(new Date());
   const { handleSubmit, setValue, watch, register, errors } = useForm({
     mode: "onChange",
   });
@@ -479,14 +486,16 @@ function MyProfileMainContents() {
     editProfile({
       variables: {
         ...data,
+
       },
     });
     refetch();
   };
-
   const onSaveInvalid = (data) => {};
-  console.log("avataravataravatar", avatar);
-  console.log("userData?.me?.avatar", userData?.me?.avatar);
+  // console.log("avataravataravatar", avatar);
+  // console.log("userData?.me?.avatar", userData?.me?.avatar);
+
+  
   return (
     <Container>
       <form onSubmit={handleSubmit(onSaveValid, onSaveInvalid)}>
@@ -654,10 +663,10 @@ function MyProfileMainContents() {
                 <Filed>
                   <InfoSubTitle>Date of Birth</InfoSubTitle>
                   <InputField
-                    // <Input
+                    className="birthDate"
                     ref={register}
                     value={watch("birth")}
-                    type="text"
+                    type="date"
                     name="birth"
                     placeholder={userData?.me?.birth}
                     // max={getCurrentDate()}
@@ -694,7 +703,6 @@ function MyProfileMainContents() {
                 <Filed>
                   <InfoSubTitle>City</InfoSubTitle>
                   <InputField
-                    // <Input
                     ref={register}
                     value={watch("city")}
                     type="text"

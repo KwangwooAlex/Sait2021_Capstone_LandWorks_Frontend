@@ -469,15 +469,7 @@ function OverviewMainContents() {
   const { data } = useQuery(SEE_ALL_MY_TEAM_QUERY);
 
   console.log("teamData", teamData);
-  // console.log("projectData", projectData?.seeProject);
-  // console.log("projectId", typeof projectId);
-  // {`/myProject/${teamName}/${projects?.id}`}
-
-  // const [isProject, setIsProject] = useState();
-
-  // const handleProjectName = () => {
-  //   if ()
-  // }
+  
 
   const { format } = require("date-fns");
   const sDate = new Date(projectData?.seeProject?.startDate);
@@ -547,7 +539,10 @@ function OverviewMainContents() {
           </SmallBox>
           <CalDiv>
             <CalBox20>
-              <TeamCalender onChange={onChange} value={value} />
+              <TeamCalender 
+                onChange={onChange} 
+                value={value} 
+              />
               {/* <ChartImg src={Chart} /> */}
             </CalBox20>
           </CalDiv>
@@ -683,7 +678,7 @@ function OverviewMainContents() {
                           )}
                         </ListTd>
                         <ListTd className="lName">
-                          {trimText(file.fileName, 20)}
+                          {trimText(file.fileName, 15)}
                         </ListTd>
                         <ListTd className="lRole">{file.createdAt}</ListTd>
                       </ListTr>

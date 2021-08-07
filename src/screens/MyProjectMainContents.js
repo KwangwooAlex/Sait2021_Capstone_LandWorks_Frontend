@@ -15,6 +15,7 @@ import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import EditProjects from "../components/EditProjects";
 import { trimText } from "../components/Utils";
 import LoadingPage from "../components/LoadingPage";
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 const DELETE_PROJECT = gql`
   mutation deleteProject($projectId: Int!) {
@@ -370,7 +371,7 @@ const SummaryLabel = styled.label`
 const InputResult = styled.div`
   margin-left: 10px;
   font-weight: 600;
-  width: 20%;
+  width: 80%;
   color: darkblue;
   &.desResult {
     margin-left: 0px;
@@ -419,12 +420,16 @@ const TableContainer = styled.table`
   font-size: 13px;
 `;
 
-const Tbody = styled.thead``;
+const Tbody = styled.thead`
+`;
 const Tr = styled.tr`
   display: flex;
   border-bottom: 1px solid gray;
   justify-content: center;
   align-items: center;
+  &.nothing {
+    border-bottom: 1px solid white;
+  }
 `;
 
 const Th = styled.th`
@@ -492,6 +497,16 @@ const Td = styled.td`
   }
 `;
 
+const NothingList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 17vh;
+  color: #b1b1b1;
+  font-size: 20px;
+`;
+
 const EditPBtn = styled.button`
   border: none;
   outline: none;
@@ -514,22 +529,6 @@ const Input = styled.input`
   background-color: white;
 `;
 
-// const EditpName = styled.input`
-//   border: 1px solid gray;
-//   width: 100%;
-// `;
-// const EditpDesc = styled.input`
-//   border: 1px solid gray;
-//   width: 100%;
-// `;
-// const EditpStatus = styled.input`
-//   border: 1px solid gray;
-//   width: 100%;
-// `;
-// const EditpSecurity = styled.input`
-//   border: 1px solid gray;
-//   width: 100%;
-// `;
 
 function MyProjectMainContents() {
   const [submitData, setSubmitData] = useState({});
@@ -1179,9 +1178,10 @@ function MyProjectMainContents() {
             </Tr>
           </Thead>
         </TableContainerTop>
-
+          
         <TableDiv>
           <TableContainer>
+          {projectList.length !== 0 ? (
             <Tbody>
               {projectList?.map((projects, index) => (
                 <>
@@ -1249,6 +1249,18 @@ function MyProjectMainContents() {
                 </>
               ))}
             </Tbody>
+          ):(
+            <Tbody>
+              <Tr className="nothing">
+                <Td>
+                  <NothingList>
+                    <AddBoxIcon style={{ fontSize: 35 }} onClick={handleOpenModal} />
+                    Please Create New Project...
+                  </NothingList>
+                </Td>
+              </Tr>
+            </Tbody>
+          )}
           </TableContainer>
         </TableDiv>
       </MainContents>

@@ -5,8 +5,6 @@ import { Link, useParams } from "react-router-dom";
 import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
@@ -757,6 +755,7 @@ const MemTop = styled.div`
 
 const MemRight = styled.div`
   margin-left: 50px;
+  width: 40%;
 `;
 
 const ModalMemberProfileImageBox = styled.div`
@@ -784,6 +783,7 @@ const ModalMemberName = styled.div`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 15px;
+  overflow-wrap: break-word;
   /* text-align: left; */
   /* color: #000000; */
 `;
@@ -1123,6 +1123,10 @@ function MembersMainContents() {
     const roleName = teamData?.seeTeam?.role?.filter(
       (role) => role.userId === userData.me.id
     );
+    if(roleName.length > 0 && roleName[0].roleName === "Project Manager") {
+      alert("You are a project manager. You cannot edit yourself");
+      return null;
+    }
     // console.log("roleName", roleName);
     if (roleName.length > 0 && roleName[0].roleName === "Project Manager") {
       setEditPerson(member);
@@ -1473,78 +1477,8 @@ function MembersMainContents() {
                   ) : (
                     "Guest"
                   )}
-                  {/* {isEditMode ? (
-                    <EditRole
-                      ref={register}
-                      type="text"
-                      name="projectStatus"
-                      // placeholder={projects.projectStatus}
-                      value={watch("projectStatus")}
-                      onClick={(event) => event.preventDefault()}
-                      // onChange={handleEditChange}
-                    />
-                  ) : (
-                    <> Project Manager </>
-                  )} */}
                 </ListTd>
                 <ListTd className="lMail">{trimText(member.email, 30)}</ListTd>
-                {/* {teamData?.seeTeam?.role?.filter(
-                  (role) => role.userId === member.id
-                ).length > 0 ? (
-                  teamData.seeTeam.role.filter(
-                    (role) => role.userId === userData?.id
-                  )[0].roleName === "Project Manager" ? (
-                    <>
-                      <ListTd
-                        className="lEdit"
-                        onClick={(event) => handleEditList(event, member)}
-                      >
-                        <MeditBtn>
-                          <EditIcon />
-                        </MeditBtn>
-                      </ListTd>
-                      <ListTd className="lDelete">
-                        <DeleteMBtn
-                          onClick={() => deleteTeamMemberFunction(member.id)}
-                        >
-                          <DeleteIcon />
-                        </DeleteMBtn>
-                      </ListTd>
-                    </>
-                  ) : (
-                    <>
-                      <ListTd
-                        className="lEdit"
-                        onClick={(event) => handleEditListError(event)}
-                      >
-                        <MeditBtn>
-                          <EditIcon />
-                        </MeditBtn>
-                      </ListTd>
-                      <ListTd className="lDelete">
-                        <DeleteMBtn>
-                          <DeleteIcon />
-                        </DeleteMBtn>
-                      </ListTd>
-                    </>
-                  )
-                ) : (
-                  <>
-                    <ListTd
-                      className="lEdit"
-                      onClick={(event) => handleEditListError(event)}
-                    >
-                      <MeditBtn>
-                        <EditIcon />
-                      </MeditBtn>
-                    </ListTd>
-                    <ListTd className="lDelete">
-                      <DeleteMBtn>
-                        <DeleteIcon />
-                      </DeleteMBtn>
-                    </ListTd>
-                  </>
-                )} */}
                 <ListTd
                   className="lEdit"
                   onClick={(event) => handleEditList(event, member)}

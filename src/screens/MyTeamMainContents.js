@@ -125,10 +125,13 @@ const ModalHeader = styled.h4`
   background: #004070;
   color: white;
   font-size: 13px;
+  position: sticky;
+  top: 0;
 `;
 
 const ModalBody = styled.div`
   margin: 20px 30px;
+  overflow-y: overlay;
 `;
 
 const ModalInfo = styled.div``;
@@ -157,16 +160,6 @@ const Description = styled.textarea`
 
 const ModalBtn = styled.div`
   margin: 20px auto;
-`;
-
-const InputSearch = styled.input`
-  margin-top: 25px;
-  border: 1px solid gray;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 13px;
-  height: 20px;
-  width: 200px;
 `;
 
 const CancelTeam = styled.button`
@@ -248,20 +241,48 @@ const SearchTeam = styled.div`
 const TeamBody = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 40px;
+  grid-gap: 30px;
   justify-items: stretch;
-  margin-top: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  height: 68vh;
+  overflow-y: overlay;
 `;
 
 const TeamList = styled.div`
   height: 60px;
-  margin-top: 10px;
+  margin-top: 5px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600px;
+`;
+
+const ListEachTeam = styled.li`
+  font-family: Impact "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  /* font-size: 11px; */
+  font-weight: 600;
+  border: 1px solid lightgray;
+  padding: 15px;
+  box-shadow: 0px 3px 6px gray;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  /* background-color: white; */
+  width: 90%;
+  height: 200px;
+  list-style: none;
+  background-color: #f1f1f1;
+  transition: 0.2s;
+  /* translate: 0 */
+  /* height: 150px; */
+  &:hover {
+    background-color: #e6e4e4;
+    transform: scale(1.02);
+    /* animation: backwards 2s linear; */
+  }
 `;
 
 const ImageBox = styled.div`
@@ -275,31 +296,6 @@ const ImageBox = styled.div`
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
-`;
-
-const ListEachTeam = styled.li`
-  font-family: Impact "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  border: 1px solid lightgray;
-  padding: 15px;
-  box-shadow: 0px 3px 6px gray;
-  border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-  /* background-color: white; */
-  width: 100%;
-  height: 100%;
-  list-style: none;
-  background-color: #f1f1f1;
-  transition: 0.2s;
-  /* translate: 0 */
-  /* height: 150px; */
-  &:hover {
-    background-color: #e6e4e4;
-    transform: scale(1.02);
-    /* animation: backwards 2s linear; */
-  }
 `;
 
 const SettingBtn = styled.button`
@@ -536,11 +532,11 @@ function MyTeamMainContents() {
       }/${Math.floor(Math.random() * 11) + 190}`;
       backgroundArray.push(newBackGround);
     }
-    console.log("backgroundArray", backgroundArray);
+    // console.log("backgroundArray", backgroundArray);
     setBackGround(backgroundArray);
-    console.log("배경", backGround);
+    // console.log("배경", backGround);
   };
-  console.log("배경", backGround);
+  // console.log("배경", backGround);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -570,7 +566,7 @@ function MyTeamMainContents() {
   console.log("teamData!!!!", teamData);
 
   const onCompletedDelete = () => {
-    console.log("여기오나?");
+    // console.log("여기오나?");
     alert("Your Project has been deleted.");
     refetch();
   };
@@ -584,22 +580,7 @@ function MyTeamMainContents() {
     }
   );
 
-  console.log("전체팀보자", allTeamData);
-
-  // if (allTeamData?.seeAllMyTeam?.length > 0) {
-  //   let newBackGround;
-  //   for (var i = 0; i < allTeamData?.seeAllMyTeam?.length; i++) {
-  //     console.log(
-  //       "allTeamData?.seeAllMyTeam?.length",
-  //       allTeamData.seeAllMyTeam.length
-  //     );
-  //     newBackGround = `https://picsum.photos/${
-  //       Math.floor(Math.random() * 11) + 190
-  //     }/${Math.floor(Math.random() * 11) + 190}`;
-
-  //     setBackGround([...backGround, newBackGround]);
-  //   }
-  // }
+  
 
   const { handleSubmit, setValue, watch, register, errors } = useForm({
     mode: "onChange",
@@ -679,6 +660,7 @@ function MyTeamMainContents() {
     setIsDelete({ bgColor: "lightgray" });
   };
 
+
   const handleDeleteBtnModal = (teamId) => {
     alert("Your team has been deleted.");
     setIsDModalOpen(false);
@@ -691,6 +673,8 @@ function MyTeamMainContents() {
       },
     });
   };
+
+  console.log("allTeamData", allTeamData);
 
   return seeAllTeamLoading && seeTeamLoading ? (
     <LoadingPage />
@@ -759,11 +743,12 @@ function MyTeamMainContents() {
               </SettingBtn>
               <Link to={`/myProject/${team.teamName}`}>
                 <ImageBox src={backGround[index]} />
-                <TeamList>{team.teamName}</TeamList>
+                <TeamList>{trimText(team.teamName, 15)}</TeamList>
               </Link>
             </ListEachTeam>
           ))}
       </TeamBody>
+
       <Modal isOpen={isDModalOpen} style={settingCustomStyles}>
         <SetModalHeader>
           MANAGE TEAM

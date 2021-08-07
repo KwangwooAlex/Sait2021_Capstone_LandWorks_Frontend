@@ -20,6 +20,7 @@ import {
 import { faFile } from "@fortawesome/free-regular-svg-icons";
 import { trimText } from "../components/Utils";
 import LoadingPage from "../components/LoadingPage";
+import PublishIcon from '@material-ui/icons/Publish';
 
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
@@ -342,6 +343,9 @@ const Tr = styled.tr`
   justify-content: center;
   align-items: center;
   width: 100%;
+  &.nothing {
+    border-bottom: 1px solid white;
+  }
 `;
 const Th = styled.th`
   padding: 10px;
@@ -401,6 +405,17 @@ const Td = styled.td`
   &.fDelete {
     width: 10%;
   }
+`;
+
+const NothingList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 17vh;
+  color: #b1b1b1;
+  font-size: 20px;
+  cursor: pointer;
 `;
 
 const MeditBtn = styled.button`
@@ -763,6 +778,7 @@ function FilesMainContents() {
       </TableContainerTop>
       <TableDiv>
         <TableContainer>
+        {fileList.length !== 0 ? (
           <Tbody>
             {/* 파일업로드 파트 전체 수정해야함. 지금이건 프로젝트 리스트로 대신 하드코딩 해둔거임 */}
             {fileList?.map((file, index) => (
@@ -875,6 +891,18 @@ function FilesMainContents() {
               // </Link>
             ))}
           </Tbody>
+          ):(
+            <Tbody>
+              <Tr className="nothing">
+                <Td>
+                  <NothingList>
+                    <PublishIcon style={{ fontSize: 35 }} onClick={handleUploadOpen} />
+                    Please Upload New File...
+                  </NothingList>
+                </Td>
+              </Tr>
+            </Tbody>
+          )}
         </TableContainer>
       </TableDiv>
     </Container>
