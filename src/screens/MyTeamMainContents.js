@@ -66,6 +66,14 @@ const CREATE_TEAM_MUTATION = gql`
   }
 `;
 
+const ME_QUERY = gql`
+  query me {
+    me {
+      id
+    }
+  }
+`;
+
 const SEE_TEAM_QUERY = gql`
   query seeTeam($teamName: String!) {
     seeTeam(teamName: $teamName) {
@@ -239,6 +247,7 @@ const SearchTeam = styled.div`
 `;
 
 const TeamBody = styled.div`
+  padding: 7px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 30px;
@@ -518,6 +527,7 @@ function MyTeamMainContents() {
   const [isAbout, setIsAbout] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [backGround, setBackGround] = useState();
+  const { data: userData } = useQuery(ME_QUERY);
   let backgroundArray = [];
   const saveBackground = () => {
     let newBackGround;
@@ -579,8 +589,6 @@ function MyTeamMainContents() {
       onCompleted: onCompletedDelete,
     }
   );
-
-  
 
   const { handleSubmit, setValue, watch, register, errors } = useForm({
     mode: "onChange",
@@ -660,18 +668,26 @@ function MyTeamMainContents() {
     setIsDelete({ bgColor: "lightgray" });
   };
 
-
-  const handleDeleteBtnModal = (teamId) => {
-    alert("Your team has been deleted.");
-    setIsDModalOpen(false);
-    setIsAbout(true);
-    setIsDelete(false);
-    // console.log("teamId", typeof teamId);
-    deleteTeam({
-      variables: {
-        teamId,
-      },
-    });
+  const handleDeleteBtnModal = (teamId, teamData) => {
+    if (
+      teamData?.role.filter((role) => role?.userId === userData?.me?.id)
+        .length > 0 &&
+      teamData?.role.filter((role) => role?.userId === userData?.me?.id)[0]
+        .roleName === "Project Manager"
+    ) {
+      alert("Your team has been deleted.");
+      setIsDModalOpen(false);
+      setIsAbout(true);
+      setIsDelete(false);
+      // console.log("teamId", typeof teamId);
+      deleteTeam({
+        variables: {
+          teamId,
+        },
+      });
+    } else {
+      alert("Only Project Manager Can Delete The Team!!!");
+    }
   };
 
   console.log("allTeamData", allTeamData);
@@ -849,7 +865,12 @@ function MyTeamMainContents() {
                 </DeleteSetSub>
 
                 <DeleteBtn
-                  onClick={() => handleDeleteBtnModal(teamData?.seeTeam?.id)}
+                  onClick={() =>
+                    handleDeleteBtnModal(
+                      teamData?.seeTeam?.id,
+                      teamData?.seeTeam
+                    )
+                  }
                 >
                   Delete Team
                 </DeleteBtn>

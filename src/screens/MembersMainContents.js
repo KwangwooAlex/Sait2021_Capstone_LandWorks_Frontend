@@ -1116,10 +1116,17 @@ function MembersMainContents() {
     setIsEditMode(false);
   };
 
-  const handleEditList = (event, member, role) => {
+  const handleEditList = (event, member, teamData) => {
     event.preventDefault();
     // console.log("editmember", member, role);
     // console.log("userData", userData);
+    console.log("teamData", teamData);
+    const clickedRole = teamData?.seeTeam?.role?.filter(
+      (role) => role.userId === member.id
+    );
+
+    console.log("clickedRole", clickedRole);
+
     const roleName = teamData?.seeTeam?.role?.filter(
       (role) => role.userId === userData.me.id
     );
@@ -1129,8 +1136,16 @@ function MembersMainContents() {
     // }
     // console.log("roleName", roleName);
     if (roleName.length > 0 && roleName[0].roleName === "Project Manager") {
-      setEditPerson(member);
-      handleEditModal();
+      if (
+        clickedRole.length > 0 &&
+        roleName[0].roleName === "Project Manager"
+      ) {
+        alert("You can not edit this role");
+      } else {
+        console.log("member", member);
+        setEditPerson(member);
+        handleEditModal();
+      }
     } else {
       alert("You do not have a permission to do it");
       return null;
@@ -1481,7 +1496,7 @@ function MembersMainContents() {
                 <ListTd className="lMail">{trimText(member.email, 30)}</ListTd>
                 <ListTd
                   className="lEdit"
-                  onClick={(event) => handleEditList(event, member)}
+                  onClick={(event) => handleEditList(event, member, teamData)}
                 >
                   <MeditBtn>
                     <EditIcon />
